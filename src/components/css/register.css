@@ -1,0 +1,66 @@
+/* Center the container on the page */
+.container {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center */
+    height: 100vh; /* Full viewport height */
+    background-color: #f0f0f0; /* Light background color */
+  }
+  
+  .box {
+    background-color: #ffffff; /* White background for the box */
+    padding: 40px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    text-align: center; /* Center the text */
+    width: 300px; /* Fixed width for the container */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+  }
+  
+  h1 {
+    color: #333; /* Dark text color for the heading */
+    margin-bottom: 20px; /* Margin below the heading */
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-sizing: border-box; /* Include padding and border in width */
+  }
+  
+  .input-group input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .register-button {
+    width: 100%; /* Button takes full width */
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .register-button:hover {
+    background-color: #0056b3;
+  }
+  

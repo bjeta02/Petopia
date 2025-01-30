@@ -1,0 +1,82 @@
+/* LandingPage.css */
+
+/* Set the height of the page to take full screen */
+.landing-page {
+    display: flex;
+    justify-content: center; /* Horizontally center the container */
+    align-items: center; /* Vertically center the container */ /* Make the parent container full screen height */
+    background-image: url('../../assets/dog.jpg');  /* Path to the background image */
+    background-size: cover; /* Make the image cover the entire background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    min-height: 100vh;
+    width: 100%; /* Ensure it doesn't shrink other pages */
+  }
+  
+  .which-container {
+    background-color: rgba(255, 255, 255, 0.564);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow */
+    text-align: center; /* Center the text */
+    width: 500px; /* Fixed width for the container */
+    height: 270px;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .icon {
+    font-size: 5rem;
+    margin-bottom: 10px;
+  }
+  
+  .button {
+    background-color: #4caf50; /* Green button */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+  
+  .button:hover {
+    background-color: #45a049; /* Darker green when hovered */
+  }
+
+/* Separator line (horizontal dashed line) */
+.separator {
+  position: absolute; /* Position it relative to the parent container */
+  left: 50%; /* Center the separator horizontally */
+  transform: translateX(-50%); /* Offset by half its width to truly center */
+  border-left: 2px dashed #000; /* Vertical dashed line */
+  height: 150px; /* Height of the separator */
+}
+
+.landing-page h1 {
+  color: #000;
+  font-size: 3rem;
+}
+
+
+.landing-page h6{
+  font-size: 1.5rem;
+  color:black;
+}

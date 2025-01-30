@@ -1,0 +1,96 @@
+/* Center the content on the screen */
+.center-container {
+    display: flex;
+    justify-content: center; /* Horizontally center the container */
+    align-items: center; /* Vertically center the container */
+    height: 100vh; /* Make the parent container full screen height */
+    background-image: url('../../assets/dog.jpg'); /* Path to the background image */
+    background-size: cover; /* Make the image cover the entire background */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+  }
+  
+  /* The container box for the form */
+  .container-box {
+    background-color: rgba(255, 255, 255, 0.118);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow */
+    text-align: center; /* Center the text */
+    width: 500px; /* Fixed width for the container */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+  }
+  
+  /* Form fields and labels */
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #ffffff;
+  }
+  
+  .input-group input {
+    width: 150%; /* Ensure the input field fills the container */
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-sizing: border-box; /* Include padding and border in width */
+  }
+  
+  /* Input focus effect */
+  .input-group input:focus {
+    border-color: #4caf50;
+    outline: none;
+  }
+  
+  /* Button */
+  .login-button {
+    width: 100%; /* Make button fill the container */
+    padding: 12px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box; /* Ensure button takes up full width */
+  }
+  
+  .login-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Register link */
+  .register-link {
+    margin-top: 15px; /* Add some space between the button and the register link */
+    font-size: 14px;
+  }
+  
+  .register-link a {
+    color: #4caf50;
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Heading */
+  h1 {
+    color: #ffffff;
+    margin-bottom: 20px; /* Add some margin below the heading */
+  }
+
+  p {
+    color: #ffffff;
+  }
+
+  

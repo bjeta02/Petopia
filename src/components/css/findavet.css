@@ -1,0 +1,156 @@
+/* The new outermost div for the background image */
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../assets/bg.jpg');  /* Correct path to the image */
+    background-size: cover;   /* Make the background image cover the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+     /* Ensure the background stays behind the content */
+  }
+  
+  .findavet-container {
+    display: flex;
+    flex-direction: column;   /* Stack the elements vertically */
+    justify-content: center;  /* Vertically center */
+    align-items: center;      /* Horizontally center */
+    width: 600px;             /* Fixed width */
+    height: 550px;            /* Fixed height */
+    color: white;             /* Set text color to white for contrast */
+    background-color: rgba(254, 254, 254, 0.886); /* Slightly transparent white background */
+    position: fixed;          /* Fix the container in the center of the screen */
+    top: 50%;                 /* Center vertically */
+    left: 50%;                /* Center horizontally */
+    transform: translate(-50%, -50%);  /* Adjust for exact center positioning */
+    border-radius: 15px;      /* Optional: rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* Optional: subtle shadow */
+  }
+  
+  
+  /* Styling for the "Book an Appointment Online" heading */
+  .appointment-heading {
+    font-weight: bold;
+    font-size: 3.5rem;
+    margin-bottom: 20px;   /* Space between the heading and the invisible box */
+    color: #000000;        /* Adjust text color */
+  }
+  
+  .periwinkle {
+    color: rgba(0, 78, 222); /* Periwinkle color */
+    font-weight: bold; /* Optional: Make the text bold */
+  }
+  
+  /* Styling for the FIND A VET subheading */
+  .appointment-subheading {
+    font-size: 2rem;
+    color: rgb(0, 78, 222);
+    margin-bottom: -15px;    
+  }
+  
+  /* Styling for the search box container */
+  .search-box-container {
+    width: 90%;
+    max-width: 500px;  /* Max width to control the width of the search box */
+    height: 60px;
+    display: flex;
+    justify-content: center;  /* Center the search box */
+    align-items: center;      /* Vertically center the search box */
+    position: relative;
+    margin-bottom: 20px;     /* Space between search box and the invisible box */
+  }
+  
+  /* Styling for the search icon */
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8rem;
+    color: #333;  /* Icon color */
+    pointer-events: none;  /* Prevent icon from blocking input field */
+  }
+  
+  /* Styling for the search box */
+  .search-box {
+    width: 100%;              /* Adjust width of the search box */
+    padding: 15px 15px 15px 40px;  /* Add padding on the left to make room for the icon */
+    font-size: 1.8rem;        /* Increased font size */
+    color: #123151;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional subtle shadow */
+  }
+  
+  /* Invisible box centered in the middle */
+  .invisible-box {
+    display: flex;
+    justify-content: center;   /* Horizontally center the content */
+    align-items: center;       /* Vertically center the content */
+    width: 80%;                /* Use percentage-based width for responsiveness */
+    max-width: 600px;          /* Max width to prevent it from growing too large */
+    height: 30vh;              /* Use viewport height for responsiveness */
+    max-height: 400px;         /* Max height to prevent it from growing too large */
+    background-color: rgba(0, 149, 255, 0.286); /* Invisible background */
+    border: 2px solid transparent; /* Optional: border for visual purposes */
+    box-shadow: 0 0 10px rgba(238, 13, 13, 0.1); /* Subtle shadow */
+    margin-top: 20px;          /* Space between previous content */
+    text-align: center;        /* Center the text inside */
+    border-radius: 20px;
+  }
+  
+  /* Styling for the heading inside invisible-box */
+  .invisible-box h1 {
+    font-size: 2rem;           /* Adjust the font size */
+    color: rgb(0, 0, 1);    /* Periwinkle color for the text */
+    font-weight: bold;         /* Bold text */
+    line-height: 1.4;          /* Line spacing for better readability */
+    margin: 0;                 /* Remove default margin */
+  }
+  
+  .box-logo {
+    width: 100%;                       /* Full width */
+    height: 150px;                     /* Set the height of the logo box */
+    background-image: url('../../assets/vet-logo.png');  /* Path to the logo image */
+    background-size: contain;          /* Ensure the entire image fits within the box */
+    background-repeat: no-repeat;      /* Prevent image repetition */
+    background-position: center;      /* Center the image within the box */
+    display: flex;
+    justify-content: center;           /* Center contents horizontally (if any) */
+    align-items: center;               /* Center contents vertically (if any) */
+    border-radius: 10px;               /* Optional: rounded corners */
+  }
+
+  /* Media Queries for smaller screens */
+  @media (max-width: 768px) {
+    .appointment-heading {
+      font-size: 1.5rem;   /* Make the heading smaller on smaller screens */
+    }
+  
+    .search-box {
+      width: 95%;           /* Make the search box take up more space */
+    }
+  
+    .invisible-box {
+      width: 90%;           /* Make the invisible box take up more space on smaller screens */
+      height: 25vh;         /* Adjust height for small screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .appointment-heading {
+      font-size: 1.2rem;   /* Further reduce heading size for very small screens */
+    }
+  
+    .search-box {
+      width: 100%;           /* Make the search box take up full width */
+    }
+  
+    .invisible-box {
+      width: 95%;           /* Make the invisible box take almost full width */
+      height: 20vh;         /* Adjust height for very small screens */
+    }
+  }
+  
