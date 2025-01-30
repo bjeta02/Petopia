@@ -1,0 +1,89 @@
+#footer {
+    background: linear-gradient(to right, #0066cc, #4a90e2);
+    padding: 50px 0;
+    text-align: center;
+    color: white;
+  }
+  
+  .section-title h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff; /* Keep the text white */
+  }
+  
+  .section-title h4 {
+    font-size: 1.4rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+    color: #fff; /* Keep the text white */
+  }
+  
+  /* Input & Button Container */
+  .input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  
+  /* Email Input */
+  .email-input {
+    width: 350px;
+    padding: 15px;
+    border: 2px solid #004c99;
+    border-radius: 8px;
+    font-size: 1em;
+    color: black;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .email-input:focus {
+    outline: none;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    border-color: #007acc; /* Focus border color */
+  }
+  
+  /* Get Started Button */
+ /* Get Started Button */
+.get-started-btn {
+  background-color: #0066cc;
+  color: white;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center; /* Align text and arrow vertically */
+}
+
+/* Arrow in the Button */
+.get-started-btn::after {
+  content: ' →'; /* Unicode for an arrow */
+  font-size: 1.4rem;
+  margin-left: 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effects */
+.get-started-btn:hover {
+  background-color: #005bb5;
+  transform: scale(1.05);
+}
+
+.get-started-btn:hover::after {
+  margin-left: 15px; /* Move the arrow further to emphasize the hover effect */
+}
+
+.copyright p{
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #fff;
+}
