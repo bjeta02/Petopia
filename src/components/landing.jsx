@@ -18,12 +18,12 @@ const LandingPage = () => {
         <div className="options">
           <div className="option">
             <div className="icon">🩺</div>
-            <button className="button">I'm a Vet</button>
+            <button className="button-landing">I'm a Vet</button>
           </div>
           <div className="separator"></div>
           <div className="option">
             <div className="icon">🐾</div>
-            <button className="button" onClick={handlePatientClick}>I'm a Patient</button>
+            <button className="button-landing" onClick={handlePatientClick}>I'm a Patient</button>
             <h6>looking for a vet</h6>
           </div>
         </div>
