@@ -1,0 +1,116 @@
+.shops-container {
+    margin-top: 80px;
+    padding: 20px;
+    max-width: 1200px; /* Adjusted width */
+    margin-left: auto;
+    margin-right: auto;
+}
+  
+.search-filter-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Search, Location, and Filter Boxes */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    width: 100%; /* Make search take full space */
+    flex: 3; /* Make search larger */
+}
+
+.location-box,
+.filter-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    width: 200px; /* Fixed width */
+    flex-shrink: 0; /* Prevents shrinking */
+}
+
+.search-box input, .location-box select, .filter-box button {
+    border: none;
+    outline: none;
+    background: transparent;
+    margin-left: 10px;
+    flex: 1;
+}
+
+.search-box i, .location-box i, .filter-box i {
+    color: #666;
+    font-size: 16px;
+}
+
+/* Shops List */
+.shops-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shop-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 1200px; /* Adjusted width */
+    width: 100%;
+    margin: auto;
+}
+
+.shop-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 2;
+}
+
+.shop-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.shop-schedule {
+    flex: 1;
+}
+
+.shop-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.book-button, .profile-button {
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.book-button {
+    background: transparent;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.profile-button {
+    background: rgb(0, 120, 168);
+    color: white;
+}

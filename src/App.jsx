@@ -14,6 +14,9 @@ import ProfilePage from "./components/profile";
 import Footer from "./components/footer";
 import LandingPage from "./components/landing"; 
 import Findavet from "./components/findavet";
+import Shops from "./components/shops";
+import PetShop from "./components/petshop";
+import ShopProfile from "./components/shopprofile";
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -54,11 +57,13 @@ const App = () => {
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/findavet" element={<Findavet />} />
+        <Route path="/shops" element={<Shops />} />
+        <Route path="/petshop" element={<PetShop />} />
+        <Route path="/shopprofile" element={<ShopProfile />} />
 
         {/* Profile Route */}
         <Route path="/profile" element={<ProfilePage />} />
         
-        {/* Service Routes */}
       </Routes>
     </Router>
   );

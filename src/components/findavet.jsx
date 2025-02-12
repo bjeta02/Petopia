@@ -5,14 +5,16 @@ function Findavet() {
   return (
     <div className="bg-img">
       <div className="findavet-container">
-        <h1 className="appointment-subheading">FIND A VET</h1>
+        <div className="appointment-subheading">
+          <p>FIND A VET</p>
+        </div>
         <h1 className="appointment-heading">
           Book an Appointment, 
-          <span className="periwinkle"> Online!</span>
+          <span className="periwinkle"> online!</span>
         </h1>
         <div className="search-box-container">
-          <div className="search-icon">
-            <i className="fas fa-search"></i> {/* Font Awesome magnifying glass icon */}
+        <div className="search-icon">
+            <i className="fas fa-search"></i> 
           </div>
           <input 
             type="text" 
@@ -20,10 +22,15 @@ function Findavet() {
             placeholder="Search for a vet..." 
           />
         </div>
+        <a href="/shops" className="need-help">
+          <p>Need Help?</p>
+        </a>
         <div className="invisible-box">
-          <h1>Looking for immediate pet medical assistance?</h1>
-          <div className="box-logo">
+          <div className="text-container">
+            <h1>Looking for immediate pet medical assistance?</h1>
+            <p>Look for the vet that suits your pet's needs.</p>
           </div>
+          <div className="box-logo"></div>
         </div>
       </div>
     </div>
