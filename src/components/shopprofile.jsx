@@ -4,14 +4,14 @@ import axios from "axios"; // Import Axios
 import "../components/css/shopprofile.css"; // Import CSS
 
 function ShopProfile() {
-  const { id } = useParams(); // Get the shop ID from the URL
+  const { clinicId } = useParams(); // Get the shop ID from the URL
   const [shop, setShop] = useState(null); // State for shop data
   const [loading, setLoading] = useState(true); // State for loading
 
   useEffect(() => {
     const fetchShop = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/clinics/${id}`);
+        const response = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
         setShop(response.data); // Save the fetched data
       } catch (error) {
         console.error("Error fetching shop details:", error);
@@ -21,7 +21,7 @@ function ShopProfile() {
     };
 
     fetchShop();
-  }, [id]);
+  }, [clinicId]);
 
   if (loading) {
     return <p>Loading shop details...</p>;

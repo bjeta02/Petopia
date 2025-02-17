@@ -59,7 +59,7 @@ const App = () => {
         <Route path="/findavet" element={<Findavet />} />
         <Route path="/shops" element={<Shops />} />
         <Route path="/petshop/:clinicId" element={<PetShop />} />
-        <Route path="/shopprofile/:id" element={<ShopProfile />} />
+        <Route path="/shopprofile/:clinicId" element={<ShopProfile />} />
 
         {/* Profile Route */}
         <Route path="/profile" element={<ProfilePage />} />
