@@ -16,7 +16,7 @@ const LandingPage = () => {
       <div className="which-container">
         <h1 className="title">Which one are you?</h1>
         <div className="options">
-          <div className="option">
+          <div className="option">  
             <div className="icon">🩺</div>
             <button className="button-landing">I'm a Vet</button>
           </div>
@@ -24,7 +24,6 @@ const LandingPage = () => {
           <div className="option">
             <div className="icon">🐾</div>
             <button className="button-landing" onClick={handlePatientClick}>I'm a Patient</button>
-            <h6>looking for a vet</h6>
           </div>
         </div>
       </div>

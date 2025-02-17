@@ -22,8 +22,8 @@ function Findavet() {
             placeholder="Search for a vet..." 
           />
         </div>
-        <a href="/shops" className="need-help">
-          <p>Need Help?</p>
+        <a href="/shops" className="browse-shop">
+          <p>Browse Shops</p>
         </a>
         <div className="invisible-box">
           <div className="text-container">

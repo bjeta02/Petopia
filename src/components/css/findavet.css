@@ -154,7 +154,7 @@ body {
     text-align: left;
   }
 
-  .need-help {
+  .browse-shop {
     background: transparent;
     border: none;
     color: #333;
@@ -165,13 +165,106 @@ body {
     font-weight: bold;
   }
   
-  .need-help p {
+  .browse-shop p {
     margin-right: 50px;
     text-align: right;
     color: rgba(0, 78, 222);
   }
   
   
-
+  @media screen and (max-width: 768px) {
+    .findavet-container {
+      width: 95%;
+      max-width: 90%;
+      padding: 15px;
+    }
+  
+    .appointment-heading {
+      font-size: 2.5rem;
+    }
+  
+    .appointment-subheading p {
+      font-size: 1.8rem;
+    }
+  
+    .search-box-container {
+      width: 100%;
+    }
+  
+    .search-box {
+      font-size: 1.6rem;
+      padding: 12px 12px 12px 35px;
+    }
+  
+    .search-icon {
+      font-size: 1.6rem;
+      left: 10px;
+    }
+  
+    .invisible-box {
+      width: 100%;
+      max-width: 90%;
+      padding: 10px;
+    }
+  
+    .invisible-box h1 {
+      font-size: 1.8rem;
+    }
+  
+    .box-logo {
+      height: 100px;
+    }
+  
+    .text-container h1 {
+      font-size: 2.2rem;
+    }
+  
+    .text-container p {
+      font-size: 1.4rem;
+    }
+  }
+  
+  /* For screens smaller than 480px (Mobile Phones) */
+  @media screen and (max-width: 480px) {
+    .findavet-container {
+      width: 95%;
+      max-width: 90%;
+      padding: 15px;
+    }
+  
+    .appointment-heading {
+      font-size: 2.2rem;
+    }
+  
+    .appointment-subheading p {
+      font-size: 1.6rem;
+    }
+  
+    .search-box {
+      font-size: 1.4rem;
+      padding: 10px 10px 10px 30px;
+    }
+  
+    .search-icon {
+      font-size: 1.4rem;
+      left: 8px;
+    }
+  
+    .invisible-box h1 {
+      font-size: 1.6rem;
+    }
+  
+    .box-logo {
+      height: 80px;
+    }
+  
+    .text-container h1 {
+      font-size: 2rem;
+    }
+  
+    .text-container p {
+      font-size: 1.3rem;
+    }
+  }
  
   
