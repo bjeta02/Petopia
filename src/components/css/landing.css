@@ -1,82 +1,124 @@
-/* LandingPage.css */
-
-/* Set the height of the page to take full screen */
+/* Background to match the login page */
 .landing-page {
-    display: flex;
-    justify-content: center; /* Horizontally center the container */
-    align-items: center; /* Vertically center the container */ /* Make the parent container full screen height */
-    background-image: url('../../assets/dog.jpg');  /* Path to the background image */
-    background-size: cover; /* Make the image cover the entire background */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Prevent the image from repeating */
-    min-height: 100vh;
-    width: 100%; /* Ensure it doesn't shrink other pages */
-  }
-  
-  .which-container {
-    background-color: rgba(255, 255, 255, 0.564);
-    backdrop-filter: blur(10px);
-    padding: 20px;
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow */
-    text-align: center; /* Center the text */
-    width: 500px; /* Fixed width for the container */
-    height: 270px;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .options {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-  
-  .option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .icon {
-    font-size: 5rem;
-    margin-bottom: 10px;
-  }
-  
-  .button-landing {
-    background-color: #4caf50; /* Green button */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-  }
-  
-  .button:hover {
-    background-color: #45a049; /* Darker green when hovered */
-  }
-
-/* Separator line (horizontal dashed line) */
-.separator {
-  position: absolute; /* Position it relative to the parent container */
-  left: 50%; /* Center the separator horizontally */
-  transform: translateX(-50%); /* Offset by half its width to truly center */
-  border-left: 2px dashed #000; /* Vertical dashed line */
-  height: 150px; /* Height of the separator */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #3988d6, #6038b6);
+  padding: 20px;
 }
 
-.landing-page h1 {
-  color: #000;
+/* Main container */
+.which-container {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content */
+}
+
+.which-container:hover {
+  transform: translateY(-5px);
+}
+
+/* Title */
+.title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+/* Options container */
+.options {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Each option (Vet & Patient) */
+.option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+}
+
+/* Icons */
+.icon {
   font-size: 3rem;
+  margin-bottom: 15px;
 }
 
-
-.landing-page h6{
+/* Buttons */
+.button-landing {
+  margin-top: 15px;
+  padding: 14px 24px;
+  background: #6c5ce7;
+  color: white;
+  border: none;
+  border-radius: 8px;
   font-size: 1.5rem;
-  color:black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  width: 80%;
+  max-width: 300px;
+}
+
+.button-landing:hover {
+  background: #4834d4;
+  transform: scale(1.05);
+}
+
+/* Subtext under patient option */
+.option h6 {
+  margin-top: 8px;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* Separator */
+.separator {
+  width: 2px;
+  height: 80px;
+  background: #ddd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .which-container {
+    padding: 2rem;
+    width: 90%;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .options {
+    flex-direction: column; /* Stack items vertically on small screens */
+    gap: 20px;
+  }
+
+  .option {
+    width: 100%;
+  }
+
+  .button-landing {
+    font-size: 1.3rem;
+    width: 100%;
+  }
+
+  .separator {
+    width: 80%;
+    height: 2px;
+  }
 }
