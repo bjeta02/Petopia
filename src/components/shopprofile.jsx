@@ -4,14 +4,14 @@ import axios from "axios"; // Import Axios
 import "../components/css/shopprofile.css"; // Import CSS
 
 function ShopProfile() {
-  const { clinicId } = useParams(); // Get the shop ID from the URL
+  const { id } = useParams(); // Get the shop ID from the URL
   const [shop, setShop] = useState(null); // State for shop data
   const [loading, setLoading] = useState(true); // State for loading
 
   useEffect(() => {
     const fetchShop = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
+        const response = await axios.get(`http://localhost:5000/api/clinics/${id}`);
         setShop(response.data); // Save the fetched data
       } catch (error) {
         console.error("Error fetching shop details:", error);
@@ -21,7 +21,7 @@ function ShopProfile() {
     };
 
     fetchShop();
-  }, [clinicId]);
+  }, [id]);
 
   if (loading) {
     return <p>Loading shop details...</p>;
@@ -40,7 +40,9 @@ function ShopProfile() {
             <img src={shop.image || "/shop-image.jpg"} alt="Shop Logo" className="shop-logo" />
             <div className="shop-details">
               <h2 className="shop-name">{shop.name}</h2>
-              <p className="shop-specialty">Specialty: {shop.services || "N/A"}</p>
+              <p className="shop-specialty">
+  Specialty: {shop.services?.map(service => service.service_name).join(" | ") || "N/A"}
+</p>
               <p className="shop-experience">Experience: {shop.experience || "N/A"} Years</p>
             </div>
           </div>
