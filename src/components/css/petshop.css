@@ -1,112 +1,150 @@
 .page-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px; /* Prevents elements from touching screen edges */
+}
+
+/* Pet Shop Form Container */
+.petshop-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  width: 70%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 900px; /* Prevents overly large width */
+}
+
+/* Shop Info & Form */
+.shop-info, .form-container {
+  padding: 20px;
+}
+
+/* Shop Info */
+.shop-info {
+  width: 40%;
+}
+
+/* Form Container */
+.form-container {
+  width: 60%;
+}
+
+/* Step Indicator */
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.step {
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 25px;
+  border-radius: 50%;
+  background: #e0e0e0;
+}
+
+.step.active {
+  background: #007bff;
+  color: white;
+}
+
+/* Form Fields */
+.form-label {
+  display: block;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.input-field, .date-picker {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Gender Selection */
+.gender-container {
+  margin-top: 15px;
+}
+
+.gender-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.gender-options {
+  display: flex;
+  justify-content: left;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.gender-options button {
+  padding: 6px 10px;
+  font-size: 13px;
+  width: 70px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.gender-options .selected {
+  background: #007bff;
+  color: white;
+}
+
+/* Action Buttons */
+.action-button {
+  width: 100%;
+  margin-top: 20px;
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 🔽 Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
   .petshop-container {
-    display: flex;
-    width: 70%;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+      flex-direction: column; /* Stack items on small screens */
+      width: 90%; /* Makes container more compact */
+      padding: 15px;
   }
-  
-  .shop-info {
-    width: 40%;
-    padding: 20px;
+
+  .shop-info, .form-container {
+      width: 100%; /* Full width for smaller screens */
+      padding: 15px;
+      text-align: center; /* Centers text */
   }
-  
-  .form-container {
-    width: 60%;
-    padding: 20px;
-  }
-  
-  .step-indicator {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .step {
-    width: 25px;
-    height: 25px;
-    text-align: center;
-    line-height: 25px;
-    border-radius: 50%;
-    background: #e0e0e0;
-  }
-  
-  .step.active {
-    background: #007bff;
-    color: white;
-  }
-  
-  .form-label {
-    display: block;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .input-field, .date-picker {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .gender-container {
-    margin-top: 15px; /* Adds space above gender section */
-  }
-  
-  .gender-label {
-    display: block;
-    margin-bottom: 5px; /* Adds space between label and buttons */
-  }
-  
+
   .gender-options {
-    display: flex;
-    justify-content: left;
-    gap: 10px; /* Space between buttons */
-    margin-top: 10px; /* Pushes buttons lower */
+      justify-content: center; /* Centers gender buttons */
   }
-  
+
   .gender-options button {
-    padding: 6px 10px; /* Smaller padding */
-    font-size: 13px; /* Smaller text */
-    width: 70px; /* Smaller width */
-    border: 1px solid #ccc;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 5px;
+      width: 100px; /* Slightly larger for touch-friendly buttons */
   }
-  
-  .gender-options .selected {
-    background: #007bff;
-    color: white;
-  }
-  
-  
+
   .action-button {
-    width: 100%;
-    margin-top: 20px;
-    background: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    font-size: 18px;
-    border-radius: 5px;
-    cursor: pointer;
+      font-size: 16px; /* Slightly smaller for mobile */
   }
-  
-  .back-button {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
+}

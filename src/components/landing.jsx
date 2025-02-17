@@ -24,7 +24,6 @@ const LandingPage = () => {
           <div className="option">
             <div className="icon">🐾</div>
             <button className="button-landing" onClick={handlePatientClick}>I'm a Patient</button>
-            <h6>looking for a vet</h6>
           </div>
         </div>
       </div>
