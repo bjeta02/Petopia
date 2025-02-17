@@ -16,7 +16,7 @@ function Shops() {
       } catch (error) {
         console.error("Error fetching pet shops:", error);
       }
-    };
+    };  
     fetchShops();
   }, []);
 
@@ -93,3 +93,4 @@ function Shops() {
 }
 
 export default Shops;
+  
