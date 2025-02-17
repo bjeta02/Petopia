@@ -1,14 +1,12 @@
 import mongoose from "mongoose";
 
 const appointmentSchema = new mongoose.Schema({
-    owner_id: { type: mongoose.Schema.Types.ObjectId, ref: "Owner" },
-    pet_id: { type: mongoose.Schema.Types.ObjectId, ref: "Pet" },
-    clinic_id: { type: mongoose.Schema.Types.ObjectId, ref: "Clinic" },
+    owner_id: { type: mongoose.Schema.Types.ObjectId, ref: "Owner", required: true },
+    pet_id: { type: mongoose.Schema.Types.ObjectId, ref: "Pet", required: true },
+    clinic_id: { type: mongoose.Schema.Types.ObjectId, ref: "Clinic", required: true },
     vet_id: { type: mongoose.Schema.Types.ObjectId, ref: "Veterinarian", required: false },
-    service_id: { type: mongoose.Schema.Types.ObjectId, ref: "Service" },
+    service_id: { type: mongoose.Schema.Types.ObjectId, ref: "Service", required: true },
     date: Date,
-    start_time: String,
-    end_time: String,
     status: { type: String, enum: ["pending", "confirmed", "completed", "canceled"], default: "pending" },
     notes: String
 }, { timestamps: true });

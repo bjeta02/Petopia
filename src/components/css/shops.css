@@ -1,20 +1,22 @@
 .shops-container {
     margin-top: 80px;
     padding: 20px;
-    max-width: 1200px; /* Adjusted width */
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
-  
+
+/* Responsive layout for search and filters */
 .search-filter-container {
     display: flex;
+    flex-wrap: wrap; /* Allows items to wrap on small screens */
     gap: 10px;
     align-items: center;
     margin-bottom: 20px;
 }
 
 /* Search, Location, and Filter Boxes */
-.search-box {
+.search-box, .location-box, .filter-box {
     display: flex;
     align-items: center;
     background: white;
@@ -22,21 +24,16 @@
     border-radius: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid #ccc;
-    width: 100%; /* Make search take full space */
-    flex: 3; /* Make search larger */
 }
 
-.location-box,
-.filter-box {
-    display: flex;
-    align-items: center;
-    background: white;
-    padding: 10px 15px;
-    border-radius: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ccc;
-    width: 200px; /* Fixed width */
-    flex-shrink: 0; /* Prevents shrinking */
+.search-box {
+    width: 100%;
+    flex: 3;
+}
+
+.location-box, .filter-box {
+    width: 200px;
+    flex-shrink: 0;
 }
 
 .search-box input, .location-box select, .filter-box button {
@@ -52,31 +49,35 @@
     font-size: 16px;
 }
 
-/* Shops List */
+/* Responsive Shops List */
 .shops-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
+/* Shop Card */
 .shop-card {
     display: flex;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
     justify-content: space-between;
     align-items: center;
     background: white;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 1200px; /* Adjusted width */
+    max-width: 1200px;
     width: 100%;
     margin: auto;
 }
 
+/* Shop Info */
 .shop-info {
     display: flex;
     align-items: center;
     gap: 15px;
     flex: 2;
+    flex-wrap: wrap;
 }
 
 .shop-logo {
@@ -89,6 +90,7 @@
     flex: 1;
 }
 
+/* Buttons */
 .shop-actions {
     display: flex;
     flex-direction: column;
@@ -100,7 +102,8 @@
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    width: 200px;
+    width: 100%; /* Adjust button width for smaller screens */
+    max-width: 200px;
 }
 
 .book-button {
@@ -113,4 +116,35 @@
 .profile-button {
     background: rgb(0, 120, 168);
     color: white;
+}
+
+/* 🔽 Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .search-filter-container {
+        flex-direction: column; /* Stack elements */
+        align-items: stretch;
+    }
+
+    .location-box, .filter-box {
+        width: 100%; /* Full width for mobile */
+    }
+
+    .shop-card {
+        flex-direction: column; /* Stack items */
+        align-items: flex-start;
+    }
+
+    .shop-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .shop-actions {
+        width: 100%;
+        align-items: center;
+    }
+
+    .book-button, .profile-button {
+        width: 100%; /* Full width buttons on mobile */
+    }
 }
