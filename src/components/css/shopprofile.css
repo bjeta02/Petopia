@@ -1,127 +1,199 @@
 /* Page Layout */
 .page-container {
-    padding: 20px;
-    background-color: #f3f4f6;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-  }
-  
-  .grid-container {
-    width: 100%;
-    max-width: 1200px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-  }
-  
-  /* Shop Info Section */
-  .shop-info {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 95%;
-  }
-  
-  .shop-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .shop-logo {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .shop-name {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .shop-specialty,
-  .shop-experience {
-    color: gray;
-    font-size: 14px;
-  }
-  
-  .shop-description {
-    margin-top: 10px;
-    color: #555;
-  }
-  
-  /* Booking Section */
-  .booking-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .section-title {
-    font-weight: bold;
-    font-size: 1.5em;
-  }
-  
-  .booking-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .icon {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .schedule-time,
-  .schedule-fee {
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .book-button-profile {
-    margin-top: 10px;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-weight: bold;
-  }
-  
-  /* Clinic Schedules */
-  /* Shop Information Section */
+  padding: 20px;
+  background-color: #f3f4f6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+/* Grid Layout */
+.grid-container {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* Shop Info Section */
+.shop-info {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.shop-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.shop-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.shop-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.shop-specialty,
+.shop-experience {
+  color: gray;
+  font-size: 14px;
+}
+
+.shop-description {
+  margin-top: 10px;
+  color: #555;
+}
+
+/* Booking Section */
+.booking-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.booking-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+.schedule-time,
+.schedule-fee {
+  font-size: 14px;
+  color: #555;
+}
+
+.book-button-profile {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* Clinic Schedules */
 .shop-info-container {
-    width: 95%; /* Matches grid-container width */
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shop-info-container2 {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shop-location,
+.shop-contact,
+.shop-hours {
+  font-size: 16px;
+  color: #333;
+  margin: 5px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid-container {
+      grid-template-columns: 1fr; /* Stack elements vertically */
   }
 
-  .shop-info-container2 {
-    
-    width: 100%; /* Matches grid-container width */
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  .shop-header {
+      flex-direction: column;
+      text-align: center;
   }
-  
+
+  .shop-logo {
+      width: 60px;
+      height: 60px;
+  }
+
+  .shop-name {
+      font-size: 18px;
+  }
+
+  .shop-specialty,
+  .shop-experience {
+      font-size: 12px;
+  }
+
+  .booking-info {
+      flex-direction: column;
+      text-align: center;
+  }
+
+  .icon {
+      width: 30px;
+      height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+      padding: 10px;
+  }
+
+  .shop-info,
+  .booking-container,
+  .shop-info-container,
+  .shop-info-container2 {
+      padding: 15px;
+  }
+
+  .shop-logo {
+      width: 50px;
+      height: 50px;
+  }
+
+  .shop-name {
+      font-size: 16px;
+  }
+
+  .shop-specialty,
+  .shop-experience,
   .shop-location,
   .shop-contact,
   .shop-hours {
-    font-size: 16px;
-    color: #333;
-    margin: 5px 0;
+      font-size: 12px;
   }
-  
-  
+
+  .section-title {
+      font-size: 1.2em;
+  }
+
+  .book-button-profile {
+      padding: 8px 10px;
+      font-size: 14px;
+  }
+}

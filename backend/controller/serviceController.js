@@ -11,6 +11,18 @@ export const getServices = async (req, res) => {
     }
 };
 
+// Fetch all services for a specific clinic
+export const getServicesByClinic = async (req, res) => {
+    const { clinicId } = req.params;  // Clinic ID passed as a parameter
+    try {
+        const services = await Service.find({ "clinic_id": clinicId })
+            .populate("clinic_id", "name address");  // Populate clinic details
+        res.json(services);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 export const postService = async (req, res) => {
     try {
