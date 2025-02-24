@@ -32,11 +32,11 @@
 
         try {
           // Fetch clinic details
-          const clinicResponse = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
+          const clinicResponse = await axios.get(`http://172.20.10.12:5000/api/clinics/${clinicId}`);
           setClinic(clinicResponse.data);
 
           // Fetch services for the clinic
-          const servicesResponse = await axios.get(`http://localhost:5000/api/services/clinic/${clinicId}`);
+          const servicesResponse = await axios.get(`http://172.20.10.12:5000/api/services/clinic/${clinicId}`);
           setServices(servicesResponse.data);
         } catch (error) {
           console.error("Error fetching clinic or services:", error);
@@ -61,7 +61,7 @@
     
       // Proceed with the submission if validation passes
       try {
-        const ownerResponse = await axios.post("http://localhost:5000/api/owners/register", {
+        const ownerResponse = await axios.post("http://172.20.10.12:5000/api/owners/register", {
           name,
           email,
           phone,
@@ -69,7 +69,7 @@
         });
     
         // Continue with creating pet and appointment
-        const petResponse = await axios.post("http://localhost:5000/api/pets/register", {
+        const petResponse = await axios.post("http://172.20.10.12:5000/api/pets/register", {
           owner_id: ownerResponse.data._id,
           name: petName,
           type: petType,
@@ -86,9 +86,11 @@
           service_id: selectedService,
           notes: "Some notes",
         };
+
+        console.log("Data: ", appointmentData);
         
-        const appointmentResponse = await axios.post("http://localhost:5000/api/appointments/create", appointmentData);
-    
+        const appointmentResponse = await axios.post("http://172.20.10.12:5000/api/appointments/create", appointmentData);
+        
           alert("Appointment booked successfully!");
           navigate(`/appointments`);
       } catch (error) {
@@ -105,6 +107,10 @@
           {/* Left Section - Pet Shop Info */}
           {clinic && (
             <div className="shop-info">
+              <img
+                  src={`http://172.20.10.12:5000/logos/logo_${clinic._id}.jpg`}  // Fetch the logo dynamically
+                  className="shop-logo-book" 
+                />
               <h2>{clinic.name}</h2>
               <p>{clinic.description}</p>
               {/* Add any other clinic information you want to display here */}
@@ -172,6 +178,7 @@
             )}
 
             {/* Step 3: Pet & Owner Details */}
+            {/* Step 3: Pet & Owner Details */}
             {step === 3 && (
               <>
                 <button className="back-button" onClick={() => setStep(2)}>
@@ -180,97 +187,100 @@
                 <h3>Pet & Owner Details</h3>
                 <p>Please provide information about yourself and your pet.</p>
 
-                <label className="form-label">Owner Name *</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required 
-                />
+                <div className="scrollable-step">
+                  <label className="form-label">Owner Name</label>
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required 
+                  />
 
-                <label className="form-label">Owner Email *</label>
-                <input 
-                  type="email" 
-                  className="input-field"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
+                  <label className="form-label">Owner Email</label>
+                  <input 
+                    type="email" 
+                    className="input-field"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
 
-                <label className="form-label">Owner Phone *</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
+                  <label className="form-label">Owner Phone</label>
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
 
-                <label className="form-label">Owner Address *</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
-                />
+                  <label className="form-label">Owner Address</label>
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
+                  />
 
-                <label className="form-label">Pet Name *</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={petName}
-                  onChange={(e) => setPetName(e.target.value)}
-                  required 
-                />
+                  <label className="form-label">Pet Name</label>
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    value={petName}
+                    onChange={(e) => setPetName(e.target.value)}
+                    required 
+                  />
 
-                <label className="form-label">Pet Type *</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={petType}
-                  onChange={(e) => setPetType(e.target.value)}
-                  required
-                />
+                  <label className="form-label">Pet Type</label>
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    value={petType}
+                    onChange={(e) => setPetType(e.target.value)}
+                    required
+                  />
 
-                <label className="form-label">Pet Breed (Optional)</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={petBreed}
-                  onChange={(e) => setPetBreed(e.target.value)}
-                />
-                
-                <label className="form-label">Pet Gender *</label>
-                <div className="gender-options">
-                  <button 
-                    type="button"
-                    className={petGender === "Male" ? "selected" : ""}
-                    onClick={() => setPetGender("Male")}
-                  >
-                    Male
-                  </button>
-                  <button 
-                    type="button"
-                    className={petGender === "Female" ? "selected" : ""}
-                    onClick={() => setPetGender("Female")}
-                  >
-                    Female
-                  </button>
+                  <label className="form-label">Pet Breed (Optional)</label>
+                  <input 
+                    type="text" 
+                    className="input-field"
+                    value={petBreed}
+                    onChange={(e) => setPetBreed(e.target.value)}
+                  />
+                  
+                  <label className="form-label">Pet Gender *</label>
+                  <div className="gender-options">
+                    <button 
+                      type="button"
+                      className={petGender === "Male" ? "selected" : ""}
+                      onClick={() => setPetGender("Male")}
+                    >
+                      Male
+                    </button>
+                    <button 
+                      type="button"
+                      className={petGender === "Female" ? "selected" : ""}
+                      onClick={() => setPetGender("Female")}
+                    >
+                      Female
+                    </button>
+                  </div>
+
+                  <label className="form-label">Pet Age (Optional)</label>
+                  <input 
+                    type="number" 
+                    className="input-field"
+                    value={petAge}
+                    onChange={(e) => setPetAge(e.target.value)}
+                  />
                 </div>
-
-                <label className="form-label">Pet Age (Optional)</label>
-                <input 
-                  type="number" 
-                  className="input-field"
-                  value={petAge}
-                  onChange={(e) => setPetAge(e.target.value)}
-                />
 
                 <button className="action-button" onClick={handleSubmit}>SUBMIT</button>
               </>
             )}
+
           </div>
         </div>
       </div>

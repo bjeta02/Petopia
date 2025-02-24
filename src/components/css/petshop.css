@@ -3,8 +3,12 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding: 20px; /* Prevents elements from touching screen edges */
+  padding: 20px; 
+  min-height: 600px;
+  max-height: none; /* Remove fixed max-height */
+  overflow-y: auto; /* Allow scrolling */
 }
+
 
 /* Pet Shop Form Container */
 .petshop-container {
@@ -16,6 +20,17 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   max-width: 900px; /* Prevents overly large width */
+  min-height: 600px; /* Set a minimum height */
+  justify-content: center;
+}
+
+.form-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers content horizontally */
+  justify-content: center; /* Centers content vertically */
+  text-align: center;
 }
 
 /* Shop Info & Form */
@@ -122,29 +137,77 @@
   cursor: pointer;
 }
 
+.shop-logo-book {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Centers horizontally */
+}
+
+/* Step 3 Scrollable Section */
+.scrollable-step {
+  max-height: 300px; /* Adjust height as needed */
+  overflow-y: auto;
+  padding-right: 10px; /* Prevents scrollbar from overlapping content */
+}
+
+
+
 /* 🔽 Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
   .petshop-container {
-      flex-direction: column; /* Stack items on small screens */
-      width: 90%; /* Makes container more compact */
-      padding: 15px;
-  }
+    flex-direction: column;
+    width: 90%;
+    padding: 15px;
+    min-height: auto; /* Let content determine height */
+}
+
+.petshop-container {
+  flex-direction: column;
+  width: 90%;
+  padding: 15px;
+  min-height: auto; /* Let content determine height */
+}
+
+
 
   .shop-info, .form-container {
-      width: 100%; /* Full width for smaller screens */
-      padding: 15px;
-      text-align: center; /* Centers text */
+      width: 100%;
+      padding: 10px;
+      text-align: center;
   }
 
-  .gender-options {
-      justify-content: center; /* Centers gender buttons */
+  /* Reduce text sizes */
+  .form-label, .gender-label, .back-button {
+      font-size: 14px;
+  }
+
+  .input-field, .date-picker {
+      font-size: 14px;
+      padding: 8px;
   }
 
   .gender-options button {
-      width: 100px; /* Slightly larger for touch-friendly buttons */
+      width: 90px;
+      font-size: 12px;
   }
 
   .action-button {
-      font-size: 16px; /* Slightly smaller for mobile */
+    font-size: 16px;
+    padding: 12px;
+    margin-bottom: 20px; /* Ensure button isn't at screen edge */
+}
+
+  /* Reduce logo size for smaller screens */
+  .shop-logo-book {
+      width: 80px; /* Smaller logo */
+  }
+  
+  .shop-info h2 {
+    font-size: 18px; 
+  }
+
+  .shop-info p {
+    font-size: 12px;
   }
 }
