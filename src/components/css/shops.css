@@ -24,6 +24,7 @@
     border-radius: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid #ccc;
+    height: 50px; /* Set fixed height to ensure all boxes are the same height */
 }
 
 .search-box {
@@ -36,7 +37,20 @@
     flex-shrink: 0;
 }
 
-.search-box input, .location-box select, .filter-box button {
+/* Add overflow handling for location */
+.location-selector {
+    width: 100%;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;    /* Hide overflow */
+    text-overflow: ellipsis; /* Truncate with ellipsis */
+    padding: 10px;
+    font-size: 1.6rem;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+.search-box input, .location-box select, .filter-box select {
     border: none;
     outline: none;
     background: transparent;
@@ -47,6 +61,71 @@
 .search-box i, .location-box i, .filter-box i {
     color: #666;
     font-size: 16px;
+}
+
+/* Logo in the Filter Box */
+.filter-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Align the icon, text, and down arrow */
+    background: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    height: 50px;
+    width: 190px; /* Set width */
+}
+
+/* Filter Box Icon */
+.filter-box i {
+    font-size: 20px; /* Adjust size for the filter icon */
+    color: #666;
+}
+
+/* Filter Box Select */
+.filter-box select {
+    width: 100%;
+    background: transparent; /* Remove background */
+    border: none; /* Remove border */
+    outline: none;
+    padding-left: 10px;
+    font-size: 1.6rem;
+    color: #424141;
+    flex: 1;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;    /* Hide overflow */
+    text-overflow: ellipsis; /* Truncate with ellipsis */
+}
+
+/* Down Arrow for Filter Box */
+.filter-box::after {
+    content: '\f0d7'; /* FontAwesome down arrow */
+    font-family: 'Font Awesome 5 Free'; 
+    font-size: 20px;
+    color: #666;
+    margin-left: -15px; /* Space between text and arrow */
+    display: inline-block;
+    transform: translateY(3px); /* Adjust arrow position */
+}
+
+/* Remove internal box look for filter */
+.filter-box select {
+    background: transparent; /* Remove background color */
+    border: none; /* No extra border */
+    outline: none;
+    margin-left: 10px;
+    flex: 1;
+    font-size: 1.6rem;
+}
+
+/* Adjust filter icon visibility */
+.filter-box i {
+    font-size: 30px; /* Adjust icon size */
+    margin-right: 10px; /* Space between icon and select */
+    color: #666;
+    visibility: visible !important; /* Force icon to be visible */
+    display: inline-block !important;
 }
 
 /* Responsive Shops List */
@@ -78,6 +157,7 @@
     gap: 15px;
     flex: 2;
     flex-wrap: wrap;
+    margin-right: 10px;
 }
 
 .shop-logo {
@@ -137,6 +217,7 @@
     .shop-info {
         flex-direction: column;
         align-items: flex-start;
+        margin-bottom: 20px;
     }
 
     .shop-actions {
@@ -146,5 +227,21 @@
 
     .book-button, .profile-button {
         width: 100%; /* Full width buttons on mobile */
+    }
+
+    .shop-logo {
+        width: 80px; /* Increase size on mobile */
+        height: 80px;
+        margin: 0 auto; /* Center the logo */
+    }
+
+    .shop-card {
+        flex-direction: column; /* Stack items */
+        align-items: center; /* Center all items in the card */
+    }
+
+    .shop-info {
+        flex-direction: column;
+        align-items: center; /* Center the shop info */
     }
 }

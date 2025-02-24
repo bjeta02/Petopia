@@ -10,18 +10,30 @@ function Findavet() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true; // Flag to track whether the component is still mounted
+  
     // Fetch available services from the backend
     const fetchServices = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/services"); // Assuming an endpoint for services
-        const uniqueServices = [...new Set(response.data.map(service => service.name))]; // Remove duplicates
-        setServices(uniqueServices);
+        const response = await axios.get("http://172.20.10.12:5000/api/services"); // Assuming an endpoint for services
+        if (isMounted) { // Only update state if component is still mounted
+          const uniqueServices = [...new Set(response.data.map(service => service.name))]; // Remove duplicates
+          setServices(uniqueServices);
+        }
       } catch (error) {
         console.error("Error fetching services:", error);
       }
     };
+  
     fetchServices();
-  }, []);
+  
+    // Cleanup function to set the flag to false when the component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, []); // Empty dependency array means this effect runs once when the component mounts
+  
+  
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);

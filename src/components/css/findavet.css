@@ -163,6 +163,7 @@ body {
     text-align: right;
     align-self: flex-end; /* Align the link at the bottom of the container */
     font-weight: bold;
+    margin-right: -25px; /* Default margin */
   }
   
   .browse-shop p {
@@ -171,6 +172,37 @@ body {
     color: rgba(0, 78, 222);
   }
   
+/* Styling for the dropdown container */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white; /* Ensure background is white */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* Styling for dropdown items */
+.dropdown-item {
+  padding: 10px;
+  font-size: 1.6rem;
+  color: #333; /* Ensure text is dark */
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Hover effect for better visibility */
+.dropdown-item:hover {
+  background: rgba(0, 78, 222, 0.1);
+  color: #004ede; /* Highlight color */
+}
+
+
   
   @media screen and (max-width: 768px) {
     .findavet-container {
@@ -222,6 +254,14 @@ body {
     .text-container p {
       font-size: 1.4rem;
     }
+
+    .browse-shop {
+      margin-right: -30px;  /* Adjust margin-right for smaller screens */
+    }
+  
+    .browse-shop p {
+      margin-right: 30px;  /* Adjust paragraph's margin-right for consistency */
+    }
   }
   
   /* For screens smaller than 480px (Mobile Phones) */
@@ -264,6 +304,14 @@ body {
   
     .text-container p {
       font-size: 1.3rem;
+    }
+
+    .browse-shop {
+      margin-right: -20px;  /* Adjust further for mobile phones */
+    }
+  
+    .browse-shop p {
+      margin-right: 20px;  /* Adjust paragraph's margin-right for mobile */
     }
   }
  

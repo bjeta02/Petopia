@@ -23,7 +23,7 @@ const LandingPage = () => {
           <div className="separator"></div>
           <div className="option">
             <div className="icon">🐾</div>
-            <button className="button-landing" onClick={handlePatientClick}>I'm a Patient</button>
+            <button className="button-landing" onClick={handlePatientClick}>Patient</button>
           </div>
         </div>
       </div>

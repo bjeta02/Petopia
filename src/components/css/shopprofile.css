@@ -123,6 +123,10 @@
   margin: 5px 0;
 }
 
+.shop-schedule2 {
+  text-align: left;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .grid-container {
@@ -197,3 +201,4 @@
       font-size: 14px;
   }
 }
+

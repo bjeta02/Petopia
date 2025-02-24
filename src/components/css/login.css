@@ -6,6 +6,7 @@
   height: 100vh;
   background: linear-gradient(135deg, #308ae4, #6c31eb);
   padding: 20px;
+  padding-top: 100px;
 }
 
 /* Stylish login box */
