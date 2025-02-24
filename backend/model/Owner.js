@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
-const ownerSchema = new mongoose.Schema({
+const OwnerSchema = new mongoose.Schema({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false }, // No trailing space
     name: String,
-    email: String, // unique: true 
+    email: String,
     phone: String,
-    password: String,
     address: String,
+    pet_count: Number,
 }, { timestamps: true });
 
-export default mongoose.model("Owner", ownerSchema);  
+export default mongoose.model("Owner", OwnerSchema);

@@ -28,10 +28,15 @@ export const registerOwner = async (req, res) => {
 
 // Get all owners (if needed)
 export const getOwners = async (req, res) => {
-    try {
-        const owners = await Owner.find();
-        res.json(owners);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+      const owners = await Owner.find()
+          .populate({
+              path: "user_id", // Populate the user_id field in Owner
+              select: "firstname lastname email" // Select the fields you want from User
+          });
+
+      res.status(200).json(owners);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
 };

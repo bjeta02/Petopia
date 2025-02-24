@@ -106,11 +106,20 @@
           {clinic && (
             <div className="shop-info">
               <h2>{clinic.name}</h2>
-              <p>{clinic.description}</p>
-              {/* Add any other clinic information you want to display here */}
+              <p>
+                {clinic.services && clinic.services.length > 0 ? (
+                  clinic.services.map((service, index) => (
+                    <span key={service.service_id}> {/* Use service_id as the key */}
+                      {index > 0 && " | "} {service.service_name} {/* Access service_name */}
+                    </span>
+                  ))
+                ) : (
+                  <span>No services available</span>
+                )}
+                {clinic.services && clinic.services.length > 3 && " | More..."}
+              </p>
             </div>
           )}
-
           {/* Right Section - Multi-Step Form */}
           <div className="form-container">
             {/* Step Indicator */}

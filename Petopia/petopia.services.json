@@ -1,0 +1,882 @@
+[{
+  "_id": {
+    "$oid": "67b0bb5a4b6fd4028d2ea1ca"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3d8"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:05:46.420Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:05:46.420Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bb5a4b6fd4028d2ea1cb"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3d8"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:05:46.421Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:05:46.421Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bb5a4b6fd4028d2ea1cc"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3d8"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:05:46.421Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:05:46.421Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bbc14b6fd4028d2ea1e3"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3d9"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:07:29.673Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:07:29.673Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bbc14b6fd4028d2ea1e4"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3d9"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:07:29.673Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:07:29.673Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bbc14b6fd4028d2ea1e5"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3d9"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:07:29.673Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:07:29.673Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bbe24b6fd4028d2ea1ea"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3da"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:08:02.297Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:08:02.297Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bbe24b6fd4028d2ea1eb"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3da"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:08:02.297Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:08:02.297Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bbe24b6fd4028d2ea1ec"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3da"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:08:02.297Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:08:02.297Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc024b6fd4028d2ea1f3"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3da"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:08:34.010Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:08:34.010Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc3f4b6fd4028d2ea1f8"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3db"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:09:35.141Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:09:35.141Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc3f4b6fd4028d2ea1f9"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3db"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:09:35.141Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:09:35.141Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc3f4b6fd4028d2ea1fa"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3db"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:09:35.141Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:09:35.141Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc4a4b6fd4028d2ea1ff"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3dc"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:09:46.724Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:09:46.724Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc4a4b6fd4028d2ea200"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3dc"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:09:46.724Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:09:46.724Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc4a4b6fd4028d2ea201"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3dc"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:09:46.724Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:09:46.724Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc5f4b6fd4028d2ea206"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3dd"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:10:07.843Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:10:07.843Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc5f4b6fd4028d2ea207"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3dd"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:10:07.843Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:10:07.843Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc5f4b6fd4028d2ea208"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3dd"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:10:07.843Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:10:07.843Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc934b6fd4028d2ea20d"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3de"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:10:59.032Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:10:59.032Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc934b6fd4028d2ea20e"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3de"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:10:59.032Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:10:59.032Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bc934b6fd4028d2ea20f"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3de"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:10:59.032Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:10:59.032Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bce84b6fd4028d2ea214"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3de"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:12:24.399Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:12:24.399Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bce84b6fd4028d2ea215"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3de"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:12:24.399Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:12:24.399Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bce84b6fd4028d2ea216"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3de"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:12:24.399Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:12:24.399Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd0a4b6fd4028d2ea21b"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3df"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:12:58.710Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:12:58.710Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd0a4b6fd4028d2ea21c"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3df"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:12:58.710Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:12:58.710Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd0a4b6fd4028d2ea21d"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3df"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:12:58.710Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:12:58.710Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd154b6fd4028d2ea222"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e0"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:09.690Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:09.690Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd154b6fd4028d2ea223"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e0"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:09.690Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:09.690Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd154b6fd4028d2ea224"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e0"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:09.690Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:09.690Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd254b6fd4028d2ea229"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e1"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:25.515Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:25.515Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd254b6fd4028d2ea22a"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e1"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:25.515Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:25.515Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd254b6fd4028d2ea22b"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e1"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:25.515Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:25.515Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd364b6fd4028d2ea230"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e2"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:42.626Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:42.626Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd364b6fd4028d2ea231"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e2"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:42.626Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:42.626Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd364b6fd4028d2ea232"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e2"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:42.626Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:42.626Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd3f4b6fd4028d2ea237"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e3"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:51.417Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:51.417Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd3f4b6fd4028d2ea238"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e3"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:51.417Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:51.417Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd3f4b6fd4028d2ea239"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e3"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:13:51.417Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:13:51.417Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd5a4b6fd4028d2ea23e"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e4"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:18.744Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:18.744Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd5a4b6fd4028d2ea23f"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e4"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:18.744Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:18.744Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd5a4b6fd4028d2ea240"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e4"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:18.744Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:18.744Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd664b6fd4028d2ea245"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e5"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:30.803Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:30.803Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd664b6fd4028d2ea246"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e5"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:30.803Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:30.803Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd664b6fd4028d2ea247"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e5"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:30.804Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:30.804Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd764b6fd4028d2ea24c"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e6"
+  },
+  "name": "Veterinary Checkup",
+  "description": "Comprehensive health checkup for pets",
+  "estimated_duration": 45,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:46.023Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:46.023Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd764b6fd4028d2ea24d"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e6"
+  },
+  "name": "Pet Boarding",
+  "description": "Safe and comfortable boarding services",
+  "estimated_duration": 1440,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:46.023Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:46.023Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67b0bd764b6fd4028d2ea24e"
+  },
+  "clinic_id": {
+    "$oid": "67b0b6f7bf78bac35d27e3e6"
+  },
+  "name": "Pet Grooming",
+  "description": "Bath, haircut, and nail trimming",
+  "estimated_duration": 60,
+  "__v": 0,
+  "createdAt": {
+    "$date": "2025-02-15T16:14:46.023Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-15T16:14:46.023Z"
+  }
+}]

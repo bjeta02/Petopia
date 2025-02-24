@@ -99,7 +99,7 @@ export const Navigation = () => {
             <span className="icon-bar"></span>
           </button>
           <a className="navbar-brand page-scroll" href="#page-top">
-            <img src={require('../assets/Logo.png')} alt="Petopia Logo" style={styles.logo} />
+            <img src={require('../assets/logo.png')} alt="Petopia Logo" style={styles.logo} />
 
           </a>
         </div>

@@ -10,19 +10,34 @@ function Shops() {
   const [services, setServices] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedService, setSelectedService] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");  // Search query state
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");  // Debounced search query
   const navigate = useNavigate();
+
+  // Debounce logic to delay API call
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery); // Set the debounced search query
+    }, 1000); // Wait 1000ms after user stops typing
+
+    return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts or the query changes
+  }, [searchQuery]);
 
   useEffect(() => {
     const fetchShops = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/clinics", {
+        const response = await axios.get("http://10.10.79.169:5000/api/clinics", {
           params: {
             location: selectedLocation,
-            service: selectedService
+            service: selectedService,
+            search: debouncedSearchQuery,  // Include the search query
           }
         });
 
-        setShops(response.data.clinics);
+        // Filter out inactive shops
+        const activeShops = response.data.clinics.filter(shop => shop.status !== "Inactive");
+
+        setShops(activeShops);
         setLocations(response.data.locations);
         setServices(response.data.services);
       } catch (error) {
@@ -31,7 +46,71 @@ function Shops() {
     };
 
     fetchShops();
-  }, [selectedLocation, selectedService]); // Refetch data when filters change
+  }, [selectedLocation, selectedService, debouncedSearchQuery]);
+
+  const checkIfOpen = (shop) => {
+    const now = new Date();
+    const currentDay = now.toLocaleString("en-US", { weekday: "long" }).toLowerCase(); // e.g., "monday"
+    const currentHour = now.getHours(); // 24-hour format
+    const currentMinute = now.getMinutes();
+    const currentTime = currentHour * 100 + currentMinute; // Convert to comparable format (e.g., 14:30 -> 1430)
+  
+    // Map day names to numbers
+    const daysMap = {
+      sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6,
+    };
+  
+    const parseDaysRange = (days) => {
+      if (!days || typeof days !== "string") {
+        console.warn("Invalid or missing days field:", days);
+        return [];
+      }
+    
+      const range = days.toLowerCase().split(" to ");
+      if (range.length === 2 && daysMap[range[0]] !== undefined && daysMap[range[1]] !== undefined) {
+        const start = daysMap[range[0]];
+        const end = daysMap[range[1]];
+        return Object.keys(daysMap).filter(day => daysMap[day] >= start && daysMap[day] <= end);
+      }
+      return [days.toLowerCase()];
+    };
+    
+  
+    const openDays = parseDaysRange(shop.days); // Extract valid days
+  
+    const parseTime = (timeStr) => {
+      if (!timeStr || typeof timeStr !== "string") {
+        console.warn("Invalid or missing time string:", timeStr);
+        return null;
+      }
+    
+      const [time, modifier] = timeStr.split(" "); // Split time and AM/PM
+      let [hour, minute] = time.split(":").map(Number);
+    
+      if (modifier === "PM" && hour !== 12) hour += 12;
+      if (modifier === "AM" && hour === 12) hour = 0;
+    
+      return hour * 100 + minute;
+    };
+    
+  
+    const openTime = parseTime(shop.open_time);
+    const closeTime = parseTime(shop.close_time);
+  
+    // Check if today is within open days and within time range
+    const isOpen = openDays.includes(currentDay) && currentTime >= openTime && currentTime <= closeTime;
+
+    console.log(`Checking shop: ${shop.name}`);
+    console.log(`Current Day: ${currentDay}`);
+    console.log(`Open Days: ${openDays}`);
+    console.log(`Current Time: ${currentTime}`);
+    console.log(`Open Time: ${openTime} | Close Time: ${closeTime}`);
+    console.log(`Is Open? ${isOpen ? "YES" : "NO"}`);
+
+  
+    return isOpen;
+  };  
+  
 
   return (
     <div className="shops-container">
@@ -39,7 +118,13 @@ function Shops() {
       <div className="search-filter-container">
         <div className="search-box">
           <FaSearch />
-          <input type="text" className="search-bar" placeholder="Search Pet Shops" />
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search Pet Shops"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}  // Update search query as user types
+          />
         </div>
         <div className="location-box">
           <FaMapMarkerAlt />
@@ -71,54 +156,61 @@ function Shops() {
             ))}
           </select>
         </div>
-      </div>
+      </div>  
 
       {/* Pet Shops List */}
       <div className="shops-list">
         {shops.length > 0 ? (
-          shops.map((shop) => (
-            <div key={shop._id} className="shop-card">
-              <div className="shop-info">
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="Shop Logo"
-                  className="shop-logo"
-                />
-                <div>
-                  <h3>{shop.name}</h3>
-                  <p>{shop.description}</p>
-                  <p>
-                    {shop.services &&
-                      shop.services.length > 0 &&
-                      shop.services.slice(0, 3).map((service, index) => (
-                        <span key={index}>
-                          {index > 0 && " | "} {service}
-                        </span>
-                      ))}
-                    {shop.services.length > 3 && " | More..."}
-                  </p>
-                  <p className="availability">✔ Open Now | ❌ No In-Person Visit</p>
+          shops.map((shop) => {
+            const isOpen = checkIfOpen(shop); // Check if this shop is open
+
+            return (
+              <div key={shop._id} className="shop-card">
+                <div className="shop-info">
+                  <img
+                    src={`http://localhost:5000/logos/logo_${shop._id}.jpg`}  // Fetch the logo dynamically
+                    className="shop-logo" 
+                  />
+                  <div>
+                    <h3>{shop.name}</h3>
+                    <p>{shop.description}</p>
+                    <p>
+                      {shop.services &&
+                        shop.services.length > 0 &&
+                        shop.services.slice(0, 3).map((service, index) => (
+                          <span key={index}>
+                            {index > 0 && " | "} {service}
+                          </span>
+                        ))}
+                      {shop.services.length > 3 && " | More..."}
+                    </p>
+                    <p className="availability">
+                      <span className={`status-indicator ${checkIfOpen(shop) ? "open" : "closed"}`}>
+                        {checkIfOpen(shop) ? "🟢 OPEN" : "🔴 CLOSED"}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div className="shop-schedule">
+                  <p>📅 Available Schedule: {shop.days}</p>
+                  <p>🕘 {shop.open_time} - {shop.close_time}</p>
+                </div>
+                <div className="shop-actions">
+                  <a 
+                    onClick={() => navigate(`/petshop/${shop._id}`)}
+                    className="book-button">
+                    BOOK APPOINTMENT
+                  </a>
+                  <button
+                    className="profile-button"
+                    onClick={() => navigate(`/shopprofile/${shop._id}`)}
+                  >
+                    VIEW PROFILE
+                  </button>
                 </div>
               </div>
-              <div className="shop-schedule">
-                <p>📅 Available Schedule: {shop.days}</p>
-                <p>🕘 {shop.open_time} - {shop.close_time}</p>
-              </div>
-              <div className="shop-actions">
-                <a 
-                  onClick={() => navigate(`/petshop/${shop._id}`)}
-                  className="book-button">
-                  BOOK APPOINTMENT
-                </a>
-                <button
-                  className="profile-button"
-                  onClick={() => navigate(`/shopprofile/${shop._id}`)}
-                >
-                  VIEW PROFILE
-                </button>
-              </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>Loading pet shops...</p>
         )}

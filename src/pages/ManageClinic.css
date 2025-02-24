@@ -1,0 +1,9 @@
+.status-tag.inactive {
+    background-color: #ff0000;
+    color: rgb(255, 255, 255);
+}
+
+.status-tag.active {
+    background-color: #28a745;
+    color: white;
+}

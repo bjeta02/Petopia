@@ -1,0 +1,105 @@
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    border-right: 1px solid var(--surface-border);
+    background-color: var(--surface-section);
+    margin-right: 10px;
+}
+
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.sidebar-logo img {
+    width: 200px;
+    height: auto;
+}
+
+.sidebar-menu {
+    padding: 1rem;
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 2px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.sidebar-menu a i {
+    margin-right: 8px;
+}
+
+.sidebar-menu a:hover,
+.sidebar-menu a.active {
+    background-color: #149674;
+    color: white;
+}
+
+/* Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 280px;
+    right: 0;
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    background-color: var(--surface-0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--surface-border);
+    z-index: 10;
+}
+
+.header-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Icons & Badges */
+.icon-button {
+    font-size: 1.5rem;
+    color: #095d7e;
+    cursor: pointer;
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 50%;
+    padding: 2px 6px;
+}
+
+/* Utility Classes */
+.bg-active {
+    background-color: #149674;
+}
+
+.hover\:bg-hover:hover {
+    background-color: #149674;
+}

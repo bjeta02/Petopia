@@ -50,7 +50,7 @@ function Findavet() {
 
         <div className="search-box-container">
           <div className="search-icon">
-            <i className="fas fa-search"></i> 
+            <i className="fas fa-search"></i>
           </div>
 
           {/* Input Box for Search */}
