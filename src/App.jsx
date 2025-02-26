@@ -61,9 +61,8 @@ const App = () => {
         <Route path="/petshop/:clinicId" element={<PetShop />} />
         <Route path="/shopprofile/:clinicId" element={<ShopProfile />} />
 
-        {/* Profile Route */}
-        <Route path="/profile" element={<ProfilePage />} />
-        
+        {/* Profile Route with ownerId parameter */}
+        <Route path="/profile/:ownerId" element={<ProfilePage />} />
       </Routes>
     </Router>
   );

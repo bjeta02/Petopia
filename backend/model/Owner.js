@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
-const ownerSchema = new mongoose.Schema({
-    name: String,
-    email: String, // unique: true 
-    phone: String,
+const OwnerSchema = new mongoose.Schema({
+    firstname: String,
+    lastname: String,
     password: String,
+    email: String,
+    phone: String,
     address: String,
+    pet_count: Number,
 }, { timestamps: true });
 
-export default mongoose.model("Owner", ownerSchema);  
+export default mongoose.model("Owner", OwnerSchema);

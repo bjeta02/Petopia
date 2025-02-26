@@ -41,7 +41,7 @@ export const postService = async (req, res) => {
             // Check if clinic exists
             const clinicExists = await Clinic.findById(service.clinic_id);
             if (!clinicExists) {
-                return res.status(400).json({ message: `Clinic with ID ${service.clinic_id} not found.` });
+                return res.status(404).json({ message: `Clinic with ID ${service.clinic_id} not found.` });
             }
         }
 
@@ -49,6 +49,7 @@ export const postService = async (req, res) => {
         const savedServices = await Service.insertMany(services);
         res.status(201).json({ message: "Services added successfully", data: savedServices });
     } catch (error) {
+        console.error("Error posting services:", error);
         res.status(500).json({ message: error.message });
     }
 };

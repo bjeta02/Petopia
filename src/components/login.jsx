@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios"; // Import axios for making API calls
 import "../components/css/login.css"; // Import the CSS for styling
 
@@ -7,35 +8,36 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(''); // State to hold error messages
   const [loading, setLoading] = useState(false); // State to manage loading state
+  const navigate = useNavigate();
 
-  // Handle login form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the form from reloading the page
     setLoading(true); // Set loading state to true
     setError(''); // Reset error message
 
     try {
-      // Make API call to login
-      const response = await axios.post(`http://172.20.10.12:5000/api/users/login`, {
-        email: username, // Assuming username is the email
-        password: password,
-      });
+        // Make API call to login
+        const response = await axios.post(`http://localhost:5000/api/owners/login`, {
+            email: username, // Assuming username is the email
+            password: password,
+        });
 
-      // Handle successful login
-      console.log('Login successful:', response.data);
-      // You can store the token in local storage or context
-      localStorage.setItem('token', response.data.token);
-      // Redirect to dashboard or another page
-      window.location.href = '/shops'; // Change this to your dashboard route
+        // Handle successful login
+        console.log('Login successful:', response.data);
+        const { token, owner } = response.data; // Destructure token and owner data
+        localStorage.setItem('token', token); // Store the token
+        localStorage.setItem('owner', JSON.stringify(owner)); // Store owner data
+
+        // Redirect to dashboard or another page
+        window.location.href = `/login/${owner.id}`; // Change this to your dashboard route
     } catch (err) {
-      // Handle error
-      console.error('Login error:', err.response ? err.response.data.message : err.message);
-      setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
+        // Handle error
+        console.error('Login error:', err.response ? err.response.data.message : err.message);
+        setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
     } finally {
-      setLoading(false); // Reset loading state
+        setLoading(false); // Reset loading state
     }
   };
-
   return (
     <div className="center-container">
       <div className="container-box">

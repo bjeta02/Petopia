@@ -1,7 +1,7 @@
 .header {
     width: 100%;
     min-height: 70vh; /* Full screen height */
-    background-image: url('C:\Codes\T1\public\img\intro-bg.jpg');
+    background-image: url('/public/img/intro-bg.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
