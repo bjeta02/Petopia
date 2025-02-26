@@ -85,5 +85,5 @@ margin-left: 15px; /* Move the arrow further to emphasize the hover effect */
 .copyright p{
 margin-top: 20px;
 font-size: 0.9rem;
-color: #fff;
+color: #fff !important;
 }

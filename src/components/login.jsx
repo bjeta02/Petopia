@@ -16,17 +16,17 @@ const Login = () => {
 
     try {
       // Make API call to login
-      const response = await axios.post(`http://172.20.10.12:5000/api/users/login`, {
+      const response = await axios.post(`http://localhost:5000/api/owners/login`, {
         email: username, // Assuming username is the email
         password: password,
-      });
 
+      });
       // Handle successful login
       console.log('Login successful:', response.data);
       // You can store the token in local storage or context
       localStorage.setItem('token', response.data.token);
       // Redirect to dashboard or another page
-      window.location.href = '/shops'; // Change this to your dashboard route
+      window.location.href = '/home'; // Change this to your dashboard route
     } catch (err) {
       // Handle error
       console.error('Login error:', err.response ? err.response.data.message : err.message);

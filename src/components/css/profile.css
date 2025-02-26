@@ -1,0 +1,429 @@
+.profile-container {
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 80px;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background for contrast */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between columns */
+}
+
+.label-margin {
+    margin-bottom: 0.5rem; /* Adjust the value as needed */
+  }
+
+.column {
+    flex: 1; /* Allow columns to grow equally */
+    min-width: 300px; /* Minimum width for each column */
+}
+
+.profile-fields {
+    width: 100%;
+}
+
+.p-field {
+    margin-bottom: 15px;
+}
+
+.button-group {
+    margin-top: 20px; /* Space above the button group */
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.custom-edit-button {
+    background-color: rgb(0, 60, 255); /* Change to your desired color */
+    color: white; /* Change text color if needed */
+    border: none; /* Remove border if desired */
+  }
+  
+  .custom-edit-button:hover {
+    background-color: rgb(17, 0, 255); /* Change hover color if desired */
+  }
+
+.footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right in the dialog */
+    margin-top: 20px; /* Space above the footer buttons */
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 10px; /* Space between buttons */
+}
+
+.card {
+    border-radius: 8px; /* Rounded corners for cards */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.card-title {
+    font-size: 1.5rem; /* Larger title font */
+    font-weight: bold; /* Bold title */
+    margin-bottom: 10px; /* Space below title */
+}
+
+/* CSS Style */
+.pet-manager {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #ffffff;
+    margin-top: 20px;
+  }
+  
+  .p-datatable {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .p-datatable .p-datatable-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background: #f7f9fc;
+    margin-top: 5px;
+    padding: 1rem;
+    border-bottom: 2px solid #dee2e6;
+  }
+  
+  .p-datatable .p-datatable-tbody tr {
+    transition: background-color 0.2s ease;
+    margin-left: 20px;
+  }
+  
+  .p-datatable .p-datatable-tbody tr:hover {
+    background: #f1f5f9;
+  }
+
+  /* Dialog Styling */
+.custom-dialog {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+}
+
+.dialog-title {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Input Fields */
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.field label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.field input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+
+.field input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* Dialog Footer */
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.save-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn {
+    background-color: #ddd;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #bbb;
+}
+
+.profile-fields {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.p-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.p-field label {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.p-field input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1.3rem;
+    transition: border 0.3s ease;
+}
+
+.p-field input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+.calendar {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.calendar-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calendar .p-datepicker {
+    transform: scale(1); /* Scale up the whole calendar */
+    transform-origin: center; /* Keep it centered */
+}
+
+
+.calendar .p-datepicker-calendar {
+    font-size: 1.2rem; /* Make date numbers bigger */
+    height: 377px;
+}
+
+.calendar .p-datepicker-header {
+    font-size: 1.3rem; /* Enlarge month & year */
+}
+
+.calendar .p-datepicker table {
+    width: 100%; /* Slightly expand the grid */   
+}
+
+/* Add borders to the calendar cells */
+.calendar .p-datepicker-calendar td, 
+.calendar .p-datepicker-calendar th {
+    border: 1px solid #ddd; /* Light gray border */
+    padding: 10px; /* Add spacing */
+    text-align: center;
+}
+
+/* Make sure the table fills the available space */
+.calendar .p-datepicker-calendar {
+    width: 100%;
+    border-collapse: collapse; /* Ensure borders merge properly */
+}
+
+/* Optional: Add hover effect for better UX */
+.calendar .p-datepicker-calendar td:hover {
+    background-color: #f5f5f5; /* Light background on hover */
+    cursor: pointer;
+}
+
+.custom-add-button {
+    background-color: #28a745 !important; /* Green */
+    color: white !important; /* White text */
+    font-size: 1.2rem !important; /* Bigger font */
+    padding: 12px 20px !important; /* More padding */
+    border-radius: 8px !important; /* Rounded edges */
+    border: none !important; /* No border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-add-button .pi {
+    font-size: 1.3rem !important; /* Bigger icon */
+}
+
+.custom-add-button:hover {
+    background-color: #218838 !important; /* Darker green on hover */
+}
+
+.custom-dialog {
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 600px;
+}
+
+.dialog-title {
+    font-size: 1.8rem; /* Bigger title */
+    font-weight: bold;
+    text-align: center;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.field label {
+    font-size: 1.2rem; /* Bigger labels */
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.custom-dialog .custom-input {
+    width: 100%;
+    font-size: 1.5rem;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    transition: border 0.3s ease;
+}
+
+
+.custom-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+    font-size: 1.2rem; /* Bigger button text */
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.save-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn {
+    background-color: #ddd;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background-color: #bbb;
+}
+
+/* Style the dropdown trigger */
+.custom-dropdown {
+    width: 100%;
+    font-size: 1.5rem; /* Bigger text */
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* Increase the font size of the selected value inside the dropdown */
+.custom-dropdown .p-dropdown-label {
+    font-size: 1.5rem; /* Make text bigger */
+    padding: 2px; /* Adjust padding */
+}
+
+
+/* Style the dropdown panel */
+.custom-dropdown-panel {
+    font-size: 1.5rem; /* Bigger choices */
+    padding: 10px;
+}
+
+/* Increase the height of each option */
+.p-dropdown-item {
+    font-size: 1.5rem; /* Bigger font size */
+    padding: 12px; /* More padding for better spacing */
+}
+
+.custom-save-button, .custom-edit-button {
+    background-color: green !important;
+    color: black !important;
+    border: none;
+    font-weight: bold;
+    font-size: 1.2rem; /* Increases text size */
+    border-radius: 8px; /* Adds rounded corners */
+    width: 130px; /* Adjust width */
+}
+
+
+.custom-save-button {
+    background-color: green !important;
+    color: rgb(3, 3, 3) !important;
+    border: none;
+    font-weight: bold;
+}
+
+.custom-edit-button {
+    background-color: green !important;
+    color: rgb(255, 255, 255) !important;
+    border: none;
+    font-weight: bold;
+}
+
+.appointment-history {
+    margin-top: 20px;
+  }
+  

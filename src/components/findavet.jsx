@@ -15,7 +15,7 @@ function Findavet() {
     // Fetch available services from the backend
     const fetchServices = async () => {
       try {
-        const response = await axios.get("http://172.20.10.12:5000/api/services"); // Assuming an endpoint for services
+        const response = await axios.get("http://localhost:5000/api/services"); // Assuming an endpoint for services
         if (isMounted) { // Only update state if component is still mounted
           const uniqueServices = [...new Set(response.data.map(service => service.name))]; // Remove duplicates
           setServices(uniqueServices);

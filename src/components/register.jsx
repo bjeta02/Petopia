@@ -8,6 +8,7 @@ const Register = () => {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -30,10 +31,11 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://172.20.10.12:5000/api/users/register', {
+      const response = await axios.post('http://localhost:5000/api/owners/register', {
         firstname,
         lastname,
         email,
+        phone,
         password,
       });
 
@@ -84,6 +86,17 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="phone">Phone Number</label>
+            <input
+              type="number"
+              id="phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Enter your phone number"
               required
             />
           </div>

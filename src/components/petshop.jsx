@@ -32,11 +32,11 @@
 
         try {
           // Fetch clinic details
-          const clinicResponse = await axios.get(`http://172.20.10.12:5000/api/clinics/${clinicId}`);
+          const clinicResponse = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
           setClinic(clinicResponse.data);
 
           // Fetch services for the clinic
-          const servicesResponse = await axios.get(`http://172.20.10.12:5000/api/services/clinic/${clinicId}`);
+          const servicesResponse = await axios.get(`http://localhost:5000/api/services/clinic/${clinicId}`);
           setServices(servicesResponse.data);
         } catch (error) {
           console.error("Error fetching clinic or services:", error);
@@ -61,7 +61,7 @@
     
       // Proceed with the submission if validation passes
       try {
-        const ownerResponse = await axios.post("http://172.20.10.12:5000/api/owners/register", {
+        const ownerResponse = await axios.post("http://localhost:5000/api/owners/register", {
           name,
           email,
           phone,
@@ -69,7 +69,7 @@
         });
     
         // Continue with creating pet and appointment
-        const petResponse = await axios.post("http://172.20.10.12:5000/api/pets/register", {
+        const petResponse = await axios.post("http://localhost:5000/api/pets/register", {
           owner_id: ownerResponse.data._id,
           name: petName,
           type: petType,
@@ -89,7 +89,7 @@
 
         console.log("Data: ", appointmentData);
         
-        const appointmentResponse = await axios.post("http://172.20.10.12:5000/api/appointments/create", appointmentData);
+        const appointmentResponse = await axios.post("http://localhost:5000/api/appointments/create", appointmentData);
         
           alert("Appointment booked successfully!");
           navigate(`/appointments`);
@@ -108,7 +108,7 @@
           {clinic && (
             <div className="shop-info">
               <img
-                  src={`http://172.20.10.12:5000/logos/logo_${clinic._id}.jpg`}  // Fetch the logo dynamically
+                  src={`http://localhost:5000${clinic.logo}`}  // Fetch the logo dynamically
                   className="shop-logo-book" 
                 />
               <h2>{clinic.name}</h2>

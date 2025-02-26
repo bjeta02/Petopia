@@ -95,7 +95,7 @@ export const Navigation = () => {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand page-scroll" href="#page-top">
+          <a className="navbar-brand page-scroll" href="/home">
             <img src={require('../assets/Logo.png')} alt="Petopia Logo" style={styles.logo} />
           </a>
         </div>
@@ -128,14 +128,29 @@ export const Navigation = () => {
 
                 {dropdownVisible && (
                   <div style={styles.dropdown}>
-                    <div style={styles.dropdownItem} onClick={() => navigate("/user/profile")}>
-                      Profile
-                    </div>
-                    <div style={styles.dropdownItem} onClick={handleLogout}>
-                      Logout
-                    </div>
+                    <>
+                      <div style={styles.dropdownItem} onClick={() => { 
+                        navigate("/home"); 
+                        setDropdownVisible(false);
+                      }}>
+                        Home
+                      </div>
+                      <div style={styles.dropdownItem} onClick={() => { 
+                        navigate("/profile"); 
+                        setDropdownVisible(false);
+                      }}>
+                        Profile
+                      </div>
+                      <div style={styles.dropdownItem} onClick={() => { 
+                        handleLogout(); 
+                        setDropdownVisible(false);
+                      }}>
+                        Logout
+                      </div>
+                    </>
                   </div>
                 )}
+
               </li>
             )}
           </ul>

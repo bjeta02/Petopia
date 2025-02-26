@@ -21,6 +21,7 @@ body {
   
   .findavet-container {
     display: flex;
+    position: absolute;
     flex-direction: column;   /* Stack the elements vertically */
     justify-content: center;  /* Vertically center */
     align-items: center;      /* Horizontally center */
@@ -85,7 +86,7 @@ body {
   /* Styling for the search box */
   .search-box {
     width: 100%;              /* Adjust width of the search box */
-    padding: 15px 15px 15px 40px;  /* Add padding on the left to make room for the icon */
+    padding: 15px 40px 15px 40px;  /* Add padding on the left to make room for the icon */
     font-size: 1.8rem;        /* Increased font size */
     color: #123151;
     border: 2px solid #82aded;

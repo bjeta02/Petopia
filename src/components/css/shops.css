@@ -198,6 +198,18 @@
     color: white;
 }
 
+.shop-card {
+    cursor: pointer; /* Makes the card clickable */
+    transition: background-color 0.3s, transform 0.2s, filter 0.3s; /* Smooth hover effect */
+  }
+  
+  .shop-card:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Slight dark overlay */
+    transform: translateY(-3px); /* Slight lift effect */
+    filter: brightness(0.95); /* Slightly dim the card */
+  }
+  
+
 /* 🔽 Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
     .search-filter-container {

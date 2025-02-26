@@ -6,6 +6,11 @@ const LandingPage = () => {
 
     const navigate = useNavigate();
 
+    const handleClinicClick = () => {
+      navigate('/clinic'); // Redirect to the dashboard page
+
+    };
+
     const handlePatientClick = () => {
       navigate('/home'); // Redirect to the dashboard page
 
@@ -18,7 +23,7 @@ const LandingPage = () => {
         <div className="options">
           <div className="option">  
             <div className="icon">🩺</div>
-            <button className="button-landing">I'm a Vet</button>
+            <button className="button-landing" onClick={handleClinicClick}>I'm a Vet</button>
           </div>
           <div className="separator"></div>
           <div className="option">
