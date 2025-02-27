@@ -7,7 +7,7 @@ const LandingPage = () => {
     const navigate = useNavigate();
 
     const handleClinicClick = () => {
-      navigate('/clinic'); // Redirect to the dashboard page
+      navigate('/clinic/dashboard'); // Redirect to the dashboard page
 
     };
 

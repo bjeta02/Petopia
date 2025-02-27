@@ -55,7 +55,7 @@ function Shops() {
   useEffect(() => {
     const fetchShops = async () => {
       try {
-        const response = await axios.get("http://10.10.79.153:5000/api/clinics", {
+        const response = await axios.get("http://localhost:5000/api/clinics", {
           params: {
             location: selectedLocation,
             service: selectedService,
@@ -206,6 +206,15 @@ function Shops() {
     return isOpen;
   };
 
+  const handleBookAppointment = (shopId) => {
+    const ownerId = localStorage.getItem('ownerId'); // Check if owner is logged in
+    if (ownerId) {
+      navigate(`/petshop/${shopId}?ownerId=${ownerId}`); // Navigate with ownerId
+    } else {
+      navigate(`/petshop/${shopId}?guest=true`); // Navigate as guest
+    }
+  };
+
   return (
     <div className="shops-container">
       {/* Search & Filters */}
@@ -263,7 +272,7 @@ function Shops() {
             >
               <div className="shop-info">
                 <img
-                  src={`http://10.10.79.153:5000${shop.logo}`}  // Fetch the logo dynamically
+                  src={`http://localhost:5000${shop.logo}`}  // Fetch the logo dynamically
                   className="shop-logo" 
                 />
                 <div>
@@ -286,17 +295,17 @@ function Shops() {
                 <p>📍 Distance: {shop.distance !== undefined ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
               </div>
               <div className="shop-actions">
-                <button 
-                  onClick={() => navigate(`/petshop/${shop._id}`)}
-                  className="book-button">
-                  BOOK APPOINTMENT
-                </button>
-                <button
-                  className="profile-button"
-                  onClick={() => navigate(`/shopprofile/${shop._id}`)}
-                >
-                  VIEW PROFILE
-                </button>
+                  <button 
+                    onClick={() => handleBookAppointment(shop._id)}
+                    className="book-button">
+                    BOOK APPOINTMENT
+                  </button>
+                  <button
+                    className="profile-button"
+                    onClick={() => navigate(`/shopprofile/${shop._id}`)}
+                  >
+                    VIEW PROFILE
+                  </button>
               </div>
             </div>
           ))

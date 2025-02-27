@@ -17,6 +17,11 @@ import Findavet from "./components/findavet";
 import Shops from "./components/shops";
 import PetShop from "./components/petshop";
 import ShopProfile from "./components/shopprofile";
+import OtpPage from "./components/otppage";
+import VetLayout from "./components/VetLayout";
+import VetDashboard from "./components/VetDashboard";
+import VetAppointments from "./components/VetAppointments";
+import VetHistory from "./components/VetHistory";
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -60,6 +65,13 @@ const App = () => {
         <Route path="/shops" element={<Shops />} />
         <Route path="/petshop/:clinicId" element={<PetShop />} />
         <Route path="/shopprofile/:clinicId" element={<ShopProfile />} />
+        <Route path="/otp" element={<OtpPage />} />
+
+        <Route path="/clinic/*" element={<VetLayout />}>
+          <Route path="dashboard" element={<VetDashboard />} />
+          <Route path="appointments" element={<VetAppointments />} />
+          <Route path="history" element={<VetHistory />} />
+        </Route>
 
         {/* Profile Route */}
         <Route path="/profile" element={<ProfilePage />} />

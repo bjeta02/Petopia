@@ -16,7 +16,7 @@ function ShopProfile() {
   useEffect(() => {
     const fetchShop = async () => {
       try {
-        const response = await axios.get(`http://10.10.79.153:5000/api/clinics/${clinicId}`);
+        const response = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
         setShop(response.data); // Save the fetched data
       } catch (error) {
         console.error("Error fetching shop details:", error);
@@ -81,6 +81,15 @@ function ShopProfile() {
     return isOpen;
   };
 
+  const handleBookAppointment = (clinicId) => {
+    const ownerId = localStorage.getItem('ownerId'); // Check if owner is logged in
+    if (ownerId) {
+      navigate(`/petshop/${clinicId}?ownerId=${ownerId}`); // Navigate with ownerId
+    } else {
+      navigate(`/petshop/${clinicId}?guest=true`); // Navigate as guest
+    }
+  };
+
   console.log("Fetched shop data:", shop);
 
   return (
@@ -90,7 +99,7 @@ function ShopProfile() {
         <div className="shop-info">
           <div className="shop-header">
             <img 
-              src={shop.logo ? `http://10.10.79.153:5000${shop.logo}` : '/path/to/default/logo.png'} 
+              src={shop.logo ? `http://localhost:5000${shop.logo}` : '/path/to/default/logo.png'} 
               alt="Shop Logo" 
               className="shop-logo" 
             />
@@ -115,29 +124,35 @@ function ShopProfile() {
               <p>{shop.open_time || "N/A"} - {shop.close_time || "N/A"}</p>
             </div>
           </div>
-          <button
-            className="book-button-profile"
-            onClick={() => navigate(`/petshop/${clinicId}`)}
-          >
-            BOOK HERE
-          </button>
+          <button 
+                    onClick={() => handleBookAppointment(shop._id)}
+                    className="book-button-profile">
+                    BOOK APPOINTMENT
+                  </button>
         </div>
   
-        {/* Clinic Location (Now in Small Container) */}
         {/* Clinic Location - Now inside a container */}
         <div className="shop-info-container">
-          <h3 className="section-title">Clinic Location</h3>
-          <div className="map-container">
-            <iframe
-              width="100%"
-              height="350"
-              frameBorder="0"
-              style={{ border: 0, borderRadius: "8px" }}
-              src={`https://www.google.com/maps?q=${encodeURIComponent(shop.address)}&output=embed`}
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
+  <h3 className="section-title">Clinic Location</h3>
+  <div className="map-container">
+    <iframe
+      width="100%"
+      height="350"
+      frameBorder="0"
+      style={{ border: 0, borderRadius: "8px" }}
+      src={`https://www.google.com/maps?q=${encodeURIComponent(shop.address)}&output=embed`}
+      allowFullScreen
+    ></iframe>
+  </div>
+  
+  {/* Get Directions Button */}
+  <button 
+    onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(shop.address)}`, "_blank")}
+    className="directions-button"
+  >
+    Get Directions
+  </button>
+</div>
 
   
         {/* Shop Information (Now in Wide Container) */}
