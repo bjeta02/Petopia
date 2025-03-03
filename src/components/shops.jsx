@@ -13,6 +13,7 @@ function Shops() {
   const [searchQuery, setSearchQuery] = useState("");  // Search query state
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");  // Debounced search query
   const navigate = useNavigate();
+  const [userLocation, setUserLocation] = useState(null); // State for user's location
 
   // Debounce logic to delay API call
   useEffect(() => {
@@ -23,10 +24,48 @@ function Shops() {
     return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts or the query changes
   }, [searchQuery]);
 
+  // Get user's current location
+useEffect(() => {
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          console.log(`Location found: Lat ${position.coords.latitude}, Lng ${position.coords.longitude}`);
+        },
+        (error) => {
+          console.error("Error getti  ng location:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert("Location access denied. Enable location services or allow location permissions in your browser settings.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              alert("Location request timed out. Try again.");
+              break;
+            default:
+              alert("An unknown error occurred while retrieving location.");
+          }
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
+  getUserLocation();
+}, []);
+
+
   useEffect(() => {
     const fetchShops = async () => {
       try {
-        const response = await axios.get("http://172.20.10.12:5000/api/clinics", {
+        const response = await axios.get("http://localhost:5000/api/clinics", {
           params: {
             location: selectedLocation,
             service: selectedService,
@@ -34,19 +73,100 @@ function Shops() {
           }
         });
 
-        // Filter out inactive shops
-        const activeShops = response.data.clinics.filter(shop => shop.status !== "inactive");
+        // Handle successful response
+        console.log("Shops response:", response.data);
+        const { clinics, locations, services } = response.data; // Destructure response data
 
-        setShops(activeShops);
-        setLocations(response.data.locations);
-        setServices(response.data.services);
+        // Filter out inactive shops
+        const activeShops = clinics.filter(shop => shop.status !== "inactive");
+
+        // Calculate distances and sort shops
+        const shopsWithDistance = await Promise.all(activeShops.map(async (shop) => {
+          if (shop.latitude && shop.longitude) {
+            const distance = calculateDistance(userLocation, {
+              latitude: shop.latitude,
+              longitude: shop.longitude,
+            });
+            return { ...shop, distance };
+          } else {
+            // Geocode the address if latitude and longitude are not available
+            try {
+              const clinicLocation = await geocodeAddress(shop.address);
+              const distance = calculateDistance(userLocation, clinicLocation);
+              return { ...shop, distance };
+            } catch (error) {
+              console.error("Error geocoding address:", error);
+              return { ...shop, distance: Infinity }; // Set distance to Infinity if geocoding fails
+            }
+          }
+        }));
+
+        shopsWithDistance.sort((a, b) => a.distance - b.distance); // Sort by distance
+
+        // Update state with fetched data
+        setShops(shopsWithDistance);
+        setLocations(locations);
+        setServices(services);
       } catch (error) {
         console.error("Error fetching pet shops:", error);
       }
     };
 
-    fetchShops();
-  }, [selectedLocation, selectedService, debouncedSearchQuery]);
+    if (userLocation) {
+      fetchShops();
+    }
+  }, [selectedLocation, selectedService, debouncedSearchQuery, userLocation]);
+
+  const geocodeAddress = async (address) => {
+    const apiKey = process.env.REACT_APP_API_KEY; // Your OpenCage API key
+    console.log("Using API Key:", apiKey); // Log the API key (for debugging only)
+    
+    if (!apiKey) {
+      throw new Error("API key is not defined. Please check your .env file.");
+    }
+  
+    console.log("Geocoding address:", address); // Log the address
+    try {
+      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
+        params: {
+          q: address,
+          key: apiKey,
+        },
+      });
+  
+      if (response.data.results.length > 0) {
+        const location = response.data.results[0].geometry;
+        return {
+          latitude: location.lat,
+          longitude: location.lng,
+        };
+      } else {
+        console.error("Geocoding failed: No results found for address:", address);
+        throw new Error("Geocoding failed: No results found.");
+      }
+    } catch (error) {
+      console.error("Error geocoding address:", error.message);
+      throw error; // Rethrow the error to handle it in the calling function
+    }
+  };
+
+  const calculateDistance = (loc1, loc2) => {
+    if (!loc1 || !loc2 || isNaN(loc1.latitude) || isNaN(loc1.longitude) || isNaN(loc2.latitude) || isNaN(loc2.longitude)) {
+      console.warn("Invalid location for distance calculation:", loc1, loc2);
+      return Infinity; // Return a large number if location is not available
+    }
+  
+    const R = 6371; // Radius of the Earth in km
+    const dLat = (loc2.latitude - loc1.latitude) * (Math.PI / 180);
+    const dLon = (loc2.longitude - loc1.longitude) * (Math.PI / 180);
+    const a = 
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(loc1.latitude * (Math.PI / 180)) * Math.cos(loc2.latitude * (Math.PI / 180)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    
+    return R * c; // Distance in km
+  };
 
   const checkIfOpen = (shop) => {
     const now = new Date();
@@ -54,18 +174,18 @@ function Shops() {
     const currentHour = now.getHours(); // 24-hour format
     const currentMinute = now.getMinutes();
     const currentTime = currentHour * 100 + currentMinute; // Convert to comparable format (e.g., 14:30 -> 1430)
-  
+
     // Map day names to numbers
     const daysMap = {
       sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6,
     };
-  
+
     const parseDaysRange = (days) => {
       if (!days || typeof days !== "string") {
         console.warn("Invalid or missing days field:", days);
         return [];
       }
-    
+
       const range = days.toLowerCase().split(" to ");
       if (range.length === 2 && daysMap[range[0]] !== undefined && daysMap[range[1]] !== undefined) {
         const start = daysMap[range[0]];
@@ -74,44 +194,41 @@ function Shops() {
       }
       return [days.toLowerCase()];
     };
-    
-  
+
     const openDays = parseDaysRange(shop.days); // Extract valid days
-  
+
     const parseTime = (timeStr) => {
       if (!timeStr || typeof timeStr !== "string") {
         console.warn("Invalid or missing time string:", timeStr);
         return null;
       }
-    
+
       const [time, modifier] = timeStr.split(" "); // Split time and AM/PM
       let [hour, minute] = time.split(":").map(Number);
-    
+
       if (modifier === "PM" && hour !== 12) hour += 12;
       if (modifier === "AM" && hour === 12) hour = 0;
-    
+
       return hour * 100 + minute;
     };
-  
+
     const openTime = parseTime(shop.open_time);
     const closeTime = parseTime(shop.close_time);
-  
+
     // Check if today is within open days and within time range
     const isOpen = openDays.includes(currentDay) && currentTime >= openTime && currentTime <= closeTime;
 
-    console.log(`Checking shop: ${shop.name}`);
-    console.log(`Current Day: ${currentDay}`);
-    console.log(`Open Days: ${openDays}`);
-    console.log(`Current Time: ${currentTime}`);
-    console.log(`Open Time: ${openTime} | Close Time: ${closeTime}`);
-    console.log(`Is Open? ${isOpen ? "YES" : "NO"}`);
-
-  
     return isOpen;
+  };
+
+  const handleBookAppointment = (shopId) => {
+    const ownerId = localStorage.getItem('ownerId'); // Check if owner is logged in
+    if (ownerId) {
+      navigate(`/petshop/${shopId}?ownerId=${ownerId}`); // Navigate with ownerId
+    } else {
+      navigate(`/petshop/${shopId}?guest=true`); // Navigate as guest
+    }
   };  
-
-  
-
 
   return (
     <div className="shops-container">
@@ -155,7 +272,7 @@ function Shops() {
                 {service}
               </option>
             ))}
-          </select>
+          </select> 
         </div>
       </div>
 
@@ -166,7 +283,7 @@ function Shops() {
             <div key={shop._id} className="shop-card">
               <div className="shop-info">
                 <img
-                  src={`http://172.20.10.12:5000/logos/logo_${shop._id}.jpg`}  // Fetch the logo dynamically
+                  src={`http://localhost:5000${shop.logo}`}  // Fetch the logo dynamically
                   className="shop-logo" 
                 />
                 <div>
@@ -187,17 +304,18 @@ function Shops() {
                 <p>📅 Schedule: {shop.days}</p>
                 <p>🕘 {shop.open_time} - {shop.close_time}</p>
                 <p className="availability">
-                      <span className={`status-indicator ${checkIfOpen(shop) ? "open" : "closed"}`}>
-                        {checkIfOpen(shop) ? "🟢 OPEN" : "🔴 CLOSED"}
-                      </span>
-                    </p>
+                  <span className={`status-indicator ${checkIfOpen(shop) ? "open" : "closed"}`}>
+                    {checkIfOpen(shop) ? "🟢 OPEN" : "🔴 CLOSED"}
+                  </span>
+                </p>
+                <p>📍 Distance: {shop.distance !== undefined ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
               </div>
               <div className="shop-actions">
-                <button 
-                  onClick={() => navigate(`/petshop/${shop._id}`)}
-                  className="book-button">
-                  BOOK APPOINTMENT
-                </button>
+                  <button 
+                    onClick={() => handleBookAppointment(shop._id)}
+                    className="book-button">
+                    BOOK APPOINTMENT
+                  </button>
                 <button
                   className="profile-button"
                   onClick={() => navigate(`/shopprofile/${shop._id}`)}
