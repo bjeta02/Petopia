@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios"; // Import axios for making API calls
-import "../components/css/login.css"; // Import the CSS for styling
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../components/css/login.css";
 
 const Register = () => {
   const location = useLocation();
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate(); // 🔹 Added useNavigate for redirection
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Extract email from URL and auto-fill the email field
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const emailParam = params.get("email");
@@ -20,9 +20,8 @@ const Register = () => {
     }
   }, [location]);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the form from reloading the page
+    e.preventDefault();
 
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
@@ -30,22 +29,23 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://172.20.10.12:5000/api/users/register', {
+      const response = await axios.post("http://localhost:5000/api/owners/register", {
         firstname,
         lastname,
         email,
         password,
       });
 
-      // Handle successful registration
-      console.log("Registration successful:", response.data);
-      alert("Registration successful! You can now log in.");
-      // Optionally redirect to login page
-      window.location.href = '/login';
+      alert(response.data.message);
+
+      // 🔹 Redirect to OTP page with email as a query parameter
+      navigate(`/otp?email=${encodeURIComponent(email)}`);
     } catch (error) {
-      // Handle error
-      console.error("Registration error:", error.response ? error.response.data.message : error.message);
-      alert(error.response ? error.response.data.message : 'An error occurred. Please try again.');
+      console.error(
+        "Registration error:",
+        error.response ? error.response.data.message : error.message
+      );
+      alert(error.response ? error.response.data.message : "An error occurred. Please try again.");
     }
   };
 
@@ -109,11 +109,12 @@ const Register = () => {
               required
             />
           </div>
-          
+
           <button type="submit" className="login-button">Register</button>
         </form>
+
         <div className="register-link">
-          < p>Already have an account? <a href="login">Login</a></p>
+          <p>Already have an account? <a href="login">Login</a></p>
         </div>
       </div>
     </div>
