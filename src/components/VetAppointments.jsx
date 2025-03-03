@@ -125,26 +125,35 @@ const VetAppointments = () => {
         <Column header="Actions" body={actionTemplate} />
       </DataTable>
 
-      <Dialog visible={editDialog} header="Edit Appointment" onHide={() => setEditDialog(false)}>
-        {selectedAppointment && (
-          <div className="p-field">
-            <label>Status</label>
-            <select
-              className="p-inputtext"
-              value={selectedAppointment.status}
-              onChange={(e) => setSelectedAppointment({ ...selectedAppointment, status: e.target.value })}
-            >
-              <option value="Confirmed">Confirmed</option>
-              <option value="Cancelled">Cancelled</option>
-              <option value="Completed">Completed</option>
-            </select>
+      <Dialog 
+          visible={editDialog} 
+          header="Edit Appointment" 
+          onHide={() => setEditDialog(false)} 
+          className="p-fluid edit-appointment-dialog"
+          style={{ width: '400px' }} // ⬅️ Adjust width
+      >
+          {selectedAppointment && (
+              <div className="p-dialog-content">
+                  <div className="p-field">
+                      <label>Status</label>
+                      <select
+                          value={selectedAppointment.status}
+                          onChange={(e) => setSelectedAppointment({ ...selectedAppointment, status: e.target.value })}
+                      >
+                          <option value="Confirmed">Confirmed</option>
+                          <option value="Cancelled">Cancelled</option>
+                          <option value="Completed">Completed</option>
+                      </select>
+                  </div>
+              </div>
+          )}
+          <div className="p-dialog-footer">
+              <Button label="Cancel" className="p-button-secondary" onClick={() => setEditDialog(false)} />
+              <Button label="Update" className="p-button-primary" onClick={handleUpdate} />
           </div>
-        )}
-        <div className="p-dialog-footer">
-          <Button label="Cancel" className="p-button-secondary" onClick={() => setEditDialog(false)} />
-          <Button label="Update" className="p-button-primary" onClick={handleUpdate} />
-        </div>
       </Dialog>
+
+
     </div>
   );
 };
