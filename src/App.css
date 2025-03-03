@@ -17,8 +17,15 @@
   }
 }
 
-#header{
-  margin-top: -100px;
+.header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #870d0d;
+  padding: 10px 20px;
+  height: 60px;
+  width: 100%;
+  box-sizing: border-box;
 }
 /* App.css */
 .shopping-page {

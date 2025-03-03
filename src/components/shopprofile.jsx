@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Get ID from URL
+import { useLocation } from "react-router-dom"; // Import useLocation to get query parameters
 import axios from "axios"; // Import Axios
 import "../components/css/shopprofile.css"; // Import CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
 function ShopProfile() {
-  const { clinicId } = useParams(); // Get the shop ID from the URL
+  const location = useLocation(); // Get the current location
+  const queryParams = new URLSearchParams(location.search); // Create URLSearchParams object
+  const clinicId = queryParams.get('id'); // Get the clinicId from the query parameters
+
   const [shop, setShop] = useState(null); // State for shop data
   const [loading, setLoading] = useState(true); // State for loading
 
@@ -21,7 +24,10 @@ function ShopProfile() {
         setLoading(false);
       }
     };
-    fetchShop();
+
+    if (clinicId) {
+      fetchShop();
+    }
   }, [clinicId]);
 
   if (loading) {
@@ -31,7 +37,6 @@ function ShopProfile() {
   if (!shop) {
     return <p>Shop not found.</p>;
   }
-    
 
   console.log("Fetched shop data:", shop);
 
@@ -45,7 +50,7 @@ function ShopProfile() {
               src={shop.logo ? `http://localhost:5000${shop.logo}` : '/path/to/default/logo.png'} 
               alt="Shop Logo" 
               className="shop-logo" 
-              />
+            />
             <div className="shop-details">
               <h2 className="shop-name">{shop.name}</h2>
               <p className="shop-specialty">

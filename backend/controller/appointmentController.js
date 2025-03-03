@@ -10,9 +10,9 @@ import crypto from "crypto";
 export const getAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find()
-            .populate("owner_id", "firstname lastname email") // Ensure correct field names
-            .populate("guest_id", "firstName lastName email phone pets") // Include pets in population
-            .populate("pet_id", "name type breed") // This may not be necessary if pets are in guest
+            .populate("owner_id", "firstname lastname email")
+            .populate("guest_id", "firstName lastName email phone pets")
+            .populate("pet_id", "name type breed")
             .populate("clinic_id", "name")
             .populate("vet_id", "name")
             .populate("service_id", "name")
@@ -20,25 +20,28 @@ export const getAppointments = async (req, res) => {
 
         // Create a unified owner name field and include pet details
         const appointmentsWithDetails = appointments.map(appointment => {
+            // Check if owner_id or guest_id is present
             const ownerName = appointment.owner_id
                 ? `${appointment.owner_id.firstname} ${appointment.owner_id.lastname}`
-                : `${appointment.guest_id.firstName} ${appointment.guest_id.lastName}`;
+                : appointment.guest_id
+                ? `${appointment.guest_id.firstName} ${appointment.guest_id.lastName}`
+                : 'Unknown Owner'; // Fallback if neither is present
 
-            const petDetails = appointment.guest_id && appointment.guest_id.pets.length > 0
+            const petDetails = appointment.guest_id && appointment.guest_id.pets && appointment.guest_id.pets.length > 0
                 ? appointment.guest_id.pets.map(pet => `${pet.name} (${pet.type})`).join(', ')
                 : appointment.pet_id ? `${appointment.pet_id.name} (${appointment.pet_id.type})` : 'No Pet';
 
             return {
                 ...appointment.toObject(),
-                ownerName, // Add the unified owner name
-                petDetails // Add pet details
+                ownerName,
+                petDetails
             };
         });
 
         res.status(200).json(appointmentsWithDetails);
     } catch (error) {
         console.error("Error fetching appointments:", error); // Log the error
-        res.status(500).json({ message: "Server error", error });
+        res.status(500).json({ message: "Server error", error: error.message }); // Send error message
     }
 };
 

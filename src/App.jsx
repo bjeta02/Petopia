@@ -41,10 +41,13 @@ const App = () => {
     setIsLoggedIn(!!token); // Update logged in state based on token presence
   }, []);
 
+  // Define routes where the Navigation bar should be hidden
+  const hideNavbarRoutes = ["/clinic"];
+  const shouldShowNavbar = !hideNavbarRoutes.some((route) => location.pathname.startsWith(route));
 
   return (
     <>
-      <Navigation isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      {shouldShowNavbar && <Navigation isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
       <Routes>
         {/* Set the landing page as the default route */}
         <Route path="/" element={<LandingPage />} />
@@ -66,8 +69,8 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/findavet" element={<Findavet />} />
         <Route path="/shops" element={<Shops />} />
-        <Route path="/petshop/:clinicId" element={<PetShop />} />
-        <Route path="/shopprofile/:clinicId" element={<ShopProfile />} />
+        <Route path="/petshop" element={<PetShop />} />
+        <Route path="/shopprofile/" element={<ShopProfile />} />
         <Route path="/otp" element={<OtpPage />} />
 
         <Route path="/clinic/*" element={<VetLayout />}>
@@ -81,7 +84,7 @@ const App = () => {
         <Route path="/profile" element={<ProfilePage />} />
         
       </Routes>
-    </>
+    </> 
   );
 };
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import axios from "axios";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -32,11 +33,12 @@ const VetHistory = () => {
       <Toast ref={toast} /> 
       <h2 className="text-2xl font-bold mb-4">Appointment History</h2>
 
-      <DataTable value={history} paginator rows={5} className="datatable">
+      <DataTable value={history} paginator rows={6} className="datatable">
         <Column field="_id" header="Appointment ID" sortable />
         <Column field="ownerName" header="Owner Name" />
         <Column field="petDetails" header="Pet Details" />
         <Column field="service_id.name" header="Service Availed" />
+        <Column field="status" header="Status" />
         <Column field="date" header="Date" body={dateTemplate} sortable />
       </DataTable>
     </div>

@@ -26,7 +26,7 @@ export const Navigation = () => {
     };
 
     window.addEventListener("click", handleClickOutside);
-    return () => {
+    return () => {  
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);

@@ -224,11 +224,11 @@ useEffect(() => {
   const handleBookAppointment = (shopId) => {
     const ownerId = localStorage.getItem('ownerId'); // Check if owner is logged in
     if (ownerId) {
-      navigate(`/petshop/${shopId}?ownerId=${ownerId}`); // Navigate with ownerId
+        navigate(`/petshop?id=${shopId}&ownerId=${ownerId}`); // Use & to separate parameters
     } else {
-      navigate(`/petshop/${shopId}?guest=true`); // Navigate as guest
+        navigate(`/petshop?id=${shopId}&guest=true`); // Use & to separate parameters
     }
-  };  
+};
 
   return (
     <div className="shops-container">
@@ -318,7 +318,7 @@ useEffect(() => {
                   </button>
                 <button
                   className="profile-button"
-                  onClick={() => navigate(`/shopprofile/${shop._id}`)}
+                  onClick={() => navigate(`/shopprofile?id=${shop._id}`)}
                 >
                   VIEW PROFILE
                 </button>
