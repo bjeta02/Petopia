@@ -3,10 +3,11 @@ import axios from "axios";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
+import "../components/css/VetHistory.css"; // Import CSS
 
 const VetHistory = () => {
   const [history, setHistory] = useState([]);
-  const toast = useRef(null); // ✅ Correct ref initialization
+  const toast = useRef(null);
 
   useEffect(() => {
     fetchHistory();
@@ -28,17 +29,19 @@ const VetHistory = () => {
   const dateTemplate = (rowData) => new Date(rowData.date).toLocaleString();
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <Toast ref={toast} /> 
-      <h2 className="text-2xl font-bold mb-4">Appointment History</h2>
+    <div className="vet-history-container">
+      <Toast ref={toast} />
+      <h2 className="table-title">Appointment History</h2>
 
-      <DataTable value={history} paginator rows={5} className="datatable">
-        <Column field="_id" header="Appointment ID" sortable />
-        <Column field="ownerName" header="Owner Name" />
-        <Column field="petDetails" header="Pet Details" />
-        <Column field="service_id.name" header="Service Availed" />
-        <Column field="date" header="Date" body={dateTemplate} sortable />
-      </DataTable>
+      <div className="table-wrapper">
+        <DataTable value={history} paginator rows={5} className="custom-table">
+          <Column field="_id" header="Appointment ID" sortable />
+          <Column field="ownerName" header="Owner Name" />
+          <Column field="petDetails" header="Pet Details" />
+          <Column field="service_id.name" header="Service Availed" />
+          <Column field="date" header="Date" body={dateTemplate} sortable />
+        </DataTable>
+      </div>
     </div>
   );
 };

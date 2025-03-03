@@ -178,4 +178,4 @@ export const deleteClinic = async (req, res) => {
         console.error("Error deleting clinic:", error);
         res.status(500).json({ message: "Failed to delete clinic." });
     }
-};
+};  

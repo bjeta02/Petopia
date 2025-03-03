@@ -1,11 +1,15 @@
 /* Page Layout */
 .page-container {
-  padding: 20px;
-  background-color: #f3f4f6;
   min-height: 100vh;
+  overflow-y: auto;
+  padding-top: 80px; /* Adjusted to avoid navbar issues */
+  padding-bottom: 20px;
+  background-color: #f3f4f6;
   display: flex;
   justify-content: center;
 }
+
+
 
 /* Grid Layout */
 .grid-container {
@@ -14,6 +18,19 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 20px;
+  overflow: hidden; /* Prevents unnecessary horizontal scrolling */
+  margin-top: 20px; /* Added space below navbar */
+}
+
+/* Map Section */
+.wide-map {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  height: 180px;
 }
 
 /* Shop Info Section */
@@ -57,7 +74,7 @@
 /* Booking Section */
 .booking-container {
   background: white;
-  padding: 20px;
+  padding: 18px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -66,13 +83,15 @@
 .section-title {
   font-weight: bold;
   font-size: 1.5em;
+  margin-bottom: 10px;
 }
 
 .booking-info {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 10px;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 5px;
 }
 
 .icon {
@@ -87,32 +106,46 @@
 }
 
 .book-button-profile {
-  margin-top: 10px;
-  background-color: #007bff;
+  margin-top: 15px;
+  background-color: #176ef2;
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: 100%;
+  width: 70%;
   font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-/* Clinic Schedules */
-.shop-info-container {
-  width: 100%;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.book-button-profile:hover {
+  background-color: #0056b3;
 }
 
+/* Clinic Location, Hours, and Contact */
+.shop-info-container,
 .shop-info-container2 {
   width: 100%;
   background: white;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
+
+.shop-schedule2 {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.shop-schedule2 p {
+  margin: 0;
+  font-size: 15px;
+}
+
+.map-container {
+  margin-top: 5px;
 }
 
 .shop-location,
@@ -123,65 +156,70 @@
   margin: 5px 0;
 }
 
-.shop-schedule2 {
-  text-align: left;
+.directions-button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
 }
 
+.directions-button:hover {
+  background-color: #0056b3;
+}
+
+
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .grid-container {
-      grid-template-columns: 1fr; /* Stack elements vertically */
+    grid-template-columns: 1fr;
   }
 
   .shop-header {
-      flex-direction: column;
-      text-align: center;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding-top: 40%;
   }
 
   .shop-logo {
-      width: 60px;
-      height: 60px;
+    width: 60px;
+    height: 60px;
   }
 
-  .shop-name {
-      font-size: 18px;
+  .grid-container {
+    gap: 15px;
   }
-
-  .shop-specialty,
-  .shop-experience {
-      font-size: 12px;
-  }
-
-  .booking-info {
-      flex-direction: column;
-      text-align: center;
-  }
-
-  .icon {
-      width: 30px;
-      height: 30px;
-  }
+  
 }
 
 @media (max-width: 480px) {
   .page-container {
-      padding: 10px;
+    padding-top: 80px;
   }
 
   .shop-info,
   .booking-container,
   .shop-info-container,
   .shop-info-container2 {
-      padding: 15px;
+    padding: 15px;
   }
 
   .shop-logo {
-      width: 50px;
-      height: 50px;
+    width: 50px;
+    height: 50px;
   }
 
   .shop-name {
-      font-size: 16px;
+    font-size: 16px;
   }
 
   .shop-specialty,
@@ -189,16 +227,19 @@
   .shop-location,
   .shop-contact,
   .shop-hours {
-      font-size: 12px;
+    font-size: 12px;
   }
 
   .section-title {
-      font-size: 1.2em;
+    font-size: 1.2em;
   }
 
   .book-button-profile {
-      padding: 8px 10px;
-      font-size: 14px;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .grid-container {
+    gap: 10px;
   }
 }
-

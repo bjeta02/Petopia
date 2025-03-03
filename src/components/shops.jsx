@@ -24,42 +24,32 @@ function Shops() {
     return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts or the query changes
   }, [searchQuery]);
 
-  // Get user's current location
-useEffect(() => {
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-          console.log(`Location found: Lat ${position.coords.latitude}, Lng ${position.coords.longitude}`);
-        },
-        (error) => {
-          console.error("Error getti  ng location:", error);
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              alert("Location access denied. Enable location services or allow location permissions in your browser settings.");
-              break;
-            case error.POSITION_UNAVAILABLE:
-              alert("Location information is unavailable.");
-              break;
-            case error.TIMEOUT:
-              alert("Location request timed out. Try again.");
-              break;
-            default:
-              alert("An unknown error occurred while retrieving location.");
+  useEffect(() => {
+    const getUserLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const location = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            setUserLocation(location); // Set the user's location
+            console.log("User  location set:", location); // Log the user's location
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            if (error.code === error.PERMISSION_DENIED) {
+              alert("Location access denied. Please enable location services to find nearby clinics.");
+            }
           }
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  };
-
-  getUserLocation();
-}, []);
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    };
+  
+    getUserLocation();
+  }, []);
 
 
   useEffect(() => {
@@ -72,14 +62,10 @@ useEffect(() => {
             search: debouncedSearchQuery,  // Include the search query
           }
         });
-
-        // Handle successful response
-        console.log("Shops response:", response.data);
-        const { clinics, locations, services } = response.data; // Destructure response data
-
+  
         // Filter out inactive shops
-        const activeShops = clinics.filter(shop => shop.status !== "inactive");
-
+        const activeShops = response.data.clinics.filter(shop => shop.status !== "inactive");
+  
         // Calculate distances and sort shops
         const shopsWithDistance = await Promise.all(activeShops.map(async (shop) => {
           if (shop.latitude && shop.longitude) {
@@ -100,18 +86,17 @@ useEffect(() => {
             }
           }
         }));
-
+  
         shopsWithDistance.sort((a, b) => a.distance - b.distance); // Sort by distance
-
-        // Update state with fetched data
+  
         setShops(shopsWithDistance);
-        setLocations(locations);
-        setServices(services);
+        setLocations(response.data.locations);
+        setServices(response.data.services);
       } catch (error) {
         console.error("Error fetching pet shops:", error);
       }
     };
-
+  
     if (userLocation) {
       fetchShops();
     }
@@ -228,7 +213,7 @@ useEffect(() => {
     } else {
       navigate(`/petshop/${shopId}?guest=true`); // Navigate as guest
     }
-  };  
+  };
 
   return (
     <div className="shops-container">
@@ -280,7 +265,11 @@ useEffect(() => {
       <div className="shops-list">
         {shops.length > 0 ? (
           shops.map((shop) => (
-            <div key={shop._id} className="shop-card">
+            <div 
+              key={shop._id} 
+              className="shop-card" 
+              onClick={() => navigate(`/shopprofile/${shop._id}`)} // Navigate to shop profile on click
+            >
               <div className="shop-info">
                 <img
                   src={`http://localhost:5000${shop.logo}`}  // Fetch the logo dynamically
@@ -303,11 +292,6 @@ useEffect(() => {
               <div className="shop-schedule">
                 <p>📅 Schedule: {shop.days}</p>
                 <p>🕘 {shop.open_time} - {shop.close_time}</p>
-                <p className="availability">
-                  <span className={`status-indicator ${checkIfOpen(shop) ? "open" : "closed"}`}>
-                    {checkIfOpen(shop) ? "🟢 OPEN" : "🔴 CLOSED"}
-                  </span>
-                </p>
                 <p>📍 Distance: {shop.distance !== undefined ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
               </div>
               <div className="shop-actions">
@@ -316,12 +300,12 @@ useEffect(() => {
                     className="book-button">
                     BOOK APPOINTMENT
                   </button>
-                <button
-                  className="profile-button"
-                  onClick={() => navigate(`/shopprofile/${shop._id}`)}
-                >
-                  VIEW PROFILE
-                </button>
+                  <button
+                    className="profile-button"
+                    onClick={() => navigate(`/shopprofile/${shop._id}`)}
+                  >
+                    VIEW PROFILE
+                  </button>
               </div>
             </div>
           ))

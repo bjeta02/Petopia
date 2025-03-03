@@ -1,67 +1,77 @@
-.appointments-container {
+/* Container styling */
+.vet-appointments-container {
     padding: 20px;
-    background: #fff;
+    background: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 70px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
 }
 
-.toolbar {
-    display: flex;
-    gap: 10px;
+/* Title styling */
+.vet-appointments-container h2 {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
     margin-bottom: 15px;
 }
 
-.new-btn {
-    background-color: #28a745 !important;
-    color: white !important;
-    border: none !important;
-}
-
-.export-btn {
-    background-color: #007bff !important;
-    color: white !important;
-    border: none !important;
-}
-
+/* DataTable styling */
 .datatable {
-    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9f9f9;
+    padding: 10px;
 }
 
+/* Status label styles */
 .status-tag {
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 5px;
     font-weight: bold;
+    display: inline-block;
 }
-
 .status-tag.pending {
     background-color: #ffc107;
     color: black;
 }
-
 .status-tag.confirmed {
     background-color: #007bff;
     color: white;
 }
-
 .status-tag.completed {
     background-color: #28a745;
     color: white;
 }
-
 .status-tag.cancelled {
     background-color: #dc3545;
     color: white;
 }
 
+/* Action buttons */
+/* Action buttons */
 .action-buttons {
     display: flex;
-    gap: 5px;
+    gap: 12px; /* Increased spacing between buttons */
 }
 
+/* General button styling */
+.p-button {
+    padding: 12px 20px !important; /* Bigger buttons */
+    font-size: 10px !important; /* Larger font */
+    border-radius: 6px !important; /* Rounded edges */
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* Specific button styles */
 .edit-btn {
     background-color: #ffc107 !important;
     color: black !important;
+    border: none !important;
+}
+
+.accept-btn {
+    background-color: #28a745 !important;
+    color: white !important;
     border: none !important;
 }
 
@@ -69,4 +79,128 @@
     background-color: #dc3545 !important;
     color: white !important;
     border: none !important;
+}
+
+/* Hover effects */
+.p-button:hover {
+    filter: brightness(0.85) !important;
+    transform: scale(1.05) !important; /* Slight zoom effect */
+}
+
+/* Improve modal buttons */
+.p-dialog-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* More spacing between buttons */
+}
+
+/* Primary & Secondary button styles */
+.p-button-primary {
+    font-size: 18px;
+    padding: 14px 22px !important;
+    background: #007bff !important;
+}
+
+.p-button-secondary {
+    font-size: 18px;
+    padding: 14px 22px !important;
+    background: #6c757d !important;
+}
+
+.p-button-primary:hover {
+    background: #0056b3 !important;
+}
+
+.p-button-secondary:hover {
+    background: #5a6268 !important;
+}
+
+
+/* Make dialog wider and more spacious */
+.edit-appointment-dialog {
+    max-width: 650px !important; /* Wider dialog */
+    padding: 25px;
+}
+
+/* Remove unwanted shadow */
+.p-dialog {
+    box-shadow: none !important;
+    border-radius: 8px !important;
+}
+
+/* Ensure the background overlay is correct */
+.p-dialog-mask {
+    background-color: rgba(0, 0, 0, 0.6) !important; /* Darker backdrop */
+}
+
+
+/* Improve modal content spacing */
+.p-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Increase font size for better readability */
+.p-dialog-header {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* Larger input fields */
+.p-inputtext, select {
+    padding: 12px; /* More padding */
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+/* Enhance buttons */
+.p-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+/* Fix button colors */
+.p-button {
+    color: white !important; /* White text */
+    font-weight: bold;
+}
+
+/* Ensure proper background colors */
+.p-button-secondary {
+    background-color: #6c757d !important; /* Dark gray */
+    border-color: #6c757d !important;
+}
+
+.p-button-primary {
+    background-color: #007bff !important; /* Blue */
+    border-color: #007bff !important;
+}
+
+.p-button:hover {
+    filter: brightness(0.9); /* Slight darkening on hover */
+}
+
+
+.p-button-primary {
+    font-size: 16px;
+    padding: 10px 18px;
+    background: #007bff !important;
+}
+
+.p-button-secondary {
+    font-size: 16px;
+    padding: 10px 18px;
+    background: #6c757d !important;
+}
+
+.p-button-primary:hover {
+    background: #0056b3 !important;
+}
+
+.p-button-secondary:hover {
+    background: #5a6268 !important;
 }
