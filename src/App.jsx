@@ -5,6 +5,7 @@ import { Header } from "./components/header";
 import { About } from "./components/about";
 import { About2 } from "./components/about2";
 import { Features } from "./components/features";
+import { SideBar } from "./components/VetLayout";
 import Login from "./components/login";
 import Register from "./components/register";
 import JsonData from "./data/data.json";
@@ -44,7 +45,6 @@ const App = () => {
 
   return (
     <>
-      <Navigation isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
         {/* Set the landing page as the default route */}
         <Route path="/" element={<LandingPage />} />
@@ -66,22 +66,19 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/findavet" element={<Findavet />} />
         <Route path="/shops" element={<Shops />} />
-        <Route path="/petshop/:clinicId" element={<PetShop />} />
-        <Route path="/shopprofile/:clinicId" element={<ShopProfile />} />
+        <Route path="/petshop" element={<PetShop />} />
+        <Route path="/shopprofile/" element={<ShopProfile />} />
         <Route path="/otp" element={<OtpPage />} />
 
-        <Route path="/clinic/*" element={<VetLayout />}>
-          <Route path="dashboard" element={<VetDashboard />} />
-          <Route path="appointments" element={<VetAppointments />} />
-          <Route path="history" element={<VetHistory />} />
-          <Route path="profile" element={<VetClinic />} />
-        </Route>
+        <Route path="adminDashboard" element={<VetDashboard />} />
+        <Route path="adminAppointments" element={<VetAppointments />} />
+        <Route path="adminListory" element={<VetHistory />} />
+        <Route path="adminProfile" element={<VetClinic />} />
 
         {/* Profile Route */}
         <Route path="/profile" element={<ProfilePage />} />
-        
       </Routes>
-    </>
+    </> 
   );
 };
 

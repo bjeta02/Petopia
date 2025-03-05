@@ -1,7 +1,11 @@
 import React from "react";
+import { Navigation } from "./navigation";
 
 export const About = (props) => {
   return (
+    <div>
+      <Navigation />
+    
     <div id="about">
       <div className="container">
         <div className="row">
@@ -37,6 +41,7 @@ export const About = (props) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

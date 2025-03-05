@@ -45,12 +45,29 @@ export const getAppointments = async (req, res) => {
     }
 };
 
+export const getAppointmentsByOwner = async (req, res) => {
+    const { ownerId } = req.params;
+
+    try {
+        const appointments = await Appointment.find({ owner_id: ownerId })
+            .populate('owner_id', 'firstname lastname email') // Populate owner details
+            .populate('pet_id', 'name type breed') // Populate pet details
+            .populate('clinic_id', 'name') // Populate clinic details
+            .populate('vet_id', 'name') // Populate veterinarian details
+            .populate('service_id', 'name'); // Populate service details
+
+        res.status(200).json(appointments);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching appointments", error });
+    }
+};
+
 // Temporary storage for unsaved appointments
 const pendingAppointments = new Map();
 
 export const bookAppointment = async (req, res) => {
     try {
-        const { owner_id, firstName, lastName, petName, petType, petBreed, service_id, clinic_id, date, vet_id, notes, email, phone } = req.body;
+        const { owner_id, firstName, lastName, petName, petType, petBreed, petGender, petAge, service_id, clinic_id, date, vet_id, notes, email, phone } = req.body;
 
         // Check if it's a guest appointment
         if (!owner_id) {
@@ -75,7 +92,7 @@ export const bookAppointment = async (req, res) => {
                 lastName,
                 email,
                 phone,
-                pet: { name: petName, type: petType, breed: petBreed }, // Store pet information
+                pet: { name: petName, type: petType, breed: petBreed, gender: petGender, petAge }, // Store pet information
                 clinic_id,
                 date,
                 service_id,
@@ -109,6 +126,8 @@ export const bookAppointment = async (req, res) => {
                     name: petName,
                     type: petType,
                     breed: petBreed,
+                    gender: petGender,
+                    age: petAge
                 });
                 const savedPet = await newPet.save();
                 petId = savedPet._id; // Get the new pet ID

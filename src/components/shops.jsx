@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch, FaMapMarkerAlt, FaFilter } from "react-icons/fa";
+import { Navigation } from "./navigation";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../components/css/shops.css";
@@ -24,83 +25,99 @@ function Shops() {
     return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts or the query changes
   }, [searchQuery]);
 
-  useEffect(() => {
-    const getUserLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const location = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            setUserLocation(location); // Set the user's location
-            console.log("User  location set:", location); // Log the user's location
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-            if (error.code === error.PERMISSION_DENIED) {
-              alert("Location access denied. Please enable location services to find nearby clinics.");
-            }
+  // Get user's current location
+useEffect(() => {
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+          console.log(`Location found: Lat ${position.coords.latitude}, Lng ${position.coords.longitude}`);
+        },
+        (error) => {
+          console.error("Error getti  ng location:", error);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert("Location access denied. Enable location services or allow location permissions in your browser settings.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              alert("Location request timed out. Try again.");
+              break;
+            default:
+              alert("An unknown error occurred while retrieving location.");
           }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-      }
-    };
-  
-    getUserLocation();
-  }, []);
-
-
-  useEffect(() => {
-    const fetchShops = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/clinics", {
-          params: {
-            location: selectedLocation,
-            service: selectedService,
-            search: debouncedSearchQuery,  // Include the search query
-          }
-        });
-  
-        // Filter out inactive shops
-        const activeShops = response.data.clinics.filter(shop => shop.status !== "inactive");
-  
-        // Calculate distances and sort shops
-        const shopsWithDistance = await Promise.all(activeShops.map(async (shop) => {
-          if (shop.latitude && shop.longitude) {
-            const distance = calculateDistance(userLocation, {
-              latitude: shop.latitude,
-              longitude: shop.longitude,
-            });
-            return { ...shop, distance };
-          } else {
-            // Geocode the address if latitude and longitude are not available
-            try {
-              const clinicLocation = await geocodeAddress(shop.address);
-              const distance = calculateDistance(userLocation, clinicLocation);
-              return { ...shop, distance };
-            } catch (error) {
-              console.error("Error geocoding address:", error);
-              return { ...shop, distance: Infinity }; // Set distance to Infinity if geocoding fails
-            }
-          }
-        }));
-  
-        shopsWithDistance.sort((a, b) => a.distance - b.distance); // Sort by distance
-  
-        setShops(shopsWithDistance);
-        setLocations(response.data.locations);
-        setServices(response.data.services);
-      } catch (error) {
-        console.error("Error fetching pet shops:", error);
-      }
-    };
-  
-    if (userLocation) {
-      fetchShops();
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
     }
-  }, [selectedLocation, selectedService, debouncedSearchQuery, userLocation]);
+  };
+
+  getUserLocation();
+}, []);
+
+
+useEffect(() => {
+  const fetchShops = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/clinics", {
+        params: {
+          location: selectedLocation,
+          service: selectedService,
+          search: debouncedSearchQuery,
+        }
+      });
+
+      console.log("Shops response:", response.data);
+      const { clinics, locations, services } = response.data;
+
+      const activeShops = clinics.filter(shop => shop.status !== "inactive");
+
+      const shopsWithDistance = await Promise.all(activeShops.map(async (shop) => {
+        let distance = Infinity; // Default to Infinity
+
+
+
+        if (shop.latitude && shop.longitude) {
+          distance = calculateDistance(userLocation, {
+            latitude: shop.latitude,
+            longitude: shop.longitude,
+          });
+
+        } else {
+          try {
+            const clinicLocation = await geocodeAddress(shop.address);
+            if (clinicLocation) {
+              distance = calculateDistance(userLocation, clinicLocation);
+              console.log("Geocoded location:", clinicLocation);
+            }
+          } catch (error) {
+            console.error("Error geocoding address:", error);
+          }
+        }
+
+        return { ...shop, distance };
+      }));
+
+      shopsWithDistance.sort((a, b) => a.distance - b.distance);
+      setShops(shopsWithDistance);
+      setLocations(locations);
+      setServices(services);
+    } catch (error) {
+      console.error("Error fetching pet shops:", error);
+    }
+  };
+
+  if (userLocation) {
+    fetchShops();
+  }
+}, [selectedLocation, selectedService, debouncedSearchQuery, userLocation]);
 
   const geocodeAddress = async (address) => {
     const apiKey = process.env.REACT_APP_API_KEY; // Your OpenCage API key
@@ -209,13 +226,15 @@ function Shops() {
   const handleBookAppointment = (shopId) => {
     const ownerId = localStorage.getItem('ownerId'); // Check if owner is logged in
     if (ownerId) {
-      navigate(`/petshop/${shopId}?ownerId=${ownerId}`); // Navigate with ownerId
+        navigate(`/petshop?id=${shopId}&ownerId=${ownerId}`); // Use & to separate parameters
     } else {
-      navigate(`/petshop/${shopId}?guest=true`); // Navigate as guest
+        navigate(`/petshop?id=${shopId}&guest=true`); // Use & to separate parameters
     }
   };
 
   return (
+    <div>
+    <Navigation />
     <div className="shops-container">
       {/* Search & Filters */}
       <div className="search-filter-container">
@@ -268,14 +287,15 @@ function Shops() {
             <div 
               key={shop._id} 
               className="shop-card" 
-              onClick={() => navigate(`/shopprofile/${shop._id}`)} // Navigate to shop profile on click
+              onClick={() => navigate(`/shopprofile?id=${shop._id}`)}
+              style={{ cursor: "pointer" }} // Indicate it's clickable
             >
               <div className="shop-info">
                 <img
-                  src={`http://localhost:5000${shop.logo}`}  // Fetch the logo dynamically
+                  src={`http://localhost:5000${shop.logo}`}  
                   className="shop-logo" 
                 />
-                <div>
+                <div className="shop-text">
                   <h3>{shop.name}</h3>
                   <p>
                     {shop.services &&
@@ -300,12 +320,12 @@ function Shops() {
                     className="book-button">
                     BOOK APPOINTMENT
                   </button>
-                  <button
-                    className="profile-button"
-                    onClick={() => navigate(`/shopprofile/${shop._id}`)}
-                  >
-                    VIEW PROFILE
-                  </button>
+                <button
+                  className="profile-button"
+                  onClick={() => navigate(`/shopprofile?id=${shop._id}`)}
+                >
+                  VIEW PROFILE
+                </button>
               </div>
             </div>
           ))
@@ -313,6 +333,8 @@ function Shops() {
           <p>Loading pet shops...</p>
         )}
       </div>
+    </div>
+    
     </div>
   );
 }

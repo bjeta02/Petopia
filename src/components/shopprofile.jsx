@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Get ID from URL
+import { useLocation } from "react-router-dom"; // Import useLocation to get query parameters
+import { Navigation } from "./navigation";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import Axios
 import "../components/css/shopprofile.css"; // Import CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 
-
 function ShopProfile() {
-  const { clinicId } = useParams(); // Get the shop ID from the URL
+  const location = useLocation(); // Get the current location
+  const queryParams = new URLSearchParams(location.search); // Create URLSearchParams object
+  const clinicId = queryParams.get('id'); // Get the clinicId from the query parameters
+  const navigate = useNavigate();
   const [shop, setShop] = useState(null); // State for shop data
   const [loading, setLoading] = useState(true); // State for loading
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchShop = async () => {
@@ -24,7 +26,10 @@ function ShopProfile() {
         setLoading(false);
       }
     };
-    fetchShop();
+
+    if (clinicId) {
+      fetchShop();
+    }
   }, [clinicId]);
 
   if (loading) {
@@ -35,65 +40,20 @@ function ShopProfile() {
     return <p>Shop not found.</p>;
   }
 
-  const checkIfOpen = () => {
-    const now = new Date();
-    const currentDay = now.toLocaleString("en-US", { weekday: "long" }).toLowerCase(); // e.g., "monday"
-    const currentHour = now.getHours(); // 24-hour format
-    const currentMinute = now.getMinutes();
-    const currentTime = currentHour * 100 + currentMinute; // Convert to comparable format (e.g., 14:30 -> 1430)
-
-    // Map day names to numbers
-    const daysMap = {
-      sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6,
-    };
-
-    // Convert "Monday to Friday" into a list of days
-    const parseDaysRange = (days) => {
-      if (!days) return []; // Return an empty array if days is not defined
-      const range = days.toLowerCase().split(" to ");
-      if (range.length === 2 && daysMap[range[0]] !== undefined && daysMap[range[1]] !== undefined) {
-        const start = daysMap[range[0]];
-        const end = daysMap[range[1]];
-        return Object.keys(daysMap).filter(day => daysMap[day] >= start && daysMap[day] <= end);
-      }
-      return [days.toLowerCase()];
-    };
-
-    const openDays = parseDaysRange(shop.days); // Extract valid days
-
-    // Convert "8:00 AM" / "5:00 PM" to 24-hour format (e.g., "08:00 AM" -> 800, "5:00 PM" -> 1700)
-    const parseTime = (timeStr) => {
-      if (!timeStr) return 0; // Return a default value if timeStr is not defined
-      const [time, modifier] = timeStr.split(" "); // Split time and AM/PM
-      let [hour, minute] = time.split(":").map(Number);
-
-      if (modifier === "PM" && hour !== 12) hour += 12; // Convert PM times
-      if (modifier === "AM" && hour === 12) hour = 0; // Midnight case
-
-      return hour * 100 + minute;
-    };
-
-    const openTime = parseTime(shop.open_time);
-    const closeTime = parseTime(shop.close_time);
-
-    // Check if today is within open days and within time range
-    const isOpen = openDays.includes(currentDay) && currentTime >= openTime && currentTime <= closeTime;
-    return isOpen;
-  };
-
-  const handleBookAppointment = (clinicId) => {
+  const handleBookAppointment = (shopId) => {
     const ownerId = localStorage.getItem('ownerId'); // Check if owner is logged in
     if (ownerId) {
-      navigate(`/petshop/${clinicId}?ownerId=${ownerId}`); // Navigate with ownerId
+        navigate(`/petshop?id=${shopId}&ownerId=${ownerId}`); // Use & to separate parameters
     } else {
-      navigate(`/petshop/${clinicId}?guest=true`); // Navigate as guest
+        navigate(`/petshop?id=${shopId}&guest=true`); // Use & to separate parameters
     }
-  };
+};
 
   console.log("Fetched shop data:", shop);
 
   return (
     <div className="page-container">
+      <Navigation />
       <div className="grid-container">
         {/* Left Section - Shop Info */}
         <div className="shop-info">
@@ -113,7 +73,7 @@ function ShopProfile() {
           </div>
           <p className="shop-description">{shop.description || "No description available."}</p>
         </div>
-  
+
         {/* Right Section - Earliest Available Schedule */}
         <div className="booking-container">
           <h3 className="section-title">Daily Clinic Hours</h3>
@@ -130,8 +90,8 @@ function ShopProfile() {
                     BOOK APPOINTMENT
                   </button>
         </div>
-  
-        {/* Clinic Location - Now inside a container */}
+
+        {/* Shop Information Section */}
         <div className="shop-info-container">
   <h3 className="section-title">Clinic Location</h3>
   <div className="map-container">
@@ -154,7 +114,6 @@ function ShopProfile() {
   </button>
 </div>
 
-  
         {/* Shop Information (Now in Wide Container) */}
         <div className="wide-map">
           <h3 className="section-title">Shop Information</h3>
@@ -168,8 +127,6 @@ function ShopProfile() {
       </div>
     </div>
   );
-  
-  
 }
 
 export default ShopProfile;
