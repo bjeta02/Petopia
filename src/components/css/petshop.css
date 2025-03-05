@@ -12,19 +12,32 @@
 /* Pet Shop Form Container */
 .petshop-container {
   display: flex;
-  flex-wrap: wrap;
-  width: 50%; /* Reduced width */
+  flex-direction: row; /* Arrange items side by side */
+  width: 80%; /* Increased width */
   background: white;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   padding: 40px;
-  max-width: 600px; /* Prevents overly large width */
-  min-height: 700px; /* Increased height */
-  justify-content: center;
+  max-width: 900px; /* Adjust width to fit content */
+  min-height: 700px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shop-info-book {
+  width: 40%; /* Allocate space for the clinic info */
+  padding: 20px;
+  text-align: center;
+}
+
+.shop-logo-book {
+  width: 100%; /* Make the logo responsive */
+  max-width: 100px; /* Set a max size */
+  border-radius: 10px;
 }
 
 .form-container {
-  width: 100%;
+  width: 55%; /* Allocate more space for the form */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,12 +46,12 @@
 }
 
 /* Shop Info & Form */
-.shop-info, .form-container {
+.shop-info-book, .form-container {
   padding: 20px;
 }
 
 /* Shop Info */
-.shop-info {
+.shop-info-book {
   width: 100%; /* Full width for better layout */
 }
 
@@ -155,8 +168,18 @@
   padding-right: 10px;
 }
 
-.error {
-  border: 2px solid red;
+.error-field {
+  border: 1px solid red;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.step-3-active .petshop-container {
+  margin-top: 100px !important;
 }
 
 /* 🔽 Mobile Responsive Styles */
@@ -168,7 +191,7 @@
     min-height: auto;
   }
 
-  .shop-info, .form-container {
+  .shop-info-book, .form-container {
     width: 100%;
     padding: 10px;
     text-align: center;
@@ -200,11 +223,11 @@
     width: 80px;
   }
   
-  .shop-info h2 {
+  .shop-info-book h2 {
     font-size: 18px;
   }
 
-  .shop-info p {
+  .shop-info-book p {
     font-size: 12px;
   }
 }

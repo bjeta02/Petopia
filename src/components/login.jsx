@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"; // Import axios for making API calls
 import "../components/css/login.css"; // Import the CSS for styling
+import { Navigation } from "./navigation";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -41,6 +42,7 @@ const Login = () => {
 
   return (
     <div className="center-container">
+      <Navigation />
       <div className="container-box">
         <h1>Login</h1>
         {error && <p className="error-message">{error}</p>} {/* Display error message */}
