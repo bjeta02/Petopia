@@ -217,6 +217,13 @@
         align-items: stretch;
     }
 
+    .shop-card:hover {
+        background-color: transparent;
+        transform: none;
+        filter: none;
+    }
+    
+
     .location-box, .filter-box {
         width: 100%; /* Full width for mobile */
     }

@@ -8,10 +8,11 @@ const VetLayout = () => {
       <div className="sidebar2">
         <h2>Clinic Panel</h2>
         <ul>
-          <li><Link to="/clinic/dashboard">Dashboard</Link></li>
-          <li><Link to="/clinic/profile">Clinic</Link></li>
-          <li><Link to="/clinic/appointments">Appointments</Link></li>
-          <li><Link to="/clinic/history">History</Link></li>
+          <li><Link to="/adminDashboard">Dashboard</Link></li>
+          <li><Link to="/adminProfile">Clinic</Link></li>
+          <li><Link to="/adminAppointments">Appointments</Link></li>
+          <li><Link to="/adminHistory">History</Link></li>
+          <li><Link to="/adminUser">History</Link></li>
         </ul>
       </div>
 

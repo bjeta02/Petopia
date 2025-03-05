@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from "./navigation";
 import axios from 'axios';
 import "../components/css/findavet.css";
 
@@ -50,6 +51,8 @@ function Findavet() {
   };
 
   return (
+    <div>
+      <Navigation />
     <div className="bg-img">
       <div className="findavet-container">
         <div className="appointment-subheading">
@@ -104,6 +107,7 @@ function Findavet() {
           <div className="box-logo"></div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
