@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { Navigation } from "./navigation";
 import axios from "axios";
 import "../components/css/petshop.css";
 
 function PetShop() {
-  const { clinicId } = useParams();
   const [searchParams] = useSearchParams();
+  const clinicId = searchParams.get("id");
   const ownerId = searchParams.get("ownerId");
   const isGuest = searchParams.get("guest");
   const [step, setStep] = useState(1);
@@ -25,6 +26,7 @@ function PetShop() {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchClinicData = async () => {
@@ -52,7 +54,7 @@ function PetShop() {
               headers: { "Authorization": `Bearer ${token}` }
             });
             setFirstName(`${ownerResponse.data.firstname}`);
-            setLastName (`${ownerResponse.data.lastname}`);
+            setLastName(`${ownerResponse.data.lastname}`);
             setEmail(ownerResponse.data.email);
 
             const fetchPets = async () => {
@@ -90,17 +92,33 @@ function PetShop() {
   }, [clinicId, ownerId, isGuest]);
 
   const handleSubmit = async () => {
-    if (!selectedDate || !petName || !petType || !email) {
-      alert("Please fill out all required fields!");
+    let newErrors = {};
+
+    if (step === 3) {
+      if (!firstname) newErrors.firstname = "First name is required";
+      if (!lastname) newErrors.lastname = "Last name is required";
+      if (!email) newErrors.email = "Email is required";
+      if (!petName) newErrors.petName = "Pet name is required";
+      if (!petType) newErrors.petType = "Pet type is required";
+      if (!petBreed) newErrors.petBreed = "Pet breed is required";
+      if (!petGender) newErrors.petGender = "Pet gender is required";
+      if (!petAge) newErrors.petAge = "Pet age is required";
+
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
+
+    setErrors({});
 
     try {
       const appointmentData = {
         owner_id: ownerId,
-        firstName: isGuest ? firstname : undefined, // Only include for guests
-        lastName: isGuest ? lastname : undefined,   // Only include for guests
-        email: isGuest ? email : undefined,         // Only include for guests
+        firstName: isGuest ? firstname : undefined,
+        lastName: isGuest ? lastname : undefined,
+        email: isGuest ? email : undefined,
         petName,
         petType,
         clinic_id: clinicId,
@@ -111,13 +129,11 @@ function PetShop() {
       };
 
       if (isGuest) {
-        // If it's a guest appointment, send the data to the backend to handle OTP and registration
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
         alert(response.data.message);
         setOtpSent(true);
-        setStep(4); // Move to OTP verification step
+        setStep(4);
       } else {
-        // If it's a registered owner, create the appointment directly
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
         alert("Appointment booked successfully!");
         navigate(`/appointments`);
@@ -142,33 +158,54 @@ function PetShop() {
       alert("Invalid or expired OTP.");
     }
   };
+
+  const handleNextStep = () => {
+    let newErrors = {};
+    
+    if (step === 2) {
+      if (!selectedDate) newErrors.selectedDate = "Date is required";
+      if (!selectedService) newErrors.selectedService = "Service is required";
+    }
+
+    if (step === 3) {
+      if (!firstname) newErrors.firstname = "First name is required";
+      if (!lastname) newErrors.lastname = "Last name is required";
+      if (!email) newErrors.email = "Email is required";
+      if (!petName) newErrors.petName = "Pet name is required";
+      if (!petType) newErrors.petType = "Pet type is required";
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    setErrors({});
+    setStep(step + 1);
+  };
   
   return (
     <div className="page-container">
+      <Navigation />
       <div className="petshop-container">
-        {/* Left Section - Pet Shop Info */}
         {clinic && (
-          <div className="shop-info">
+          <div className="shop-info-book">
             <img
-                src={`http://localhost:5000${clinic.logo}`}  // Fetch the logo dynamically
-                className="shop-logo-book" 
-              />
-            <h2>{clinic.name}</h2>
+              src={`http://localhost:5000${clinic.logo}`}  // Fetch the logo dynamically
+              className="shop-logo-book" 
+            />
+            <h3>{clinic.name}</h3>
             <p>{clinic.description}</p>
-            {/* Add any other clinic information you want to display here */}
           </div>
         )}
 
-        {/* Right Section - Multi-Step Form */}
         <div className="form-container">
-          {/* Step Indicator */}
           <div className="step-indicator">
             <span className={step === 1 ? "step active" : "step"}>1</span>
             <span className={step === 2 ? "step active" : "step"}>2</span>
             <span className={step === 3 ? "step active" : "step"}>3</span>
           </div>
 
-          {/* Step 1: Choose Customer Type */}
           {step === 1 && (
             <>
               <h3>Welcome!</h3>
@@ -179,45 +216,37 @@ function PetShop() {
             </>
           )}
 
-          {/* Step 2: Booking Form */}
           {step === 2 && (
             <>
-              <button className="back-button" onClick={() => setStep(1)}>
-                ← Back
-              </button>
+              <button className="back-button" onClick={() => setStep(1)}>← Back</button>
               <h3>Appointment Details</h3>
-
               <p><strong>Store hours: 9:00 AM - 5:00 PM</strong></p>
-
               <label className="form-label">SCHEDULED ON</label>
               <input 
                 type="date" 
-                className="date-picker"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                className={`date-picker ${errors.selectedDate ? "error-field" : ""}`} 
+                value={selectedDate} 
+                onChange={(e) => setSelectedDate(e.target.value)} 
               />
+              {errors.selectedDate && <p className="error-text">{errors.selectedDate}</p>}
 
-              <label className="form-label">REASON FOR BOOKING/CHIEF COMPLAINT</label>
-              {/* Service Dropdown */}
+              <label className="form-label">SELECT SERVICES</label>
               <select 
-                className="input-field"
-                value={selectedService}
+                className={`input-field ${errors.selectedService ? "error-field" : ""}`} 
+                value={selectedService} 
                 onChange={(e) => setSelectedService(e.target.value)}
               >
                 <option value="">Select Service</option>
                 {services.map((service) => (
-                  <option key={service._id} value={service._id}>
-                    {service.name}  {/* Change service display */}
-                  </option>
+                  <option key={service._id} value={service._id}>{service.name}</option>
                 ))}
               </select>
+              {errors.selectedService && <p className="error-text">{errors.selectedService}</p>}
 
-              <button className="action-button" onClick={() => setStep(3)}>CONTINUE</button>
+              <button className="action-button" onClick={handleNextStep}>CONTINUE</button>
             </>
           )}
 
-          {/* Step 3: Pet & Owner Details */}
-          {/* Step 3: Pet & Owner Details */}
           {step === 3 && (
             <>
               <button className="back-button" onClick={() => setStep(2)}>
@@ -230,49 +259,54 @@ function PetShop() {
                 <label className="form-label">First Name</label>
                 <input 
                   type="text" 
-                  className="input-field"
+                  className={`input-field ${errors.firstname ? "error-field" : ""}`}
                   value={firstname}
                   onChange={(e) => setFirstName(e.target.value)}
-                  required 
                 />
+                {errors.firstname && <p className="error-text ">{errors.firstname}</p>}
 
                 <label className="form-label">Last Name</label>
                 <input 
                   type="text" 
-                  className="input-field"
+                  className={`input-field ${errors.lastname ? "error-field" : ""}`}
                   value={lastname}
                   onChange={(e) => setLastName(e.target.value)}
-                  required 
                 />
+                {errors.lastname && <p className="error-text">{errors.lastname}</p>}
 
                 <label className="form-label">Email</label>
                 <input 
                   type="email" 
-                  className="input-field"
+                  className={`input-field ${errors.email ? "error-field" : ""}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
+                {errors.email && <p className="error-text">{errors.email}</p>}
 
                 <label className="form-label">Pet Name</label>
                 <input 
                   type="text" 
-                  className="input-field"
+                  className={`input-field ${errors.petName ? "error-field" : ""}`}
                   value={petName}
                   onChange={(e) => setPetName(e.target.value)}
-                  required 
                 />
+                {errors.petName && <p className="error-text">{errors.petName}</p>}
 
                 <label className="form-label">Pet Type</label>
-                <input 
-                  type="text" 
-                  className="input-field"
-                  value={petType}
-                  onChange={(e) => setPetType(e.target.value)}
-                  required
-                />
+                  <select
+                    className={`input-field ${errors.petType ? "error-field" : ""}`}
+                    value={petType}
+                    onChange={(e) => setPetType(e.target.value)}
+                  >
+                    <option value="">Select Pet Type</option>
+                    <option value="Dog">Dog</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Others">Others</option>
+                  </select>
+                  {errors.petType && <p className="error-text">{errors.petType}</p>}
 
-                <label className="form-label">Pet Breed (Optional)</label>
+
+                <label className="form-label">Pet Breed</label>
                 <input 
                   type="text" 
                   className="input-field"
@@ -280,7 +314,7 @@ function PetShop() {
                   onChange={(e) => setPetBreed(e.target.value)}
                 />
                 
-                <label className="form-label">Pet Gender</label>
+                <label className="form-label">Pet Gender *</label>
                 <div className="gender-options">
                   <button 
                     type="button"
@@ -298,7 +332,7 @@ function PetShop() {
                   </button>
                 </div>
 
-                <label className="form-label">Pet Age (Optional)</label>
+                <label className="form-label">Pet Age</label>
                 <input 
                   type="number" 
                   className="input-field"
@@ -311,21 +345,20 @@ function PetShop() {
             </>
           )}
           {step === 4 && otpSent && (
-          <>
-            <h3>Enter OTP</h3>
-            <input
-              type="text"
-              className="input-field"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              placeholder="Enter OTP sent to your email"
-            />
-            <button className="action-button" onClick={handleVerifyOTP}>
-              VERIFY OTP & CONFIRM APPOINTMENT
-            </button>
-          </>
-        )}
-
+            <>
+              <h3>Enter OTP</h3>
+              <input
+                type="text"
+                className="input-field"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter OTP sent to your email"
+              />
+              <button className="action-button" onClick={handleVerifyOTP}>
+                VERIFY OTP & CONFIRM APPOINTMENT
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

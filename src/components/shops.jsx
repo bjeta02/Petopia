@@ -231,6 +231,7 @@ useEffect(() => {
         navigate(`/petshop?id=${shopId}&guest=true`); // Use & to separate parameters
     }
   };
+  
 
   return (
     <div>
@@ -288,7 +289,7 @@ useEffect(() => {
               key={shop._id} 
               className="shop-card" 
               onClick={() => navigate(`/shopprofile?id=${shop._id}`)}
-              style={{ cursor: "pointer" }} // Indicate it's clickable
+              style={{ cursor: "pointer" }} 
             >
               <div className="shop-info">
                 <img
@@ -315,14 +316,21 @@ useEffect(() => {
                 <p>📍 Distance: {shop.distance !== undefined ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
               </div>
               <div className="shop-actions">
-                  <button 
-                    onClick={() => handleBookAppointment(shop._id)}
-                    className="book-button">
-                    BOOK APPOINTMENT
-                  </button>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents the click from triggering shop card navigation
+                    handleBookAppointment(shop._id);
+                  }}
+                  className="book-button"
+                >
+                  BOOK APPOINTMENT
+                </button>
                 <button
                   className="profile-button"
-                  onClick={() => navigate(`/shopprofile?id=${shop._id}`)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents unwanted card navigation
+                    navigate(`/shopprofile?id=${shop._id}`);
+                  }}
                 >
                   VIEW PROFILE
                 </button>
@@ -333,6 +341,7 @@ useEffect(() => {
           <p>Loading pet shops...</p>
         )}
       </div>
+
     </div>
     
     </div>
