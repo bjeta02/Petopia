@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Navigation } from "./navigation";
 import axios from "axios";
 import "../components/css/otppage.css";
 
@@ -63,6 +64,7 @@ const OtpPage = () => {
 
   return (
     <div className="otp-container">
+      <Navigation />
       <div className="otp-box">
         <h2>Verify Your Email</h2>
         <p>We have sent a 6-digit OTP code to your email: <strong>{email}</strong></p>

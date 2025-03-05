@@ -3,6 +3,7 @@
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 80px;
 }
 
 /* Responsive layout for search and filters */
@@ -160,8 +161,8 @@
 }
 
 .shop-logo {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
 }
 
@@ -214,33 +215,36 @@
     }
 
     .shop-info {
-        flex-direction: column;
-        align-items: flex-start;
+        display: flex;
+        flex-direction: nowrap;
+        flex-wrap: nowrap; /* Ensure they stay in a row */
         margin-bottom: 20px;
-    }
-
-    .shop-actions {
-        width: 100%;
         align-items: center;
     }
 
-    .book-button, .profile-button {
-        width: 100%; /* Full width buttons on mobile */
-    }
-
     .shop-logo {
-        width: 80px; /* Increase size on mobile */
-        height: 80px;
-        margin: 0 auto; /* Center the logo */
+        width: 70px; /* Adjust logo size */
+        height: 70px;
+        object-fit: cover;
+        border-radius: 50%; /* Keeps it circular */
+        margin-right: 20px;
     }
 
-    .shop-card {
-        flex-direction: column; /* Stack items */
-        align-items: center; /* Center all items in the card */
+    .shop-actions {
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        width: 100%;
+        gap: 2px; /* Add space between buttons */
+        display: flex;
+        flex-direction: row; /* Keep buttons in a row */
+        justify-content: space-between;
     }
 
-    .shop-info {
-        flex-direction: column;
-        align-items: center; /* Center the shop info */
+    .book-button, .profile-button {
+        width: 90%; /* Adjust width slightly smaller than full */
+        padding: 12px;
+        font-size: 14px; /* Adjust font size for readability */
+        text-align: center;
     }
+
 }

@@ -4,6 +4,7 @@
         name: { type: String, required: true },
         type: { type: String, required: true }, // e.g., Dog, Cat
         breed: { type: String },
+        gender: {type: String},
         age: { type: Number },
         // Add other pet-related fields as necessary
     });

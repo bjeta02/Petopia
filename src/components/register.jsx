@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Navigation } from "./navigation";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../components/css/login.css";
@@ -51,6 +52,7 @@ const Register = () => {
 
   return (
     <div className="center-container">
+      <Navigation />
       <div className="container-box">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>

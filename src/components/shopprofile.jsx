@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"; // Import useLocation to get query parameters
+import { Navigation } from "./navigation";
 import axios from "axios"; // Import Axios
 import "../components/css/shopprofile.css"; // Import CSS
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,6 +43,7 @@ function ShopProfile() {
 
   return (
     <div className="page-container">
+      <Navigation />
       <div className="grid-container">
         {/* Left Section - Shop Info */}
         <div className="shop-info">

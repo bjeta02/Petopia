@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from "./navigation";
 import axios from 'axios';
 import "../components/css/findavet.css";
 
@@ -51,6 +52,7 @@ function Findavet() {
 
   return (
     <div className="bg-img">
+      <Navigation />
       <div className="findavet-container">
         <div className="appointment-subheading">
           <p>FIND A VET</p>
@@ -73,7 +75,7 @@ function Findavet() {
             onChange={(e) => setSelectedService(e.target.value)} // Update service on input change
             onFocus={handleInputFocus} // Show dropdown when input is focused
             onBlur={handleInputBlur} // Hide dropdown when input loses focus
-            placeholder="Search for a service..."
+            placeholder="     Search for a service..."
           />
 
           {/* Dropdown list of services */}

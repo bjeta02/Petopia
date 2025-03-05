@@ -36,7 +36,7 @@ export const Navigation = () => {
     localStorage.removeItem("ownerId"); // Clear owner data on logout
     setIsLoggedIn(false);
     setAvatar(''); // Reset avatar state
-    window.location.reload(); // Optional: Force a page reload to clear any leftover state
+    navigate('/login');
 };
   
 
@@ -94,7 +94,7 @@ export const Navigation = () => {
   const handleProfileClick = () => {
     const ownerId = localStorage.getItem('ownerId'); // Retrieve owner ID from local storage
     if (ownerId) {
-      navigate(`/profile/${ownerId}`); // Navigate to the profile page with owner ID
+      navigate(`/profile?id=${ownerId}`); // Navigate to the profile page with owner ID
     }
   };
 

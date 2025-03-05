@@ -1,5 +1,6 @@
   import React, { useState, useEffect } from "react";
   import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+  import { Navigation } from "./navigation";
   import axios from "axios";
   import "../components/css/petshop.css";
 
@@ -102,6 +103,9 @@
       console.log("Selected Date:", selectedDate);
       console.log("Pet Name:", petName);
       console.log("Pet Type:", petType);
+      console.log("Pet Breed:", petBreed);
+      console.log("Pet Gender:", petGender);
+      console.log("Pet Age: ", petAge);
       console.log("Email:", email);
       console.log("Selected Service:", selectedService);
       
@@ -110,7 +114,6 @@
         return;
       }
 
-      
 
       try {
         const appointmentData = {
@@ -120,6 +123,9 @@
           email: isGuest ? email : undefined,         // Only include for guests
           petName,
           petType,
+          petBreed,
+          petGender,
+          petAge,
           clinic_id: clinicId,
           date: selectedDate,
           service_id: selectedService,
@@ -162,6 +168,7 @@
     
     return (
       <div className="page-container">
+        <Navigation />
         <div className="petshop-container">
           {/* Left Section - Pet Shop Info */}
           {clinic && (

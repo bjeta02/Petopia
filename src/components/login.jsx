@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from "./navigation";
 import axios from "axios"; // Import axios for making API calls
 import "../components/css/login.css"; // Import the CSS for styling
 
@@ -17,7 +18,7 @@ const Login = () => {
 
     try {
         // Make API call to login
-        const response = await axios.post(`http://192.168.137.105:5000/api/owners/login`, {
+        const response = await axios.post(`http://localhost:5000/api/owners/login`, {
             email: username, // Assuming username is the email
             password: password,
         });
@@ -41,6 +42,7 @@ const Login = () => {
 
   return (
     <div className="center-container">
+      <Navigation />
       <div className="container-box">
         <h1>Login</h1>
         {error && <p className="error-message">{error}</p>} {/* Display error message */}

@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Navigation } from "./navigation";
 import "../components/css/header.css";
 
 export const Header = (props) => {
   return (
     <header id="header" className="header">
+      <Navigation />
       <div className="intro">
         <div className="overlay">
           <div className="container">
