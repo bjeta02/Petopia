@@ -1,13 +1,14 @@
 import React from "react";
 import "../components/css/landing.css"; // Import the CSS for styling
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from "./navigation";
 
 const LandingPage = () => {
 
     const navigate = useNavigate();
 
     const handleClinicClick = () => {
-      navigate('/adminDashboard'); // Redirect to the dashboard page
+      navigate('/clinic/dashboard'); // Redirect to the dashboard page
 
     };
 
@@ -18,6 +19,7 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
+      <Navigation />
       <div className="which-container">
         <h1 className="title">Which one are you?</h1>
         <div className="options">

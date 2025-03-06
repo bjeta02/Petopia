@@ -1,176 +1,109 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
+import { ListBox } from "primereact/listbox";
 
-const ManageClinics = () => {
-  const [clinics, setClinics] = useState([]);
-  const [selectedClinic, setSelectedClinic] = useState(null);
+const ClinicProfile = () => {
+  const [clinic, setClinic] = useState(null);
   const [editDialog, setEditDialog] = useState(false);
-  const [newClinic, setNewClinic] = useState({
+  const [updatedClinic, setUpdatedClinic] = useState({
     name: "",
     address: "",
     contact_number: "",
     description: "",
-    status: "Inactive",
+    logo: "",
+    services: [],
     days: "",
     open_time: "",
     close_time: "",
-    image: "",
-    logo: "",
   });
-  const toast = useRef(null);
 
   useEffect(() => {
-    fetchClinics();
+    fetchClinicProfile();
   }, []);
 
-  // Fetch clinics from the backend
-  const fetchClinics = async () => {
-        try {
-            const response = await axios.get("http://localhost:5000/api/clinics");
-            console.log("Fetched Clinics:", response.data); // Log the response data
-            if (response.data.clinics && Array.isArray(response.data.clinics)) {
-                setClinics(response.data.clinics); // Set the clinics state with the clinics array
-            } else {
-                console.error("Expected an array but got:", response.data);
-            }
-        } catch (error) {
-            console.error("Error fetching clinics:", error);
-        }
-    };
-
-  const showToast = (severity, summary, detail) => {
-    toast.current.show({ severity, summary, detail, life: 3000 });
-  };
-
-  const handleSaveClinic = async () => {
+  const fetchClinicProfile = async () => {
     try {
-      if (selectedClinic) {
-        await axios.put(`http://localhost:5000/api/clinics/${selectedClinic._id}`, newClinic);
-        showToast("success", "Updated", "Clinic details updated successfully.");
-      } else {
-        await axios.post("http://localhost:5000/api/clinics", newClinic);
-        showToast("success", "Added", "New clinic added successfully.");
-      }
-      setEditDialog(false);
-      fetchClinics();
+      const response = await axios.get("http://localhost:5000/api/clinic/profile");
+      setClinic(response.data);
+      setUpdatedClinic(response.data);
     } catch (error) {
-      showToast("error", "Error", "Failed to save clinic.");
+      console.error("Error fetching clinic profile:", error);
     }
   };
 
-  const handleEdit = (clinic) => {
-    setSelectedClinic(clinic);
-    setNewClinic({ ...clinic });
-    setEditDialog(true);
-  };
-
-  const handleNewClinic = () => {
-    setSelectedClinic(null);
-    setNewClinic({
-      name: "",
-      address: "",
-      contact_number: "",
-      description: "",
-      status: "Inactive",
-      days: "",
-      open_time: "",
-      close_time: "",
-      image: "",
-      logo: "",
-    });
-    setEditDialog(true);
-  };
-
-  const formatStatus = (rowData) => {
-    return <span className={`status-tag ${rowData.status.toLowerCase()}`}>{rowData.status.toUpperCase()}</span>;
+  const handleSaveProfile = async () => {
+    try {
+      await axios.put("http://localhost:5000/api/clinic/profile", updatedClinic);
+      setClinic(updatedClinic);
+      setEditDialog(false);
+    } catch (error) {
+      console.error("Error updating clinic profile:", error);
+    }
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <Toast ref={toast} />
-      <h2 className="text-2xl font-bold mb-4">Manage Clinics</h2>
-      <Button label="Add Clinic" icon="pi pi-plus" className="p-button-success mb-4" onClick={handleNewClinic} />
+      {clinic ? (
+        <Card title={clinic.name} subTitle={clinic.address} className="mb-4">
+          <img src={clinic.logo} alt="Clinic Logo" className="w-32 h-32 mb-4" />
+          <p><strong>Contact:</strong> {clinic.contact_number}</p>
+          <p><strong>Description:</strong> {clinic.description}</p>
+          <p><strong>Services:</strong></p>
+          <ul>
+            {clinic.services.map((service, index) => (
+              <li key={index}>{service}</li>
+            ))}
+          </ul>
+          <p><strong>Schedule:</strong> {clinic.days}, {clinic.open_time} - {clinic.close_time}</p>
+          <Button label="Edit Profile" className="p-button-primary mt-3" onClick={() => setEditDialog(true)} />
+        </Card>
+      ) : (
+        <p>Loading clinic profile...</p>
+      )}
 
-      <DataTable value={clinics} paginator rows={5} className="datatable">
-        <Column field="name" header="Clinic Name" sortable />
-        <Column field="address" header="Address" />
-        <Column field="contact_number" header="Contact Number" />
-        <Column field="status" header="Status" body={formatStatus} />
-        <Column field="days" header="Days Open" />
-        <Column field="open_time" header="Open Time" />
-        <Column field="close_time" header="Close Time" />
-        <Column
-          header="Actions"
-          body={(rowData) => (
-            <Button icon="pi pi-pencil" className="p-button-warning" onClick={() => handleEdit(rowData)} />
-          )}
-        />
-      </DataTable>
-
-      {/* Add/Edit Dialog */}
-      <Dialog visible={editDialog} header={selectedClinic ? "Edit Clinic" : "Add Clinic"} onHide={() => setEditDialog(false)}>
+      {/* Edit Dialog */}
+      <Dialog visible={editDialog} header="Edit Clinic Profile" onHide={() => setEditDialog(false)}>
         <div className="p-fluid">
           <label>Clinic Name</label>
-          <InputText value={newClinic.name} onChange={(e) => setNewClinic({ ...newClinic, name: e.target.value })} />
+          <InputText value={updatedClinic.name} onChange={(e) => setUpdatedClinic({ ...updatedClinic, name: e.target.value })} />
 
           <label>Address</label>
-          <InputText value={newClinic.address} onChange={(e) => setNewClinic({ ...newClinic, address: e.target.value })} />
+          <InputText value={updatedClinic.address} onChange={(e) => setUpdatedClinic({ ...updatedClinic, address: e.target.value })} />
 
           <label>Contact Number</label>
-          <InputText value={newClinic.contact_number} onChange={(e) => setNewClinic({ ...newClinic, contact_number: e.target.value })} />
+          <InputText value={updatedClinic.contact_number} onChange={(e) => setUpdatedClinic({ ...updatedClinic, contact_number: e.target.value })} />
 
           <label>Description</label>
-          <InputText value={newClinic.description} onChange={(e) => setNewClinic({ ...newClinic, description: e.target.value })} />
-
-          <label>Status</label>
-          <Dropdown
-            value={newClinic.status}
-            options={[
-              { label: "Active", value: "Active" },
-              { label: "Inactive", value: "Inactive" },
-            ]}
-            onChange={(e) => setNewClinic({ ...newClinic, status: e.value })}
-          />
-
-          <label>Days Open</label>
-          <InputText value={newClinic.days} onChange={(e) => setNewClinic({ ...newClinic, days: e.target.value })} />
-
-          <label>Open Time</label>
-          <Calendar
-            value={newClinic.open_time ? new Date(`1970-01-01T${newClinic.open_time}`) : null}
-            onChange={(e) => setNewClinic({ ...newClinic, open_time: e.value.toTimeString().split(" ")[0] })}
-            timeOnly
-          />
-
-          <label>Close Time</label>
-          <Calendar
-            value={newClinic.close_time ? new Date(`1970-01-01T${newClinic.close_time}`) : null}
-            onChange={(e) => setNewClinic({ ...newClinic, close_time: e.value.toTimeString().split(" ")[0] })}
-            timeOnly
-          />
-
-          <label>Image URL</label>
-          <InputText value={newClinic.image} onChange={(e) => setNewClinic({ ...newClinic, image: e.target.value })} />
+          <InputText value={updatedClinic.description} onChange={(e) => setUpdatedClinic({ ...updatedClinic, description: e.target.value })} />
 
           <label>Logo URL</label>
-          <InputText value={newClinic.logo} onChange={(e) => setNewClinic({ ...newClinic, logo: e.target.value })} />
+          <InputText value={updatedClinic.logo} onChange={(e) => setUpdatedClinic({ ...updatedClinic, logo: e.target.value })} />
+
+          <label>Services</label>
+          <ListBox multiple value={updatedClinic.services} options={["Vaccination", "Grooming", "Check-ups", "Surgery"]} onChange={(e) => setUpdatedClinic({ ...updatedClinic, services: e.value })} />
+
+          <label>Days Open</label>
+          <InputText value={updatedClinic.days} onChange={(e) => setUpdatedClinic({ ...updatedClinic, days: e.target.value })} />
+
+          <label>Open Time</label>
+          <Calendar value={updatedClinic.open_time ? new Date(`1970-01-01T${updatedClinic.open_time}`) : null} onChange={(e) => setUpdatedClinic({ ...updatedClinic, open_time: e.value.toTimeString().split(" ")[0] })} timeOnly />
+
+          <label>Close Time</label>
+          <Calendar value={updatedClinic.close_time ? new Date(`1970-01-01T${updatedClinic.close_time}`) : null} onChange={(e) => setUpdatedClinic({ ...updatedClinic, close_time: e.value.toTimeString().split(" ")[0] })} timeOnly />
         </div>
 
         <div className="p-dialog-footer">
           <Button label="Cancel" className="p-button-secondary" onClick={() => setEditDialog(false)} />
-          <Button label="Save" className="p-button-primary" onClick={handleSaveClinic} />
+          <Button label="Save" className="p-button-primary" onClick={handleSaveProfile} />
         </div>
       </Dialog>
     </div>
   );
 };
 
-export default ManageClinics;
+export default ClinicProfile;
