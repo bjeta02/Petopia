@@ -45,6 +45,7 @@ const App = () => {
 
   return (
     <>
+    <Navigation isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
         {/* Set the landing page as the default route */}
         <Route path="/" element={<LandingPage />} />
@@ -70,10 +71,13 @@ const App = () => {
         <Route path="/shopprofile/" element={<ShopProfile />} />
         <Route path="/otp" element={<OtpPage />} />
 
-        <Route path="adminDashboard" element={<VetDashboard />} />
-        <Route path="adminAppointments" element={<VetAppointments />} />
-        <Route path="adminListory" element={<VetHistory />} />
-        <Route path="adminProfile" element={<VetClinic />} />
+        
+        <Route path="/clinic/*" element={<VetLayout />}>
+          <Route path="dashboard" element={<VetDashboard />} />
+          <Route path="appointments" element={<VetAppointments />} />
+          <Route path="history" element={<VetHistory />} />
+          <Route path="vetprofile" element={<VetClinic />} />
+        </Route>
 
         {/* Profile Route */}
         <Route path="/profile" element={<ProfilePage />} />

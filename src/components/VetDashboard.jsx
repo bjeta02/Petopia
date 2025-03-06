@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import  SideBar  from "./VetLayout";
 import axios from "axios";
 
 const VetDashboard = () => {
@@ -25,7 +24,6 @@ const VetDashboard = () => {
   return (
     
     <div className="bg-white p-6 rounded-lg shadow-md">
-    <SideBar />
       <h2 className="text-2xl font-bold mb-4">Appointment Schedule</h2>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
