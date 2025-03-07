@@ -68,7 +68,7 @@ export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails
 
         // Determine the subject and message based on the status
         switch (status) {
-            case "confirmed":
+            case "Confirmed":
                 subject = "Appointment Confirmed - Petopia";
                 message = `
                     <h2>Your Appointment is Confirmed!</h2>
@@ -79,7 +79,7 @@ export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails
                     <p>We look forward to seeing you and your furry friend!</p>
                 `;
                 break;
-            case "completed":
+            case "Completed":
                 subject = "Appointment Completed - Petopia";
                 message = `
                     <h2>Your Appointment is Completed!</h2>
@@ -90,7 +90,7 @@ export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails
                     <p>We hope you had a great experience!</p>
                 `;
                 break;
-            case "cancelled":
+            case "Cancelled":
                 subject = "Appointment Cancelled - Petopia";
                 message = `
                     <h2>Your Appointment has been Cancelled</h2>

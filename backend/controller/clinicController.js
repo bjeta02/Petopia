@@ -1,5 +1,7 @@
 import Clinic from "../model/Clinic.js";
 import Service from "../model/Service.js"; // Import Service model
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Serve static logos from the 'logos' folder
 export const getClinics = async (req, res) => {
@@ -35,7 +37,6 @@ export const getClinics = async (req, res) => {
                 if (service && !services.some((s) => s.name.toLowerCase() === service.toLowerCase())) {
                     return null;  // If service doesn't match, skip this clinic
                 }
-
 
                 return {
                     ...clinic,
@@ -121,12 +122,17 @@ export const registerClinic = async (req, res) => {
 export const updateClinic = async (req, res) => {
     try {
         const { clinicId } = req.params; // Get clinicId from request parameters
-        const { name, address, contact_number, description, status, open_time, close_time, days, image, logo } = req.body; // Expecting the updated fields from the request body
+        const { name, address, email, password, contact_number, description, status, open_time, close_time, days, image } = req.body; // Expecting the updated fields from the request body
+
+        // Check if a new logo was uploaded
+        const logoPath = req.file ? `/logos/${req.file.filename}` : undefined; // Only update if there's a new file
 
         // Create an object with the fields to update
         const updateData = {
             name,
             address,
+            email,
+            password,
             contact_number,
             description,
             status,
@@ -134,8 +140,10 @@ export const updateClinic = async (req, res) => {
             close_time,
             days,
             image,
-            logo
         };
+
+        // Only add logo to updateData if a new file is uploaded
+        if (logoPath) updateData.logo = logoPath;
 
         // Find the clinic and update it with the new data
         const updatedClinic = await Clinic.findByIdAndUpdate(
@@ -178,4 +186,4 @@ export const deleteClinic = async (req, res) => {
         console.error("Error deleting clinic:", error);
         res.status(500).json({ message: "Failed to delete clinic." });
     }
-};  
+};

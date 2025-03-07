@@ -7,8 +7,8 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
-        const clinicName = req.body.name ? req.body.name.replace(/\s+/g, "_").toLowerCase() : "clinic";
-        cb(null, `${clinicName}_logo_${Date.now()}${ext}`);
+        const baseName = path.basename(file.originalname, path.extname(file.originalname)).replace(/\s+/g, "_").toLowerCase();
+        cb(null, `${baseName}_${Date.now()}${path.extname(file.originalname)}`);        
     },
 });
 

@@ -1,51 +1,62 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios"; // Import axios for making API calls
-import "../components/css/login.css"; // Import the CSS for styling
+import axios from "axios";
+import "../components/css/login.css";
 import { Navigation } from "./navigation";
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // State to hold error messages
-  const [loading, setLoading] = useState(false); // State to manage loading state
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the form from reloading the page
-    setLoading(true); // Set loading state to true
-    setError(''); // Reset error message
+    e.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-        // Make API call to login
-        const response = await axios.post(`http://localhost:5000/api/owners/login`, {
-            email: username, // Assuming username is the email
-            password: password,
-        });
+      // API call to login
+      const response = await axios.post(`http://localhost:5000/api/owners/login`, {
+        email: username,
+        password: password,
+      });
 
-        // Handle successful login
-        console.log('Login successful:', response.data);
-        const { token, owner } = response.data; // Destructure token and owner data
-        localStorage.setItem('token', token); // Store the token
-        localStorage.setItem('ownerId', owner.id); // Store owner ID
+      // Handle successful login
+      console.log('Login successful:', response.data);
+      const { token, user } = response.data;
 
-        // Redirect to home page
-        window.location.href = '/home'; // Change this to your dashboard route
+      // Store data in local storage
+      localStorage.setItem('token', token);
+
+      // Redirect based on role
+      if (user.role === 'owner') {
+        localStorage.setItem('ownerId', user.ownerId);
+        localStorage.setItem('role', user.role); // Store role for later use
+        navigate('/home');
+      } else if (user.role === 'clinic') {
+        localStorage.setItem('clinicId', user.clinicId);
+        navigate('/dashboard');
+      } else if (user.role === 'admin') {
+        navigate('/admin-dashboard');
+      } else {
+        navigate('/home'); // Default fallback
+      }
     } catch (err) {
-        // Handle error
-        console.error('Login error:', err.response ? err.response.data.message : err.message);
-        setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
+      console.error('Login error:', err.response ? err.response.data.message : err.message);
+      setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
     } finally {
-        setLoading(false); // Reset loading state
+      setLoading(false);
     }
-};
+  };
 
   return (
     <div className="center-container">
       <Navigation />
       <div className="container-box">
         <h1>Login</h1>
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="username">Email</label>

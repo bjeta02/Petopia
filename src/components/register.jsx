@@ -22,23 +22,24 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-
+  
     try {
       const response = await axios.post("http://localhost:5000/api/owners/register", {
         firstname,
         lastname,
         email,
         password,
+        role: "owner"  // 🔹 Explicitly set role as "owner"
       });
-
+  
       alert(response.data.message);
-
-      // 🔹 Redirect to OTP page with email as a query parameter
+  
+      // 🔹 Redirect to OTP verification page
       navigate(`/otp?email=${encodeURIComponent(email)}`);
     } catch (error) {
       console.error(
@@ -48,6 +49,7 @@ const Register = () => {
       alert(error.response ? error.response.data.message : "An error occurred. Please try again.");
     }
   };
+  
 
   return (
     <div className="center-container">

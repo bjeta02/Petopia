@@ -1,3 +1,7 @@
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primereact/resources/primereact.css";
+import 'primeicons/primeicons.css'; // icons
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { Navigation } from "./components/navigation";
@@ -72,11 +76,11 @@ const App = () => {
         <Route path="/otp" element={<OtpPage />} />
 
         
-        <Route path="/clinic/*" element={<VetLayout />}>
-          <Route path="dashboard" element={<VetDashboard />} />
-          <Route path="appointments" element={<VetAppointments />} />
-          <Route path="history" element={<VetHistory />} />
-          <Route path="vetprofile" element={<VetClinic />} />
+        <Route element={<VetLayout />}> Sidebar always visible
+          <Route path="/dashboard" element={<VetDashboard />} />
+          <Route path="/appointments" element={<VetAppointments />} />
+          <Route path="/history" element={<VetHistory />} />
+          <Route path="/vetprofile" element={<VetClinic />} />
         </Route>
 
         {/* Profile Route */}

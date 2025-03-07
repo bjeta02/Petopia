@@ -5,13 +5,14 @@ import interactionPlugin from "@fullcalendar/interaction";
 import axios from "axios";
 
 const VetDashboard = () => {
+  const clinicId = localStorage.getItem("clinicId");
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     // Fetch appointments for the clinic
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/appointments");
+        const response = await axios.get(`http://localhost:5000/api/appointments/clinics/${clinicId}`);
         setAppointments(response.data);
       } catch (error) {
         console.error("Error fetching appointments:", error);
