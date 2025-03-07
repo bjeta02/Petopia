@@ -62,6 +62,46 @@ export const getAppointmentsByOwner = async (req, res) => {
     }
 };
 
+export const getAppointmentsByClinic = async (req, res) => {
+    const { clinicId } = req.params;
+
+    try {
+        const appointments = await Appointment.find({ clinic_id: clinicId })
+            .populate("owner_id", "firstname lastname email")
+            .populate("guest_id", "firstName lastName email phone pets")
+            .populate("pet_id", "name type breed")
+            .populate("vet_id", "name")
+            .populate("service_id", "name")
+            .sort({ date: -1 });
+            
+            // Create a unified owner name field and include pet details
+        const appointmentsWithDetails = appointments.map(appointment => {
+            // Check if owner_id or guest_id is present
+            const ownerName = appointment.owner_id
+                ? `${appointment.owner_id.firstname} ${appointment.owner_id.lastname}`
+                : appointment.guest_id
+                ? `${appointment.guest_id.firstName} ${appointment.guest_id.lastName}`
+                : 'Unknown Owner'; // Fallback if neither is present
+
+            const petDetails = appointment.guest_id && appointment.guest_id.pets && appointment.guest_id.pets.length > 0
+                ? appointment.guest_id.pets.map(pet => `${pet.name} (${pet.type})`).join(', ')
+                : appointment.pet_id ? `${appointment.pet_id.name} (${appointment.pet_id.type})` : 'No Pet';
+
+            return {
+                ...appointment.toObject(),
+                ownerName,
+                petDetails
+            };
+        });
+
+        res.status(200).json(appointmentsWithDetails);
+    } catch (error) {
+        console.error("Error fetching clinic appointments:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+};
+
+
 // Temporary storage for unsaved appointments
 const pendingAppointments = new Map();
 
@@ -75,6 +115,7 @@ export const bookAppointment = async (req, res) => {
             if (!firstName || !lastName || !petName || !petType || !email) {
                 return res.status(400).json({ message: "All fields are required for guest owners." });
             }
+            
 
             // Check if the guest already exists
             const existingGuest = await Guest.findOne({ email });
@@ -246,49 +287,34 @@ export const verifyAppointmentOTP = async (req, res) => {
 export const updateAppointment = async (req, res) => {
     try {
         const { id } = req.params;
-        const { clinic_id, date, owner_id, guest_id, pet_id, service_id, vet_id, notes, status } = req.body;
+        const { status } = req.body;
 
-        if (!clinic_id || !date || !service_id) {
-            return res.status(400).json({ message: "Missing required fields" });
+        // Validate the status
+        if (!status) {
+            return res.status(400).json({ message: "Status is required" });
         }
 
-        const updateData = { clinic_id, date, service_id, vet_id, notes, status };
+        const updateData = { status }
 
-        // Assign owner_id or guest_id
-        if (owner_id) {
-            updateData.owner_id = owner_id;
-        } else if (guest_id) {
-            updateData.guest_id = guest_id;
-        }
+        // Log the received status for debugging
+        console.log("Received status:", status);
 
-        // Handle pet assignment
-        if (owner_id && pet_id) {
-            updateData.pet_id = pet_id;
-        } else if (guest_id) {
-            // Fetch guest details to get pet data
-            const guest = await Guest.findById(guest_id);
-            if (guest && guest.pets.length > 0) {
-                updateData.pet_id = guest.pets[0]._id; // Assign first pet from guest
-            }
-        }
+        const normalizedStatus = status.toLowerCase();
 
-        // Set timestamps based on status
-        if (status === "completed") {
+        if (normalizedStatus === "completed") {
             updateData.completedAt = new Date();
             updateData.rejectedAt = null;
             updateData.confirmedAt = null;
-        } else if (status === "cancelled") {
+        } else if (normalizedStatus === "cancelled") {
             updateData.rejectedAt = new Date();
             updateData.completedAt = null;
             updateData.confirmedAt = null;
-        } else if (status === "confirmed") {
+        } else if (normalizedStatus === "confirmed") {
             updateData.confirmedAt = new Date();
             updateData.completedAt = null;
             updateData.rejectedAt = null;
         } else {
-            updateData.completedAt = null;
-            updateData.rejectedAt = null;
-            updateData.confirmedAt = null;
+            return res.status(400).json({ message: "Invalid status value" });
         }
 
 
@@ -313,13 +339,13 @@ export const updateAppointment = async (req, res) => {
         if (updatedAppointment.owner_id) {
             emailDetails = {
                 clinicName: updatedAppointment.clinic_id?.name || "Unknown Clinic",
-                date: new Date(date).toLocaleString(),
+                date: new Date(updatedAppointment.date).toLocaleString(),
                 serviceName: updatedAppointment.service_id?.name || "Unknown Service",
                 petName: updatedAppointment.pet_id?.name || "Your Pet",
                 firstName: updatedAppointment.owner_id.firstname || "Valued Customer",
                 appointmentId: updatedAppointment._id,
                 clinicAddress: updatedAppointment.clinic_id?.address || "Unknown Address",
-                notes: notes,
+                notes: updatedAppointment.notes || "No additional notes",
             };
             recipientEmail = updatedAppointment.owner_id.email;
         } else if (updatedAppointment.guest_id) {
@@ -328,29 +354,21 @@ export const updateAppointment = async (req, res) => {
 
             emailDetails = {
                 clinicName: updatedAppointment.clinic_id?.name || "Unknown Clinic",
-                date: new Date(date).toLocaleString(),
+                date: new Date(updatedAppointment.date).toLocaleString(),
                 serviceName: updatedAppointment.service_id?.name || "Unknown Service",
                 petName: updatedAppointment.pet_id?.name || updatedAppointment.guest_id?.pets[0]?.name || "Your Pet",
                 firstName: updatedAppointment.guest_id?.firstName || "Valued Guest",
                 appointmentId: updatedAppointment._id,
                 clinicAddress: updatedAppointment.clinic_id?.address || "Unknown Address",
-                notes: notes,
+                notes: updatedAppointment.notes || "No additional notes",
             };
             recipientEmail = updatedAppointment.guest_id?.email;
         }
 
+        // Send email notification
         if (recipientEmail) {
             try {
-                console.log(`Sending email to: ${recipientEmail} for status: ${status}`);
-
-                if (status === "confirmed") {
-                    await sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, "confirmed");
-                } else if (status === "completed") {
-                    await sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, "completed");
-                } else if (status === "cancelled") {
-                    await sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, "cancelled");
-                }
-
+                await sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, status);
                 console.log("Email sent successfully to:", recipientEmail);
             } catch (emailError) {
                 console.error("Error sending email:", emailError);
@@ -360,7 +378,7 @@ export const updateAppointment = async (req, res) => {
         }
 
         res.status(200).json({
-            message: "Appointment updated successfully.",
+            message: "Appointment status updated successfully.",
             appointment: updatedAppointment,
         });
     } catch (error) {

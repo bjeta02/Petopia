@@ -11,16 +11,12 @@ import { Dialog } from "primereact/dialog";
 import { Toolbar } from "primereact/toolbar";
 import { Toast } from "primereact/toast";
 import { format } from 'date-fns';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primereact/resources/primereact.css";
-import 'primeicons/primeicons.css'; // icons
 import "./css/profile.css";
 import { Dropdown } from "primereact/dropdown";
 
 export default function UserProfilePage() {
   const [searchParams] = useSearchParams(); // Use useSearchParams to get query parameters
-  const ownerId = searchParams.get("id"); // Get ownerId from query parameters
+  const ownerId = searchParams.get('id'); // Get ownerId from query parameters
   const [isEditing, setIsEditing] = useState(false);
   const [pets, setPets] = useState([]);
   const [pet, setPet] = useState({ name: "", type: "", breed: "", gender: "", age: ""  });
@@ -40,30 +36,36 @@ export default function UserProfilePage() {
     avatar: "https://via.placeholder.com/150",
   });
 
-  // Fetch owner data using ownerId
   const fetchOwnerData = async () => {
     const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const response = await fetch(`http://localhost:5000/api/owners/${ownerId}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+    if (token && ownerId) {
+        try {
+            console.log("Fetching owner data for ID:", ownerId);
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+            const response = await fetch(`http://localhost:5000/api/owners/${ownerId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch owner data");
+            }
+
+            const result = await response.json();  // Rename to "result"
+            console.log("Owner data fetched successfully:", result);
+
+            if (result.success && result.data) {
+                setOwner(result.data);  // Extract only "data"
+            }
+        } catch (error) {
+            console.error("Error fetching owner data:", error);
         }
-
-        const data = await response.json();
-        setOwner(data);
-      } catch (error) {
-        console.error('Error fetching owner data:', error);
-      }
     }
-  };
+};
+
 
   const fetchPets = async () => {
     const token = localStorage.getItem("token");
@@ -309,15 +311,11 @@ const fetchAppointments = async () => {
               <div className="form-grid">
                 <div className="p-field">
                   <label htmlFor="firstname" className="label-margin">First Name</label>
-                  <InputText id="firstname" name="firstname" value={owner.firstname} onChange={handleOwnerChange} disabled={!isEditing} />
+                  <InputText id="firstname" name="firstname" value={owner.firstname || ""} onChange={handleOwnerChange} disabled={!isEditing} />
                 </div>
                 <div className="p-field">
                   <label htmlFor="lastname" className="label-margin">Last Name</label>
-                  <InputText id="lastname" name="lastname" value={owner.lastname} onChange={handleOwnerChange} disabled={!isEditing} />
-                </div>
-                <div className="p-field">
-                  <label htmlFor="email" className="label-margin">Email</label>
-                  <InputText id="email" name="email" value={owner.email} onChange={handleOwnerChange} disabled={!isEditing} />
+                  <InputText id="lastname" name="lastname" value={owner.lastname || ""} onChange={handleOwnerChange} disabled={!isEditing} />
                 </div>
                 <div className="p-field">
                   <label htmlFor="phone" className="label-margin">Phone</label>

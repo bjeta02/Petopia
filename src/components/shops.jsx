@@ -77,7 +77,7 @@ useEffect(() => {
       console.log("Shops response:", response.data);
       const { clinics, locations, services } = response.data;
 
-      const activeShops = clinics.filter(shop => shop.status !== "inactive");
+      const activeShops = clinics.filter(shop => shop.status !== "Inactive");
 
       const shopsWithDistance = await Promise.all(activeShops.map(async (shop) => {
         let distance = Infinity; // Default to Infinity

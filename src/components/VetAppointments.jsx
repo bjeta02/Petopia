@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -6,8 +7,10 @@ import { Toast } from "primereact/toast";
 import { Dialog } from "primereact/dialog";
 import axios from "axios";
 import "./css/VetAppointments.css";
+import { AiOutlineConsoleSql } from "react-icons/ai";
 
 const VetAppointments = () => {
+  const clinicId = localStorage.getItem("clinicId");
   const [appointments, setAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [editDialog, setEditDialog] = useState(false);
@@ -18,8 +21,9 @@ const VetAppointments = () => {
   }, []);
 
   const fetchAppointments = async () => {
+    console.log(clinicId);
     try {
-        const response = await axios.get("http://localhost:5000/api/appointments");
+        const response = await axios.get(`http://localhost:5000/api/appointments/clinics/${clinicId}`);
         const filteredAppointments = response.data.filter(appt => {
             const status = appt.status ? appt.status.toLowerCase() : "";
             return status === "pending" || status === "confirmed";
@@ -63,36 +67,36 @@ const VetAppointments = () => {
   };
 
   const handleEdit = (appointment) => {
-    setSelectedAppointment(appointment);
+    setSelectedAppointment({
+        ...appointment,
+        originalStatus: appointment.status, // ✅ Keep track of the actual status
+        status: "", // ✅ Set status to empty so placeholder is shown first
+    });
     setEditDialog(true);
   };
 
-  const handleUpdate = async () => {
+
+
+  const handleUpdate = async (id, status) => {
+    if (!id) {
+        console.error("❌ No ID provided for update!");
+        return;
+    }
+
     try {
-      const updatedData = { ...selectedAppointment };
-
-      if (updatedData.status === "Confirmed") {
-        updatedData.confirmedAt = new Date();
-        updatedData.completedAt = null;
-        updatedData.rejectedAt = null;
-      } else if (updatedData.status === "Completed") {
-        updatedData.completedAt = new Date();
-        updatedData.confirmedAt = null;
-        updatedData.rejectedAt = null;
-      } else if (updatedData.status === "Cancelled") {
-        updatedData.rejectedAt = new Date();
-        updatedData.confirmedAt = null;
-        updatedData.completedAt = null;
-      }
-
-      await axios.put(`http://localhost:5000/api/appointments/update/${selectedAppointment._id}`, updatedData);
-      showToast("success", "Updated", "Appointment updated successfully.");
-      setEditDialog(false);
-      fetchAppointments();
+        console.log("🔵 Updating appointment status...", id, status);
+        const response = await axios.put(`http://localhost:5000/api/appointments/update/${id}`, { status });
+        console.log("🟢 Response from backend:", response.data);
+        showToast("success", "Updated", `Appointment marked as ${status}.`);
+        fetchAppointments();
+        setEditDialog(false); // Close the dialog after updating
     } catch (error) {
-      showToast("error", "Error", "Failed to update appointment.");
+        console.error("🔴 Error updating appointment:", error);
+        showToast("error", "Error", "Failed to update appointment status.");
     }
   };
+
+
 
   const dateTemplate = (rowData) => {
     return new Date(rowData.date).toLocaleString();
@@ -104,11 +108,43 @@ const VetAppointments = () => {
 
   const actionTemplate = (rowData) => {
     return (
-      <div className="action-buttons">
-        <Button icon="pi pi-pencil" className="edit-btn" onClick={() => handleEdit(rowData)} />
-        <Button icon="pi pi-check" className="accept-btn" onClick={() => updateAppointmentStatus(rowData._id, "Confirmed")} />
-        <Button icon="pi pi-times" className="delete-btn" onClick={() => updateAppointmentStatus(rowData._id, "Cancelled")} />
-      </div>
+        <div className="action-buttons">
+            <Button 
+                icon="pi pi-pencil" 
+                className="edit-btn" 
+                onClick={() => handleEdit(rowData)} 
+            />
+
+            {rowData.status === "Pending" && (
+                <>
+                    <Button 
+                        icon="pi pi-check" 
+                        className="accept-btn" 
+                        onClick={() => updateAppointmentStatus(rowData._id, "Confirmed")} 
+                    />
+                    <Button 
+                        icon="pi pi-times" 
+                        className="delete-btn"
+                        onClick={() => updateAppointmentStatus(rowData._id, "Cancelled")} 
+                    />
+                </>
+            )}
+
+            {rowData.status === "Confirmed" && (
+                <>
+                    <Button 
+                        icon="pi pi-check" 
+                        className="accept-btn" 
+                        onClick={() => updateAppointmentStatus(rowData._id, "Completed")} 
+                    />
+                    <Button 
+                        icon="pi pi-times" 
+                        className="delete-btn"  
+                        disabled 
+                    />
+                </>
+            )}
+        </div>
     );
   };
 
@@ -130,30 +166,42 @@ const VetAppointments = () => {
           header="Edit Appointment" 
           onHide={() => setEditDialog(false)} 
           className="p-fluid edit-appointment-dialog"
-          style={{ width: '400px' }} // ⬅️ Adjust width
+          style={{ width: '400px' }} 
       >
           {selectedAppointment && (
               <div className="p-dialog-content">
                   <div className="p-field">
                       <label>Status</label>
                       <select
-                          value={selectedAppointment.status}
-                          onChange={(e) => setSelectedAppointment({ ...selectedAppointment, status: e.target.value })}
-                      >
-                          <option value="Confirmed">Confirmed</option>
-                          <option value="Cancelled">Cancelled</option>
-                          <option value="Completed">Completed</option>
-                      </select>
+                            value={selectedAppointment?.status || ""}
+                            onChange={(e) => setSelectedAppointment({ ...selectedAppointment, status: e.target.value })}
+                        >
+                            <option value="" disabled>Select Status</option> {/* ✅ Placeholder visible first */}
+
+                            {selectedAppointment?.originalStatus === "Pending" && (
+                                <>
+                                    <option value="Confirmed">Confirmed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </>
+                            )}
+
+                            {selectedAppointment?.originalStatus === "Confirmed" && (
+                                <option value="Completed">Completed</option>
+                            )}
+                        </select>
                   </div>
               </div>
           )}
           <div className="p-dialog-footer">
-              <Button label="Cancel" className="p-button-secondary" onClick={() => setEditDialog(false)} />
-              <Button label="Update" className="p-button-primary" onClick={handleUpdate} />
+              <Button label="Cancel" className="p-button-cancel" onClick={() => setEditDialog(false)} />
+              <Button 
+                label="Update" 
+                className={`p-button-confirm ${!selectedAppointment?.status ? "disabled-btn" : ""}`} 
+                onClick={() => handleUpdate(selectedAppointment._id, selectedAppointment.status)} 
+                disabled={!selectedAppointment?.status} 
+            />
           </div>
       </Dialog>
-
-
     </div>
   );
 };

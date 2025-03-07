@@ -7,19 +7,18 @@
 
 .sidebar2 {
   width: 250px;
-  background: #ffffff; /* Clean white background */
+  background: #ffffff; 
   padding: 20px;
   position: fixed;
-  top: 80px; /* Ensures it starts below navbar */
+  top: 80px;
   left: 0;
-  height: calc(100vh - 80px); /* Takes full height minus navbar */
+  height: calc(100vh - 80px); 
   overflow-y: auto;
-  border-right: 2px solid #e0e0e0; /* Adds subtle border */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-  transition: all 0.3s ease-in-out; /* Smooth animations */
+  border-right: 2px solid #e0e0e0; 
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease-in-out;
 }
 
-/* Sidebar Links */
 .sidebar2 ul {
   list-style: none;
   padding: 0;
@@ -44,39 +43,42 @@
 
 .sidebar2 ul li a:hover,
 .sidebar2 ul li a.active {
-  background: #45c18d; /* Soft green highlight */
+  background: #45c18d; 
   color: white;
 }
 
-/* Icons inside links (if applicable) */
+/* / Icons inside links (if applicable) / */
 .sidebar2 ul li a i {
   margin-right: 10px;
   font-size: 18px;
   color: inherit;
 }
 
+.sidebar2 ul li a.active {
+  background: #45c18d;
+  color: white;
+}
+
 
 .vet-content {
-  flex-grow: 1; /* Automatically takes remaining space */
+  flex-grow: 1; 
   padding: 20px;
-  margin-left: 250px; /* Pushes content next to sidebar */
+  margin-left: 250px; 
 }
 
 
 .sidebar {
   position: fixed;
-  top: 80px; /* Below navbar */
+  top: 80px; 
   left: 0;
   width: 250px;
-  height: calc(100vh - 80px); /* Full height minus navbar */
+  height: calc(100vh - 80px); 
   background: #f4f4f4;
   padding: 20px;
   overflow-y: auto;
 }
 
 
-
-/* Fixed Navbar */
 .navbar-fixed {
   position: fixed;
   top: 0;
@@ -86,5 +88,3 @@
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
 }
-
-

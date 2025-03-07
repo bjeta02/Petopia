@@ -105,6 +105,8 @@ function PetShop() {
       if (!petAge) newErrors.petAge = "Pet age is required";
 
     }
+
+    
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -127,6 +129,8 @@ function PetShop() {
         vet_id: "someVetId", // Replace with actual vet ID if needed
         notes: "Some notes",
       };
+
+      console.log("Sending appointment data:", appointmentData);
 
       if (isGuest) {
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
@@ -152,7 +156,7 @@ function PetShop() {
       });
 
       alert(response.data.message);
-      navigate(`/appointments`);
+      navigate(`/appointment`);
     } catch (error) {
       console.error("Error verifying OTP:", error);
       alert("Invalid or expired OTP.");
