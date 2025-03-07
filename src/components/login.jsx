@@ -29,11 +29,11 @@ const Login = () => {
 
       // Store data in local storage
       localStorage.setItem('token', token);
+      localStorage.setItem('role', user.role); // Store role for later use
 
       // Redirect based on role
       if (user.role === 'owner') {
         localStorage.setItem('ownerId', user.ownerId);
-        localStorage.setItem('role', user.role); // Store role for later use
         navigate('/home');
       } else if (user.role === 'clinic') {
         localStorage.setItem('clinicId', user.clinicId);

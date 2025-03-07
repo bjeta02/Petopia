@@ -12,11 +12,11 @@ const VetHistory = () => {
 
   useEffect(() => {
     fetchHistory();
-  }, []);
+  }, [clinicId]);
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/appointments/${clinicId}`);
+      const response = await axios.get(`http://localhost:5000/api/appointments/clinics/${clinicId}`);
 
       // Filter for only "Completed" and "Cancelled" statuses
       const filteredHistory = response.data.filter(

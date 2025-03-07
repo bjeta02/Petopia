@@ -104,7 +104,7 @@ export const verifyUserOTP = async (req, res) => {
 
         // Only create Owner entry if the role is "owner"
         if (pendingUser.role === "owner") {
-            const newOwner = new Owner({ 
+            const newOwner = new Owner({
                 userId: savedUser._id,
                 firstname: savedUser.firstname,
                 lastname: savedUser.lastname,
