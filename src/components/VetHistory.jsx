@@ -1,57 +1,68 @@
-import { useState, useEffect, useRef } from "react";
-import axios from "axios";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { Toast } from "primereact/toast";
-import "../components/css/VetHistory.css"; // Import CSS
+  import { useState, useEffect, useRef } from "react";
+  import axios from "axios";
+  import { DataTable } from "primereact/datatable";
+  import { Column } from "primereact/column";
+  import { Toast } from "primereact/toast";
+  import "../components/css/VetHistory.css";
 
-const VetHistory = () => {
-  const clinicId = localStorage.getItem("clinicId");
-  const [history, setHistory] = useState([]);
-  const toast = useRef(null);
+  const VetHistory = () => {
+    const clinicId = localStorage.getItem("clinicId");
+    const role = localStorage.getItem("role");
+    const [history, setHistory] = useState([]);
+    const toast = useRef(null);
 
-  useEffect(() => {
-    fetchHistory();
-  }, [clinicId]);
+    useEffect(() => {
+      fetchHistory();
+    }, [clinicId, role]);
 
-  const fetchHistory = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/appointments/clinics/${clinicId}`);
+    const fetchHistory = async () => {
+      try {
+        const url =
+          role === "admin"
+            ? `http://localhost:5000/api/appointments/`
+            : `http://localhost:5000/api/appointments/clinics/${clinicId}`;
 
-      // Filter for only "Completed" and "Cancelled" statuses
-      const filteredHistory = response.data.filter(
-        (appointment) => appointment.status === "Completed" || appointment.status === "Cancelled"
-      );
+        const response = await axios.get(url);
 
-      setHistory(filteredHistory);
-    } catch (error) {
-      console.error("Error fetching history:", error);
-      if (toast.current) {
-        toast.current.show({ severity: "error", summary: "Error", detail: "Failed to fetch history" });
+        const filteredHistory = response.data.filter(
+          (appointment) =>
+            appointment.status === "Completed" || appointment.status === "Cancelled"
+        );
+
+        setHistory(filteredHistory);
+      } catch (error) {
+        if (!role) {
+          console.error("No role found in localStorage.");
+          return;
+        }
+        console.error("Error fetching history:", error);
+        toast.current?.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Failed to fetch history",
+        });
       }
-    }
+    };
+
+    const dateTemplate = (rowData) => new Date(rowData.date).toLocaleString();
+
+    return (
+      <div className="vet-history-container">
+        <Toast ref={toast} />
+        <h2 className="table-title">Appointment History</h2>
+
+        <div className="table-wrapper">
+          <DataTable value={history} paginator rows={6} className="custom-table">
+            <Column field="_id" header="Appointment ID" sortable />
+            <Column field="ownerName" header="Owner Name" />
+            <Column field="petDetails" header="Pet Details" />
+            <Column field="service_id.name" header="Service Availed" />
+            <Column field="status" header="Status" />
+            <Column field="date" header="Date" body={dateTemplate} sortable />
+          </DataTable>
+        </div>
+      </div>
+    );
   };
 
-  // Format Date
-  const dateTemplate = (rowData) => new Date(rowData.date).toLocaleString();
-
-  return (
-    <div className="vet-history-container">
-      <Toast ref={toast} />
-      <h2 className="table-title">Appointment History</h2>
-
-      <div className="table-wrapper">
-        <DataTable value={history} paginator rows={6} className="custom-table">
-          <Column field="_id" header="Appointment ID" sortable />
-          <Column field="ownerName" header="Owner Name" />
-          <Column field="petDetails" header="Pet Details" />
-          <Column field="service_id.name" header="Service Availed" />
-          <Column field="status" header="Status" />
-          <Column field="date" header="Date" body={dateTemplate} sortable />
-        </DataTable>
-      </div>
-    </div>
-  );
-};
-
-export default VetHistory;
+  export default VetHistory;

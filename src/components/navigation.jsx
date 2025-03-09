@@ -35,6 +35,7 @@ export const Navigation = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("ownerId"); // Clear owner data on logout
     localStorage.removeItem("role");
+    localStorage.removeItem("clinicId");
     setIsLoggedIn(false);
     setAvatar(''); // Reset avatar state
     navigate('/login');
