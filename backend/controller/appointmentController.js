@@ -127,6 +127,14 @@ export const bookAppointment = async (req, res) => {
             const otp = crypto.randomInt(100000, 999999).toString();
             const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes expiration
 
+            const rawDate = new Date(date);
+            const now = new Date();
+
+            rawDate.setHours(now.getHours());
+            rawDate.setMinutes(now.getMinutes());
+            rawDate.setSeconds(now.getSeconds());
+            rawDate.setMilliseconds(0);
+
             // Save appointment data in pendingAppointments
             pendingAppointments.set(email, {
                 firstName,
@@ -135,7 +143,7 @@ export const bookAppointment = async (req, res) => {
                 phone,
                 pet: { name: petName, type: petType, breed: petBreed, gender: petGender, petAge }, // Store pet information
                 clinic_id,
-                date,
+                date: rawDate,
                 service_id,
                 vet_id,
                 notes,
@@ -174,11 +182,20 @@ export const bookAppointment = async (req, res) => {
                 petId = savedPet._id; // Get the new pet ID
             }
 
+            // Combine passed date with current time
+            const passedDate = new Date(date);
+            const now = new Date();
+
+            passedDate.setHours(now.getHours());
+            passedDate.setMinutes(now.getMinutes());
+            passedDate.setSeconds(now.getSeconds());
+            passedDate.setMilliseconds(0);
+
             // Create a new appointment for the registered owner
             const newAppointment = new Appointment({
                 owner_id,
                 clinic_id,
-                date,
+                date: passedDate,
                 service_id,
                 notes,
                 pet_id: petId,
@@ -198,7 +215,7 @@ export const bookAppointment = async (req, res) => {
                 appointmentId: savedAppointment._id,
                 clinicName: clinic ? clinic.name : "Your Clinic Name", // Fetch from the database if needed
                 clinicAddress: clinic ? clinic.address : "Your Address", // Fetch from the database if needed
-                date: new Date(date).toLocaleString(),
+                date: date.toLocaleString(),
                 serviceName: service ? service.name : "Your Service Name", // Fetch from the database if needed
                 petName: pet ? pet.name : "Your Pet", // Fetch from the database if needed
                 petType: pet ? pet.type : "Your Pet Type",
@@ -289,18 +306,30 @@ export const updateAppointment = async (req, res) => {
         const { id } = req.params;
         const { status } = req.body;
 
-        // Validate the status
         if (!status) {
             return res.status(400).json({ message: "Status is required" });
         }
 
-        const updateData = { status }
-
-        // Log the received status for debugging
-        console.log("Received status:", status);
-
         const normalizedStatus = status.toLowerCase();
+        const updateData = { status };
 
+        // Update timestamps and merge current time into the existing appointment date
+        const appointment = await Appointment.findById(id);
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
+
+        // Merge current time into existing date
+        const updatedDate = new Date(appointment.date);
+        const now = new Date();
+        updatedDate.setHours(now.getHours());
+        updatedDate.setMinutes(now.getMinutes());
+        updatedDate.setSeconds(now.getSeconds());
+        updatedDate.setMilliseconds(0);
+
+        updateData.date = updatedDate;
+
+        // Set specific status timestamps
         if (normalizedStatus === "completed") {
             updateData.completedAt = new Date();
             updateData.rejectedAt = null;
@@ -317,12 +346,10 @@ export const updateAppointment = async (req, res) => {
             return res.status(400).json({ message: "Invalid status value" });
         }
 
-
-        // Update the appointment
         const updatedAppointment = await Appointment.findByIdAndUpdate(id, updateData, { new: true })
             .populate("owner_id", "email firstname")
             .populate("guest_id", "email firstName pets")
-            .populate("clinic_id", "name")
+            .populate("clinic_id", "name address")
             .populate("service_id", "name")
             .populate("pet_id", "name");
 
@@ -330,16 +357,17 @@ export const updateAppointment = async (req, res) => {
             return res.status(404).json({ message: "Appointment not found" });
         }
 
-        console.log("Updated Appointment:", updatedAppointment);
+        // Shared adjusted date for email
+        const adjustedDate = new Date(updatedAppointment.date);
 
-        // Prepare email details
+        // Prepare email content
         let emailDetails;
         let recipientEmail;
 
         if (updatedAppointment.owner_id) {
             emailDetails = {
                 clinicName: updatedAppointment.clinic_id?.name || "Unknown Clinic",
-                date: new Date(updatedAppointment.date).toLocaleString(),
+                date: adjustedDate.toLocaleString(),
                 serviceName: updatedAppointment.service_id?.name || "Unknown Service",
                 petName: updatedAppointment.pet_id?.name || "Your Pet",
                 firstName: updatedAppointment.owner_id.firstname || "Valued Customer",
@@ -349,12 +377,9 @@ export const updateAppointment = async (req, res) => {
             };
             recipientEmail = updatedAppointment.owner_id.email;
         } else if (updatedAppointment.guest_id) {
-            console.log("Guest ID:", updatedAppointment.guest_id);
-            console.log("Guest Email:", updatedAppointment.guest_id?.email);
-
             emailDetails = {
                 clinicName: updatedAppointment.clinic_id?.name || "Unknown Clinic",
-                date: new Date(updatedAppointment.date).toLocaleString(),
+                date: adjustedDate.toLocaleString(),
                 serviceName: updatedAppointment.service_id?.name || "Unknown Service",
                 petName: updatedAppointment.pet_id?.name || updatedAppointment.guest_id?.pets[0]?.name || "Your Pet",
                 firstName: updatedAppointment.guest_id?.firstName || "Valued Guest",
@@ -365,7 +390,7 @@ export const updateAppointment = async (req, res) => {
             recipientEmail = updatedAppointment.guest_id?.email;
         }
 
-        // Send email notification
+        // Send email
         if (recipientEmail) {
             try {
                 await sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, status);
@@ -386,6 +411,7 @@ export const updateAppointment = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
 
 export const deleteAppointment = async (req, res) => {
     try {

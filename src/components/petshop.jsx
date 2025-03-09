@@ -53,9 +53,17 @@ function PetShop() {
             const ownerResponse = await axios.get(`http://localhost:5000/api/owners/${ownerId}`, {
               headers: { "Authorization": `Bearer ${token}` }
             });
-            setFirstName(`${ownerResponse.data.firstname}`);
-            setLastName(`${ownerResponse.data.lastname}`);
-            setEmail(ownerResponse.data.email);
+            // Ensure response structure is correct
+            if (ownerResponse.data?.success && ownerResponse.data?.data) {
+              const owner = ownerResponse.data.data;
+
+              // Extract the correct name and email
+              setFirstName(owner.firstname || owner.userId?.firstname || "");
+              setLastName(owner.lastname || owner.userId?.lastname || "");
+              setEmail(owner.email || owner.userId?.email || "");
+            } else {
+              console.error("Invalid ownerResponse format:", ownerResponse);
+            }
 
             const fetchPets = async () => {
               try {
@@ -140,7 +148,7 @@ function PetShop() {
       } else {
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
         alert("Appointment booked successfully!");
-        navigate(`/appointments`);
+        navigate(`/appointment`);
       }
     } catch (error) {
       console.error("Error creating appointment:", error);

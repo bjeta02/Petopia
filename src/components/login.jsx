@@ -39,7 +39,7 @@ const Login = () => {
         localStorage.setItem('clinicId', user.clinicId);
         navigate('/dashboard');
       } else if (user.role === 'admin') {
-        navigate('/admin-dashboard');
+        navigate('/dashboard');
       } else {
         navigate('/home'); // Default fallback
       }

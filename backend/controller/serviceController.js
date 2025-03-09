@@ -23,7 +23,6 @@ export const getServicesByClinic = async (req, res) => {
     }
 };
 
-
 export const postService = async (req, res) => {
     try {
         const services = req.body; // Expecting an array of service objects
