@@ -24,6 +24,7 @@
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.479.0",
     "mongoose": "^8.7.3",
     "multer": "^1.4.5-lts.1",
     "primeicons": "^7.0.0",

@@ -1,0 +1,129 @@
+/* Clinic Logo */
+.cliniclogo {
+    width: 10rem;  
+    height: 10rem; 
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    padding: 5px;
+}
+
+/* Services Section */
+.services-title {
+    font-size: 1.8rem; /* Larger and more readable */
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.services-list {
+    font-size: 1.4rem; /* Increased size for better visibility */
+    font-weight: bold;
+    color: #444;
+    margin-top: 15px;
+}
+
+/* Editing Mode - Inputs */
+.input-field {
+    font-size: 1.2rem;
+    padding: 10px;
+    width: 60%; /* Adjusted width */
+    border: 2px solid #007bff;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+}
+
+.input-field:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+/* Editing Mode Container */
+.edit-mode {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Edit Mode Input Fields */
+.edit-mode input {
+    font-size: 1.2rem;
+    padding: 10px;
+    width: 60%;
+    border: 2px solid #007bff;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+}
+
+.edit-mode input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+/* Buttons */
+.add-service-btn {
+    background-color: #28a745;
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.add-service-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Delete Button */
+.delete-service-btn {
+    background-color: #dc3545;
+    color: white;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.delete-service-btn:hover {
+    background-color: #c82333;
+    transform: scale(1.1);
+}
+
+/* Edit Profile / Save Changes Buttons */
+.edit-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.edit-button, .save-button {
+    font-size: 1.2rem;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.save-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.save-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}

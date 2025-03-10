@@ -5,139 +5,145 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import axios from "axios";
+import "../components/css/vetClinic.css";
 
 const ClinicProfile = () => {
   const [clinic, setClinic] = useState(null);
-  const [allClinics, setAllClinics] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const toast = React.useRef(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    address: "",
+    contact_number: "",
+    description: "",
+    days: "",
+    open_time: "",
+    close_time: "",
+    services: [],
+  });
 
   const clinicId = localStorage.getItem("clinicId");
   const role = localStorage.getItem("role");
+  const toast = React.useRef(null);
 
   useEffect(() => {
-    let isMounted = true;
-  
     const fetchData = async () => {
-      if (role === "admin") {
-        const response = await axios.get("http://localhost:5000/api/clinics");
-        const data = response.data;
-        const clinicsArray = Array.isArray(data) ? data : data.clinics || [];
-        if (isMounted) setAllClinics(clinicsArray);
-      } else if (role === "clinic" && clinicId) {
+      if (role === "clinic" && clinicId) {
         const response = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
-        if (isMounted) setClinic(response.data);
+        setClinic(response.data);
+        setFormData({
+          address: response.data.address || "",
+          contact_number: response.data.contact_number || "",
+          description: response.data.description || "",
+          days: response.data.days || "",
+          open_time: response.data.open_time || "",
+          close_time: response.data.close_time || "",
+          services: response.data.services || [],
+        });
       }
-      if (isMounted) setLoading(false);
     };
-  
     fetchData();
-  
-    return () => {
-      isMounted = false; // Prevent setting state on unmounted component
-    };
   }, [clinicId, role]);
-  
 
-  const fetchClinicDetails = async (id) => {
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleServiceChange = (index, value) => {
+    const updatedServices = [...formData.services];
+    updatedServices[index] = { service_name: value };
+    setFormData({ ...formData, services: updatedServices });
+  };
+
+  const addService = () => {
+    setFormData({ ...formData, services: [...formData.services, { service_name: "" }] });
+  };
+
+  const removeService = (index) => {
+    const updatedServices = formData.services.filter((_, i) => i !== index);
+    setFormData({ ...formData, services: updatedServices });
+  };
+
+  const handleSave = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/clinics/${id}`);
-      setClinic(response.data);
-      setLoading(false);
+      await axios.put(`http://localhost:5000/api/clinics/update/${clinicId}`, formData);
+      setClinic({ ...clinic, ...formData });
+      setIsEditing(false);
+      toast.current.show({ severity: "success", summary: "Success", detail: "Profile updated successfully" });
     } catch (error) {
-      console.error("Error fetching clinic details:", error);
-      setLoading(false);
+      console.error("Error updating clinic:", error);
+      toast.current.show({ severity: "error", summary: "Error", detail: "Failed to update profile" });
     }
   };
 
-  const fetchAllClinics = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/clinics");
-      const data = response.data;
-      const clinicsArray = Array.isArray(data) ? data : data.clinics || [];
-      setAllClinics(clinicsArray);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching all clinics:", error);
-      setLoading(false);
-    }
-  };  
-
-  const handleStatusUpdate = async (id, status) => {
-    try {
-      await axios.put(`http://localhost:5000/api/clinics/update/${id}`, { status });
-      toast.current.show({ severity: "success", summary: "Updated", detail: "Status updated successfully" });
-      fetchAllClinics();
-    } catch (error) {
-      console.error("Error updating status:", error);
-      toast.current.show({ severity: "error", summary: "Error", detail: "Failed to update status" });
-    }
-  };
-
-  const statusBodyTemplate = (rowData) => (
-    <span className={`status-tag ${rowData.status?.toLowerCase()}`}>{rowData.status}</span>
-  );
-
-  const actionBodyTemplate = (rowData) => (
-    <div className="flex gap-2">
-      {rowData.status === "Active" ? (
-        <Button label="Deactivate" className="p-button-danger" onClick={() => handleStatusUpdate(rowData._id, "Inactive")} />
-      ) : (
-        <Button label="Activate" className="p-button-success" onClick={() => handleStatusUpdate(rowData._id, "Active")} />
-      )}
-    </div>
-  );
-
-  if (loading) return <div>Loading...</div>;
+  if (!clinic) return <div>Loading...</div>;
 
   return (
     <div className="p-6">
       <Toast ref={toast} position="bottom-right" />
+      <div className="bg-white rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        {/* Clinic Name and Logo */}
+        <Card className="p-4 text-center">
+          <img src={`http://localhost:5000${clinic.logo}`} alt="Clinic Logo" className="cliniclogo" />
+          <h1 className="text-xl font-bold">{clinic.name}</h1>
+        </Card>
 
-      {role === "admin" ? (
-        <>
-          <h2 className="text-2xl font-bold mb-4">All Clinics</h2>
-          <DataTable value={allClinics} paginator rows={5} className="shadow-md rounded-lg">
-            <Column field="name" header="Clinic Name" />
-            <Column field="address" header="Address" />
-            <Column field="contact_number" header="Contact" />
-            <Column field="status" header="Status" body={statusBodyTemplate} />
-            <Column header="Actions" body={actionBodyTemplate} />
-          </DataTable>
-        </>
-      ) : clinic ? (
-        <div className="bg-white rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Clinic Name and Logo */}
-          <Card className="p-4 text-center">
-            <img src={`http://localhost:5000${clinic.logo}`} alt="Clinic Logo" className="w-32 h-32 mx-auto mb-4" />
-            <h2 className="text-xl font-bold">{clinic.name}</h2>
-          </Card>
+        {/* Location and Contact Info */}
+        <Card className="p-4">
+          <h3 className="text-lg font-bold">Location & Contact</h3>
+          {isEditing ? (
+            <>
+              <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-field" />
+              <input type="text" name="contact_number" value={formData.contact_number} onChange={handleInputChange} className="input-field" />
+              <input type="text" name="description" value={formData.description} onChange={handleInputChange} className="input-field" />
+              <input type="text" name="days" value={formData.days} onChange={handleInputChange} className="input-field" />
+              <input type="time" name="open_time" value={formData.open_time} onChange={handleInputChange} className="input-field" />
+              <input type="time" name="close_time" value={formData.close_time} onChange={handleInputChange} className="input-field" />
+            </>
+          ) : (
+            <>
+              <p><strong>Address:</strong> {clinic.address}</p>
+              <p><strong>Contact:</strong> {clinic.contact_number}</p>
+              <p><strong>Description:</strong> {clinic.description}</p>
+              <p><strong>Schedule:</strong> {clinic.days}, {clinic.open_time} - {clinic.close_time}</p>
+            </>
+          )}
+        </Card>
 
-          {/* Location and Contact Info */}
-          <Card className="p-4">
-            <h3 className="text-lg font-bold">Location & Contact</h3>
-            <p><strong>Address:</strong> {clinic.address}</p>
-            <p><strong>Contact:</strong> {clinic.contact_number}</p>
-            <p><strong>Description:</strong> {clinic.description}</p>
-            <p><strong>Schedule:</strong> {clinic.days}, {clinic.open_time} - {clinic.close_time}</p>
-          </Card>
+        {/* Services Offered */}
+        <Card className="p-4 md:col-span-2">
+            <h3 className="services-title">Services Offered</h3>
+            {isEditing ? (
+                <div className="edit-mode">
+                    {formData.services.map((service, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                            <input
+                                type="text"
+                                value={service.service_name}
+                                onChange={(e) => handleServiceChange(index, e.target.value)}
+                                className="input-field"
+                            />
+                            <Button icon="pi pi-trash" className="delete-service-btn" onClick={() => removeService(index)} />
+                        </div>
+                    ))}
+                    <Button label="Add Service" className="add-service-btn" onClick={addService} />
+                </div>
+            ) : (
+                <ul className="services-list list-disc list-inside">
+                    <p>{clinic.services?.map((service, index) => <li key={index}>{service.service_name}</li>)}</p>
+                </ul>
+            )}
+        </Card>
 
-          <Card className="p-4 md:col-span-2">
-            <h3 className="text-lg font-bold">Services Offered</h3>
-            <ul className="list-disc list-inside">
-              {clinic.services?.map((service, index) => (
-                <li key={index}>{service.service_name}</li>
-              ))}
-            </ul>
-          </Card>
-
-          <div className="md:col-span-2 text-center">
-            <Button label="Edit Profile" className="p-button-primary mt-3" />
-          </div>
+        <div className="edit-container md:col-span-2">
+            {isEditing ? (
+                <Button label="Save Changes" className="save-button" onClick={handleSave} />
+            ) : (
+                <Button label="Edit Profile" className="edit-button" onClick={() => setIsEditing(true)} />
+            )}
         </div>
-      ) : (
-        <div>No clinic information found.</div>
-      )}
+
+
+      </div>
     </div>
   );
 };
