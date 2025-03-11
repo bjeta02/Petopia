@@ -118,3 +118,30 @@ export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails
         console.error(`Error sending ${status} appointment email:`, error);
     }
 };
+
+// Send Follow-Up Email to Clinic
+export const sendFollowUpEmailToClinic = async (clinicEmail, appointmentDetails) => {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: clinicEmail,
+            subject: "Follow-Up Appointment Reminder - Petopia",
+            html: `
+                <h2>Follow-Up Appointment Reminder</h2>
+                <p>This is a reminder for a follow-up appointment at <strong>${appointmentDetails.clinicName}</strong>.</p>
+                <p><strong>Appointment ID:</strong> ${appointmentDetails.appointmentId}</p>
+                <p><strong>Owner Name:</strong> ${appointmentDetails.firstName} ${appointmentDetails.lastName}</p>
+                <p><strong>Pet Name:</strong> ${appointmentDetails.petName}</p>
+                <p><strong>Service:</strong> ${appointmentDetails.serviceName}</p>
+                <p><strong>Follow-Up Date:</strong> ${new Date(appointmentDetails.followUpDate).toLocaleString()}</p>
+                <p><strong>Notes:</strong> ${appointmentDetails.notes || "No additional notes provided."}</p>
+                <p>Thank you for providing excellent care to our furry friends!</p>
+            `,
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Follow-Up Email sent to clinic: ", info.response);
+    } catch (error) {
+        console.error("Error sending follow-up email to clinic:", error);
+    }
+};

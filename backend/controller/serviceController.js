@@ -52,3 +52,25 @@ export const postService = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Update a specific service by ID
+export const updateService = async (req, res) => {
+    const { serviceId } = req.params;
+    const updates = req.body;
+
+    try {
+        // Check if the service exists
+        const service = await Service.findById(serviceId);
+        if (!service) {
+            return res.status(404).json({ message: "Service not found." });
+        }
+
+        // Optional: validate fields here if needed
+        const updatedService = await Service.findByIdAndUpdate(serviceId, updates, { new: true });
+
+        res.json({ message: "Service updated successfully.", data: updatedService });
+    } catch (error) {
+        console.error("Error updating service:", error);
+        res.status(500).json({ message: error.message });
+    }
+};

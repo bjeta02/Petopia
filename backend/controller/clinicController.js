@@ -62,35 +62,35 @@ export const getClinics = async (req, res) => {
 
 export const getClinicById = async (req, res) => {
     try {
-        const { id } = req.params; // Get ID from request URL
-
-        // Find clinic by ID
-        const clinic = await Clinic.findById(id).lean(); 
-
-        // Check if clinic exists
-        if (!clinic) {
-            return res.status(404).json({ message: "Clinic not found." });
-        }
-
-        // Fetch services for this clinic along with their IDs
-        const services = await Service.find({ clinic_id: id }).select("name _id");
-
-        // Construct the response object
-        const response = {
-            ...clinic,
-            services: services.map((s) => ({
-                service_id: s._id, // Include the service ID
-                service_name: s.name // Include the service name
-            })),
-        };
-
-        // Send the response
-        res.json(response);
+      const { id } = req.params;
+  
+      const clinic = await Clinic.findById(id).lean();
+  
+      if (!clinic) {
+        return res.status(404).json({ message: "Clinic not found." });
+      }
+  
+      const services = await Service.find({ clinic_id: id });
+  
+      const response = {
+        ...clinic,
+        services: services.map((s) => ({
+          _id: s._id,
+          name: s.name,
+          description: s.description,
+          estimated_duration: s.estimated_duration,
+          rate: s.rate,
+        })),
+      };
+      
+      console.log("fetched Data", response);
+      res.json(response);
     } catch (error) {
-        console.error("Error fetching clinic:", error);
-        res.status(500).json({ message: "Failed to retrieve clinic." });
+      console.error("Error fetching clinic:", error);
+      res.status(500).json({ message: "Failed to retrieve clinic." });
     }
-};
+  };
+  
 
 export const registerClinic = async (req, res) => {
     try {
@@ -187,3 +187,4 @@ export const deleteClinic = async (req, res) => {
         res.status(500).json({ message: "Failed to delete clinic." });
     }
 };
+
