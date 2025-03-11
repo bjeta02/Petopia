@@ -1,0 +1,46 @@
+
+.add-appointment {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 8px;
+  }
+
+  .add-appointment input,
+  .add-appointment .p-calendar {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .add-appointment input:focus,
+  .add-appointment .p-calendar:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+  }
+
+  .p-calendar {
+    background: white;
+  }
+
+  .add-appointment button {
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+
+  .add-appointment button:hover {
+    background-color: #0056b3;
+  }

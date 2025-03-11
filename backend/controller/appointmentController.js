@@ -4,7 +4,7 @@ import Owner from "../model/Owner.js";
 import Clinic from "../model/Clinic.js";
 import Service from "../model/Service.js";
 import Pet from "../model/Pet.js";
-import { sendAppointmentEmail, sendOTPEmail, sendAppointmentStatusUpdateEmail } from "../utils/emailService.js";
+import { sendAppointmentEmail, sendOTPEmail, sendAppointmentStatusUpdateEmail, sendFollowUpEmailToClinic } from "../utils/emailService.js";
 import crypto from "crypto";
 
 export const getAppointments = async (req, res) => {
@@ -70,7 +70,6 @@ export const getAppointmentsByClinic = async (req, res) => {
             .populate("owner_id", "firstname lastname email")
             .populate("guest_id", "firstName lastName email phone pets")
             .populate("pet_id", "name type breed")
-            .populate("vet_id", "name")
             .populate("service_id", "name")
             .sort({ date: -1 });
             
@@ -100,6 +99,68 @@ export const getAppointmentsByClinic = async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 };
+
+export const getOwnersWithAppointmentsInClinic = async (req, res) => {
+    const { clinicId } = req.params;
+  
+    try {
+      // Step 1: Get appointments for the clinic that have a valid owner
+      const appointments = await Appointment.find({
+        clinic_id: clinicId,
+        owner_id: { $ne: null },
+      })
+        .populate("owner_id", "firstname lastname email") // include owner info
+        .populate("pet_id") // if your schema links to a Pet model
+        .populate("service_id"); // if services are in a Service model
+  
+      // Step 2: Group by owner
+      const ownerMap = new Map();
+  
+      appointments.forEach((appt) => {
+        const owner = appt.owner_id;
+        if (!ownerMap.has(owner._id.toString())) {
+          ownerMap.set(owner._id.toString(), {
+            _id: owner._id,
+            firstname: owner.firstname,
+            lastname: owner.lastname,
+            email: owner.email,
+            pets: [],
+            services: [],
+          });
+        }
+      
+        const ownerData = ownerMap.get(owner._id.toString());
+      
+        // ✅ Fix: use pet_id instead of pet
+        if (
+          appt.pet_id &&
+          !ownerData.pets.find((p) => p._id.toString() === appt.pet_id._id.toString())
+        ) {
+          ownerData.pets.push(appt.pet_id);
+        }
+      
+        // Add services
+        const services = Array.isArray(appt.service_id) ? appt.service_id : [appt.service_id];
+        services.forEach((service) => {
+          if (
+            service &&
+            !ownerData.services.find((s) => s._id.toString() === service._id.toString())
+          ) {
+            ownerData.services.push(service);
+          }
+        });
+      });      
+  
+      // Step 3: Return combined data
+      const ownersWithDetails = Array.from(ownerMap.values());
+  
+      res.status(200).json(ownersWithDetails);
+    } catch (error) {
+      console.error("Error fetching owners with pets and services:", error);
+      res.status(500).json({ message: "Server error", error });
+    }
+  };
+  
 
 
 // Temporary storage for unsaved appointments
@@ -227,6 +288,64 @@ export const bookAppointment = async (req, res) => {
         }
     } catch (error) {
         console.error("Error booking appointment:", error);
+        return res.status(500).json({ message: "Server error", error });
+    }
+};
+
+export const bookAppointmentForClinic = async (req, res) => {
+    try {
+        const { owner_id, pet_id, clinic_id, service_id, date, vet_id, notes } = req.body;
+
+        // Validate required fields
+        if (!owner_id || !pet_id || !clinic_id || !service_id || !date) {
+            return res.status(400).json({ message: "Missing required fields." });
+        }
+
+        const rawDate = new Date(date);
+            const now = new Date();
+
+            rawDate.setHours(now.getHours());
+            rawDate.setMinutes(now.getMinutes());
+            rawDate.setSeconds(now.getSeconds());
+            rawDate.setMilliseconds(0);
+
+        // Create a new appointment for the owner
+        const newAppointment = new Appointment({
+            owner_id,
+            pet_id,
+            clinic_id,
+            service_id,
+            date: rawDate,
+            vet_id,
+            notes,
+            isVerified: true, // Mark as verified
+        });
+
+        const savedAppointment = await newAppointment.save();
+
+        // Fetch clinic and service details
+        const clinic = await Clinic.findById(savedAppointment.clinic_id);
+        const service = await Service.findById(savedAppointment.service_id);
+        const pet = await Pet.findById(savedAppointment.pet_id);
+        const owner = await Owner.findById(owner_id);
+
+        // Send follow-up checkup email notification
+        const followUpDate = new Date(savedAppointment.date);
+        followUpDate.setDate(followUpDate.getDate() + 7); // Set follow-up date to 7 days later
+        await sendFollowUpEmailToClinic(clinic.email, {
+            appointmentId: savedAppointment._id,
+            clinicName: clinic ? clinic.name : "Your Clinic Name",
+            firstName: owner ? owner.firstname : "Valued Customer",
+            lastName: owner ? owner.lastname : "Unknown",
+            petName: pet ? pet.name : "Your Pet",
+            serviceName: service ? service.name : "Your Service Name",
+            followUpDate: followUpDate.toLocaleString(),
+            notes: notes || "No additional notes provided.",
+        });
+
+        return res.status(201).json({ message: "Appointment booked successfully.", appointment: savedAppointment });
+    } catch (error) {
+        console.error("Error booking appointment for clinic:", error);
         return res.status(500).json({ message: "Server error", error });
     }
 };
