@@ -24,7 +24,7 @@
 }
 
 /* Editing Mode - Inputs */
-.input-field {
+.input-field2 {
     font-size: 1.2rem;
     padding: 10px;
     width: 60%; /* Adjusted width */
@@ -33,7 +33,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-.input-field:focus {
+.input-field2:focus {
     border-color: #0056b3;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
 }
@@ -127,3 +127,97 @@
     background-color: #218838;
     transform: scale(1.05);
 }
+
+/* CRUD Table Container */
+.p-6 {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Table Styling */
+  .p-datatable {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .p-datatable thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .p-datatable th {
+    padding: 12px;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  .p-datatable tbody tr {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .p-datatable tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  /* Table Cells */
+  .p-datatable td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Status Badge */
+  .status-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .status-active {
+    background: #28a745;
+    color: white;
+  }
+  
+  .status-inactive {
+    background: #dc3545;
+    color: white;
+  }
+  
+  /* Actions Column */
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .action-buttons button {
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .action-buttons .edit-btn {
+    background: #ffc107;
+    color: #333;
+  }
+  
+  .action-buttons .edit-btn:hover {
+    background: #e0a800;
+  }
+  
+  .action-buttons .delete-btn {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .action-buttons .delete-btn:hover {
+    background: #c82333;
+  }
+  

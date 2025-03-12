@@ -52,7 +52,7 @@ function Findavet() {
 
   return (
     <div>
-      <Navigation />
+    <Navigation />
     <div className="bg-img">
       <div className="findavet-container">
         <div className="appointment-subheading">

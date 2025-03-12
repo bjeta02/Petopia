@@ -27,6 +27,7 @@ function PetShop() {
   const [otpSent, setOtpSent] = useState(false);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchClinicData = async () => {
@@ -101,7 +102,7 @@ function PetShop() {
 
   const handleSubmit = async () => {
     let newErrors = {};
-
+  
     if (step === 3) {
       if (!firstname) newErrors.firstname = "First name is required";
       if (!lastname) newErrors.lastname = "Last name is required";
@@ -111,17 +112,15 @@ function PetShop() {
       if (!petBreed) newErrors.petBreed = "Pet breed is required";
       if (!petGender) newErrors.petGender = "Pet gender is required";
       if (!petAge) newErrors.petAge = "Pet age is required";
-
     }
-
-    
-    
+  
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
+  
     setErrors({});
+    
 
     try {
       const appointmentData = {
@@ -148,7 +147,7 @@ function PetShop() {
       } else {
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
         alert("Appointment booked successfully!");
-        navigate(`/appointment`);
+        navigate(`/home`);
       }
     } catch (error) {
       console.error("Error creating appointment:", error);

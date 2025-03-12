@@ -301,12 +301,12 @@ useEffect(() => {
                   <p>
                     {shop.services &&
                       shop.services.length > 0 &&
-                      shop.services.slice(0, 3).map((service, index) => (
+                      shop.services.slice(0, 2).map((service, index) => (
                         <span key={index}>
                           {index > 0 && " | "} {service}
                         </span>
                       ))}
-                    {shop.services.length > 3 && " | More..."}
+                    {shop.services.length > 2 && " | More..."}
                   </p>
                 </div>
               </div>

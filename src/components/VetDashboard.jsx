@@ -178,7 +178,7 @@ const VetDashboard = () => {
 
       {/* Add Appointment Button (Only for Clinics) */}
       {role === "clinic" && (
-        <Button label="Add Appointment" className="mb-4" onClick={() => setIsAddDialogVisible(true)} />
+        <Button label="Add Appointment" className="addapp-button" onClick={() => setIsAddDialogVisible(true)} />
       )}
 
       <FullCalendar
@@ -196,27 +196,50 @@ const VetDashboard = () => {
 
       {/* Appointment Details Modal */}
       <Dialog
-        header={<span className="text-lg font-semibold">Appointment Details</span>}
+        header={
+          <div className="flex items-center justify-between">
+            <span className="text-xl font-semibold text-gray-800">Appointment Details</span>
+          </div>
+        }
         visible={isDialogVisible}
         onHide={() => setIsDialogVisible(false)}
-        className="p-4"
+        className="p-6 rounded-xl bg-white shadow-lg"
+        style={{ width: "400px", maxWidth: "90%" }}
       >
-        <div className="space-y-4">
+        <div className="space-y-6">
           {selectedAppointments.map((apt, index) => (
-            <div key={index} className="p-4 border rounded-lg shadow-sm bg-gray-100">
-              <p className="flex items-center gap-2 text-lg font-medium">
-                <User size={18} className="text-blue-500" /> {apt.ownerName || "Guest"}
+            <div key={index} className="relative bg-white p-5 rounded-xl shadow-md border border-gray-300">
+              {/* Owner Name */}
+              <p className="flex items-center gap-3 text-lg font-semibold text-blue-600">
+                <User size={20} className="text-blue-500" /> {apt.ownerName || "Guest"}
               </p>
-              <p className="flex items-center gap-2 text-gray-700">
-                <Dog size={18} className="text-green-500" /> {apt.petDetails || "No Pets"}
+              
+              {/* Pet Details */}
+              <p className="flex items-center gap-3 text-gray-700 mt-2">
+                <Dog size={20} className="text-green-500" />
+                <span className="font-medium">{apt.petDetails || "No Pets"}</span>
               </p>
-              <p className="flex items-center gap-2 text-gray-700">
-                <ClipboardList size={18} className="text-purple-500" /> {apt.service_id?.name || "No Services Listed"}
+
+              {/* Service Name */}
+              <p className="flex items-center gap-3 text-gray-700 mt-2">
+                <ClipboardList size={20} className="text-purple-500" />
+                <span className="font-medium">{apt.service_id?.name || "No Services Listed"}</span>
               </p>
+
+              {/* Separator for multiple appointments */}
+              {index < selectedAppointments.length - 1 && (
+                <div className="relative flex justify-center items-center my-6">
+                  <div className="w-3/4 border-t border-gray-300"></div>
+                  <span className="absolute bg-white px-2 text-gray-500 text-sm">- - - - - - - - - - - - - - - - - -</span>
+                </div>
+              )}
             </div>
           ))}
         </div>
       </Dialog>
+
+
+
 
       {/* Add Appointment Modal */}
       <Dialog
@@ -274,7 +297,7 @@ const VetDashboard = () => {
               className="w-full"
             />
 
-            <Button label="Add Appointment" className="w-full" onClick={handleAddAppointment} />
+            <Button label="Add Appointment" className="addapp-button" onClick={handleAddAppointment} />
           </div>
         </Dialog>
     </div>

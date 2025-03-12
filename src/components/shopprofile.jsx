@@ -68,10 +68,10 @@ function ShopProfile() {
               <p className="shop-specialty">
                 Specialty: {shop.services?.map(service => service.service_name).join(" | ") || "N/A"}
               </p>
-              <p className="shop-experience">Experience: {shop.experience || "N/A"} Years</p>
+              <p className="shop-description">{shop.description || "No description available."}</p>
             </div>
           </div>
-          <p className="shop-description">{shop.description || "No description available."}</p>
+          
         </div>
 
         {/* Right Section - Earliest Available Schedule */}

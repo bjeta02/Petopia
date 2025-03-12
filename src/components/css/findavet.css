@@ -1,6 +1,6 @@
 
 body {
-  font-family: 'Roboto', sans-serif;  /* Example: Change to Roboto or any font you want */
+  font-family: 'Poppins', sans-serif;
   font-size: 1.6rem; /* Optional: Adjust the font size globally */
   color: #333;  /* Optional: Default text color */
 }
@@ -60,38 +60,38 @@ body {
   
   /* Styling for the search box container */
   .search-box-container {
-    width: 90%;
-    max-width: 500px;  /* Max width to control the width of the search box */
-    height: 60px;
+    position: relative;  /* Ensure child elements (icon & input) position relative to this */
     display: flex;
-    justify-content: center;  /* Center the search box */
-    align-items: center;      /* Vertically center the search box */
-    position: relative;
-    margin-bottom: 20px;     /* Space between search box and the invisible box */
-  }
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Adjust as needed */
+    background: white;
+    border-radius: 25px;
+    padding: 5px 10px;
+}
   
   /* Styling for the search icon */
   .search-icon {
     position: absolute;
-    left: 15px;
+    left: 10px;  /* Adjust to align properly */
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.8rem;
-    color: rgb(0, 78, 222);  /* Default icon color */
-    pointer-events: none;  /* Prevent icon from blocking input field */
-    transition: color 0.3s ease; /* Smooth color transition */
+    font-size: 16px;
+    color: rgb(0, 78, 222);
+    padding-left: 15px;
 }
   
   /* Styling for the search box */
   .search-box {
-    width: 100%;              /* Adjust width of the search box */
-    padding: 15px 15px 15px 40px;  /* Add padding on the left to make room for the icon */
-    font-size: 1.8rem;        /* Increased font size */
-    color: #123151;
-    border: 2px solid #82aded;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(137, 192, 250, 0.812); /* Optional subtle shadow */
-  }
+    flex: 1;
+    padding-left: 40px !important;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-radius: 25px;
+    width: 100%;
+    color: black;
+}
 
   .search-box:focus {
     border-color: #0610d0e0;  /* Change border color */
