@@ -38,11 +38,14 @@ const Login = () => {
       } else if (user.role === 'clinic') {
         localStorage.setItem('clinicId', user.clinicId);
         navigate('/dashboard');
+        window.location.reload(); // Refresh the page after navigation
       } else if (user.role === 'admin') {
         navigate('/dashboard');
+        window.location.reload(); // Refresh for admin as well
       } else {
         navigate('/home'); // Default fallback
       }
+      
     } catch (err) {
       console.error('Login error:', err.response ? err.response.data.message : err.message);
       setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');

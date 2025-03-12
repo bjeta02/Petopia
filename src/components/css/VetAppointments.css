@@ -74,25 +74,26 @@
     display: flex; /* Center the icon */
     align-items: center; /* Center vertically */
     justify-content: center; /* Center horizontally */
+    border: 2px solid currentColor !important;
 }
 
 /* Specific styles for action buttons */
 .edit-btn {
-    color: #ffc107 !important; /* Set icon color */
-    background-color: transparent !important; /* Remove background color */
-    border-color: #ffc107 !important; /* Set border color to match icon color */
+    color: #ffc107 !important;
+    background-color: transparent !important;
+    border: 2px solid #ffc107 !important; /* Ensure border is visible */
 }
 
 .accept-btn {
-    color: #28a745 !important; /* Set icon color */
-    background-color: transparent !important; /* Remove background color */
-    border-color: #28a745 !important; /* Set border color to match icon color */
+    color: #28a745 !important;
+    background-color: transparent !important;
+    border: 2px solid #28a745 !important; /* Ensure border is visible */
 }
 
 .delete-btn {
-    color: #dc3545 !important; /* Set icon color */
-    background-color: transparent !important; /* Remove background color */
-    border-color: #dc3545 !important; /* Set border color to match icon color */
+    color: #dc3545 !important;
+    background-color: transparent !important;
+    border: 2px solid #dc3545 !important; /* Ensure border is visible */
 }
 
 /* Hover effects for action buttons */

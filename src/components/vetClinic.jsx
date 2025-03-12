@@ -167,8 +167,8 @@
 
     if (role === "admin") {
       return (
-        <div className="p-6">
-          <Toast ref={toast} position="bottom-right" />
+        <div className="superadmin">
+          <Toast ref={toast} position="supadmin" />
           <h2 className="text-2xl font-bold mb-4">All Clinics</h2>
           <DataTable value={allClinics} paginator rows={5} className="shadow-md rounded-lg">
             <Column field="name" header="Clinic Name" />
@@ -199,12 +199,12 @@
             <h3 className="text-lg font-bold">Location & Contact</h3>
             {isEditing ? (
               <>
-                <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-field" />
-                <input type="text" name="contact_number" value={formData.contact_number} onChange={handleInputChange} className="input-field" />
-                <input type="text" name="description" value={formData.description} onChange={handleInputChange} className="input-field" />
-                <input type="text" name="days" value={formData.days} onChange={handleInputChange} className="input-field" />
-                <input type="time" name="open_time" value={formData.open_time} onChange={handleInputChange} className="input-field" />
-                <input type="time" name="close_time" value={formData.close_time} onChange={handleInputChange} className="input-field" />
+                <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-field2" />
+                <input type="text" name="contact_number" value={formData.contact_number} onChange={handleInputChange} className="input-field2" />
+                <input type="text" name="description" value={formData.description} onChange={handleInputChange} className="input-field2" />
+                <input type="text" name="days" value={formData.days} onChange={handleInputChange} className="input-field2" />
+                <input type="time" name="open_time" value={formData.open_time} onChange={handleInputChange} className="input-field2" />
+                <input type="time" name="close_time" value={formData.close_time} onChange={handleInputChange} className="input-field2" />
               </>
             ) : (
               <>
@@ -229,28 +229,28 @@
                               placeholder="Service Name"
                               value={service.name}
                               onChange={(e) => handleServiceChange(index, "name", e.target.value)}
-                              className="input-field"
+                              className="input-field2"
                             />
                             <input
                               type="text"
                               placeholder="Description"
                               value={service.description}
                               onChange={(e) => handleServiceChange(index, "description", e.target.value)}
-                              className="input-field"
+                              className="input-field2"
                             />
                             <input
                               type="number"
                               placeholder="Estimated Duration (minutes)"
                               value={service.estimated_duration}
                               onChange={(e) => handleServiceChange(index, "estimated_duration", e.target.value)}
-                              className="input-field"
+                              className="input-field2"
                             />
                             <input
                               type="text"
                               placeholder="Rate"
                               value={service.rate}
                               onChange={(e) => handleServiceChange(index, "rate", e.target.value)}
-                              className="input-field"
+                              className="input-field2"
                             />
                           </div>
                           <Button

@@ -29,6 +29,7 @@ import VetAppointments from "./components/VetAppointments";
 import VetHistory from "./components/VetHistory";
 import VetClinic from "./components/vetClinic";
 
+
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
   speedAsDuration: true,
@@ -50,6 +51,7 @@ const App = () => {
   return (
     <>
     <Navigation isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+    
       <Routes>
         {/* Set the landing page as the default route */}
         <Route path="/" element={<LandingPage />} />
@@ -76,7 +78,7 @@ const App = () => {
         <Route path="/otp" element={<OtpPage />} />
 
         
-        <Route element={<VetLayout />}> Sidebar always visible
+        <Route element={<VetLayout />}> 
           <Route path="/dashboard" element={<VetDashboard />} />
           <Route path="/appointments" element={<VetAppointments />} />
           <Route path="/history" element={<VetHistory />} />
