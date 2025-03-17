@@ -11,7 +11,6 @@ import { Dropdown } from "primereact/dropdown";
 import { User, Dog, ClipboardList } from "lucide-react"; // Icons
 import "../components/css/VetDashboard.css";
 
-
 const VetDashboard = () => {
   const clinicId = localStorage.getItem("clinicId");
   const role = localStorage.getItem("role");
@@ -27,7 +26,6 @@ const VetDashboard = () => {
   const [selectedPetId, setSelectedPetId] = useState(null);
   const [selectedServiceId, setSelectedServiceId] = useState(null);
 
-  
   // Form State for Adding Appointment
   const [newAppointment, setNewAppointment] = useState({
     ownerName: "",
@@ -55,7 +53,6 @@ const VetDashboard = () => {
       console.error("Error fetching owners:", error);
     }
   };
-
 
   const fetchAppointments = async () => {
     try {
@@ -85,21 +82,24 @@ const VetDashboard = () => {
     const ownerId = e.value;
     const owner = owners.find(o => o._id === ownerId);
     console.log("Selected Owner:", owner);
-  
-    setSelectedOwnerId(owner);
+    
+    // Set the selected owner ID and their pets
+    setSelectedOwnerId(ownerId);
     setPets(owner?.pets || []);
-  
-    // 🆕 Set the services available to this owner
-    setAvailableServices(owner?.services || []);
-  
+    
+    // Update the newAppointment state with the owner's name
     setNewAppointment({ 
       ...newAppointment,
       ownerId,
-      ownerName: `${owner?.firstname} ${owner?.lastname}`,
+      ownerName: `${owner?.firstname} ${owner?.lastname}`, // Set the owner's full name
     });
+  
+    // Set the available services for the selected owner
+    const services = owner?.services || []; // Assuming services are part of the owner object
+    console.log("Available Services:", services); // Debugging line
+    setAvailableServices(services);
   };
   
-
   const handlePetSelect = (e) => {
     const petId = e.value;
     const pet = pets.find(p => p._id === petId);
@@ -154,22 +154,27 @@ const VetDashboard = () => {
   
       setAppointments([...appointments, response.data.appointment]); // fixed .appointment
       setIsAddDialogVisible(false);
-      setNewAppointment({
-        ownerName: "",
-        petName: "",
-        petType: "",
-        services: "",
-        date: null,
-      });
-      setSelectedOwnerId(null);
-      setSelectedPetId(null);
-      setSelectedServiceId(null);
+      resetAddAppointmentForm(); // Reset the form after adding
     } catch (error) {
       console.error("Error adding appointment:", error);
       alert("Error adding appointment. Please try again.");
     }
   };
-  
+
+  // Function to reset the form
+  const resetAddAppointmentForm = () => {
+    setNewAppointment({
+      ownerName: "",
+      petName: "",
+      petType: "",
+      services: "",
+      date: null,
+    });
+    setSelectedOwnerId(null);
+    setSelectedPetId(null);
+    setSelectedServiceId(null);
+    setAvailableServices([]); // Reset available services
+  };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
@@ -205,7 +210,7 @@ const VetDashboard = () => {
           {selectedAppointments.map((apt, index) => (
             <div key={index} className="p-4 border rounded-lg shadow-sm bg-gray-100">
               <p className="flex items-center gap-2 text-lg font-medium">
-                <User size={18} className="text-blue-500" /> {apt.ownerName || "Guest"}
+                <User  size={18} className="text-blue-500" /> {apt.ownerName || "Guest"}
               </p>
               <p className="flex items-center gap-2 text-gray-700">
                 <Dog size={18} className="text-green-500" /> {apt.petDetails || "No Pets"}
@@ -222,7 +227,10 @@ const VetDashboard = () => {
       <Dialog
           header="Add Appointment"
           visible={isAddDialogVisible}
-          onHide={() => setIsAddDialogVisible(false)}
+          onHide={() => {
+            setIsAddDialogVisible(false);
+            resetAddAppointmentForm(); // Reset the form when closing the modal
+          }}
           className="p-4"
         >
           <div className="add-appointment space-y-3">
@@ -240,7 +248,7 @@ const VetDashboard = () => {
               placeholder="Select Pet"
               className="w-full"
               onChange={handlePetSelect}
-              disabled={!selectedOwnerId}
+              disabled={!selectedOwnerId} // Enable only if an owner is selected
             />
 
             <Dropdown
@@ -263,11 +271,11 @@ const VetDashboard = () => {
                   services: typeof selected === 'string' ? selected : selected.name,
                 });
               }}
-              disabled={!availableServices.length}
+              disabled={!availableServices.length} // Disable if no services are available
             />
 
             <Calendar
-              placeholder="Select Date"
+              placeholder ="Select Date"
               value={newAppointment.date}
               onChange={(e) => setNewAppointment({ ...newAppointment, date: e.value })}
               showIcon

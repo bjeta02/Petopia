@@ -15,33 +15,37 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-
+  
     try {
-      // API call to login
+      // API call to login for all roles (owner, clinic, admin)
       const response = await axios.post(`http://localhost:5000/api/owners/login`, {
         email: username,
         password: password,
       });
-
+  
       // Handle successful login
       console.log('Login successful:', response.data);
       const { token, user } = response.data;
-
+  
       // Store data in local storage
       localStorage.setItem('token', token);
-      localStorage.setItem('role', user.role); // Store role for later use
-
+      localStorage.setItem('role', user.role);
+  
       // Redirect based on role
-      if (user.role === 'owner') {
-        localStorage.setItem('ownerId', user.ownerId);
-        navigate('/home');
-      } else if (user.role === 'clinic') {
-        localStorage.setItem('clinicId', user.clinicId);
-        navigate('/dashboard');
-      } else if (user.role === 'admin') {
-        navigate('/dashboard');
-      } else {
-        navigate('/home'); // Default fallback
+      switch (user.role) {
+        case 'owner':
+          localStorage.setItem('ownerId', user.ownerId);
+          navigate('/home');
+          break;
+        case 'clinic':
+          localStorage.setItem('clinicId', user.clinicId);
+          navigate('/dashboard');
+          break;
+        case 'admin':
+          navigate('/dashboard');
+          break;
+        default:
+          navigate('/home');
       }
     } catch (err) {
       console.error('Login error:', err.response ? err.response.data.message : err.message);
@@ -53,7 +57,7 @@ const Login = () => {
 
   return (
     <div className="center-container">
-      <Navigation />
+      <Navigation onLoginSuccess={() => { /* Trigger a re-check of the login status */ }} />
       <div className="container-box">
         <h1>Login</h1>
         {error && <p className="error-message">{error}</p>}

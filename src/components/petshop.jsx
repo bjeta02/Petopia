@@ -53,17 +53,9 @@ function PetShop() {
             const ownerResponse = await axios.get(`http://localhost:5000/api/owners/${ownerId}`, {
               headers: { "Authorization": `Bearer ${token}` }
             });
-            // Ensure response structure is correct
-            if (ownerResponse.data?.success && ownerResponse.data?.data) {
-              const owner = ownerResponse.data.data;
-
-              // Extract the correct name and email
-              setFirstName(owner.firstname || owner.userId?.firstname || "");
-              setLastName(owner.lastname || owner.userId?.lastname || "");
-              setEmail(owner.email || owner.userId?.email || "");
-            } else {
-              console.error("Invalid ownerResponse format:", ownerResponse);
-            }
+            setFirstName(`${ownerResponse.data.firstname}`);
+            setLastName(`${ownerResponse.data.lastname}`);
+            setEmail(ownerResponse.data.email);
 
             const fetchPets = async () => {
               try {
@@ -113,8 +105,6 @@ function PetShop() {
       if (!petAge) newErrors.petAge = "Pet age is required";
 
     }
-
-    
     
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -138,8 +128,6 @@ function PetShop() {
         notes: "Some notes",
       };
 
-      console.log("Sending appointment data:", appointmentData);
-
       if (isGuest) {
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
         alert(response.data.message);
@@ -148,7 +136,7 @@ function PetShop() {
       } else {
         const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
         alert("Appointment booked successfully!");
-        navigate(`/appointment`);
+        navigate(`/appointments`);
       }
     } catch (error) {
       console.error("Error creating appointment:", error);
@@ -164,7 +152,7 @@ function PetShop() {
       });
 
       alert(response.data.message);
-      navigate(`/appointment`);
+      navigate(`/appointments`);
     } catch (error) {
       console.error("Error verifying OTP:", error);
       alert("Invalid or expired OTP.");
@@ -243,7 +231,7 @@ function PetShop() {
               {errors.selectedDate && <p className="error-text">{errors.selectedDate}</p>}
 
               <label className="form-label">SELECT SERVICES</label>
-              <select 
+              <select
                 className={`input-field ${errors.selectedService ? "error-field" : ""}`} 
                 value={selectedService} 
                 onChange={(e) => setSelectedService(e.target.value)}

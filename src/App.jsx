@@ -76,7 +76,7 @@ const App = () => {
         <Route path="/otp" element={<OtpPage />} />
 
         
-        <Route element={<VetLayout />}> Sidebar always visible
+        <Route element={<VetLayout />}>
           <Route path="/dashboard" element={<VetDashboard />} />
           <Route path="/appointments" element={<VetAppointments />} />
           <Route path="/history" element={<VetHistory />} />

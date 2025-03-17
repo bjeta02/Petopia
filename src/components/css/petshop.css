@@ -1,181 +1,160 @@
 .page-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 20px; 
-  min-height: 800px; /* Increased height */
-  max-height: none; /* Remove fixed max-height */
-  overflow-y: auto; /* Allow scrolling */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100vh !important;
+  padding: 20px !important; 
+  min-height: 800px !important;
+  max-height: none !important;
+  overflow-y: auto !important;
 }
 
 /* Pet Shop Form Container */
 .petshop-container {
-  display: flex;
-  flex-direction: row; /* Arrange items side by side */
-  width: 80%; /* Increased width */
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  max-width: 900px; /* Adjust width to fit content */
-  min-height: 700px;
-  justify-content: space-between;
-  align-items: center;
+  display: flex !important;
+  flex-direction: row !important;
+  width: 80% !important;
+  background: white !important;
+  border-radius: 10px !important;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1) !important;
+  padding: 40px !important;
+  max-width: 900px !important;
+  min-height: 700px !important;
+  justify-content: space-between !important;
+  align-items: center !important;
 }
 
 .shop-info-book {
-  width: 40%; /* Allocate space for the clinic info */
-  padding: 20px;
-  text-align: center;
+  width: 40% !important;
+  padding: 20px !important;
+  text-align: center !important;
 }
 
 .shop-logo-book {
-  width: 100%; /* Make the logo responsive */
-  max-width: 100px; /* Set a max size */
-  border-radius: 10px;
+  width: 100% !important;
+  max-width: 100px !important;
+  border-radius: 10px !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 auto !important;
 }
 
 .form-container {
-  width: 55%; /* Allocate more space for the form */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-/* Shop Info & Form */
-.shop-info-book, .form-container {
-  padding: 20px;
-}
-
-/* Shop Info */
-.shop-info-book {
-  width: 100%; /* Full width for better layout */
-}
-
-/* Form Container */
-.form-container {
-  width: 100%;
+  width: 55% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
 }
 
 /* Step Indicator */
 .step-indicator {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 30px;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-bottom: 30px !important;
 }
 
 .step {
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  line-height: 25px;
-  border-radius: 50%;
-  background: #e0e0e0;
+  width: 25px !important;
+  height: 25px !important;
+  text-align: center !important;
+  line-height: 25px !important;
+  border-radius: 50% !important;
+  background: #e0e0e0 !important;
 }
 
 .step.active {
-  background: #007bff;
-  color: white;
+  background: #007bff !important;
+  color: white !important;
 }
 
 /* Form Fields */
 .form-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 15px;
-  font-size: 14px;
+  display: block !important;
+  font-weight: bold !important;
+  margin-top: 15px !important;
+  font-size: 14px !important;
 }
 
 .input-field, .date-picker {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 100% !important;
+  padding: 10px !important;
+  margin-top: 5px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
 }
 
-/* Gender Selection */
 .gender-container {
-  margin-top: 15px;
+  margin-top: 15px !important;
 }
 
 .gender-label {
-  display: block;
-  margin-bottom: 5px;
+  display: block !important;
+  margin-bottom: 5px !important;
 }
 
 .gender-options {
-  display: flex;
-  justify-content: left;
-  gap: 10px;
-  margin-top: 10px;
+  display: flex !important;
+  justify-content: left !important;
+  gap: 10px !important;
+  margin-top: 10px !important;
 }
 
 .gender-options button {
-  padding: 6px 10px;
-  font-size: 13px;
-  width: 70px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 5px;
+  padding: 6px 10px !important;
+  font-size: 13px !important;
+  width: 70px !important;
+  border: 1px solid #ccc !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  border-radius: 5px !important;
 }
 
 .gender-options .selected {
-  background: #007bff;
-  color: white;
+  background: #007bff !important;
+  color: white !important;
 }
 
 /* Action Buttons */
 .action-button {
-  width: 60%;
-  margin-top: 20px;
-  background: #653deb;
-  color: white;
-  padding: 10px;
-  border: none;
-  font-size: 18px;
-  border-radius: 5px;
-  cursor: pointer;
+  width: 60% !important;
+  margin-top: 20px !important;
+  background: #653deb !important;
+  color: white !important;
+  padding: 10px !important;
+  border: none !important;
+  font-size: 18px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
 }
 
 /* Back Button */
 .back-button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  align-self: flex-start; /* Moves button to the left */
-  margin-top: 20px; /* Adds spacing */
-}
-
-
-.shop-logo-book {
-  width: 100px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+  background: none !important;
+  border: none !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  align-self: flex-start !important;
+  margin-top: 20px !important;
 }
 
 /* Step 3 Scrollable Section */
 .scrollable-step {
-  max-height: 450px;
-  overflow-y: auto;
-  padding-right: 10px;
+  max-height: 450px !important;
+  overflow-y: auto !important;
+  padding-right: 10px !important;
 }
 
 .error-field {
-  border: 1px solid red;
+  border: 1px solid red !important;
 }
 
 .error-text {
-  color: red;
-  font-size: 12px;
-  margin-top: 2px;
+  color: red !important;
+  font-size: 12px !important;
+  margin-top: 2px !important;
 }
 
 .step-3-active .petshop-container {
@@ -185,49 +164,49 @@
 /* 🔽 Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
   .petshop-container {
-    flex-direction: column;
-    width: 90%;
-    padding: 15px;
-    min-height: auto;
+    flex-direction: column !important;
+    width: 90% !important;
+    padding: 15px !important;
+    min-height: auto !important;
   }
 
   .shop-info-book, .form-container {
-    width: 100%;
-    padding: 10px;
-    text-align: center;
+    width: 100% !important;
+    padding: 10px !important;
+    text-align: center !important;
   }
 
   /* Reduce text sizes */
   .form-label, .gender-label, .back-button {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 
   .input-field, .date-picker {
-    font-size: 14px;
-    padding: 8px;
+    font-size: 14px !important;
+    padding: 8px !important;
   }
 
   .gender-options button {
-    width: 90px;
-    font-size: 12px;
+    width: 90px !important;
+    font-size: 12px !important;
   }
 
   .action-button {
-    font-size: 16px;
-    padding: 12px;
-    margin-bottom: 20px;
+    font-size: 16px !important;
+    padding: 12px !important;
+    margin-bottom: 20px !important;
   }
 
   /* Reduce logo size for smaller screens */
   .shop-logo-book {
-    width: 80px;
+    width: 80px !important;
   }
   
   .shop-info-book h2 {
-    font-size: 18px;
+    font-size: 18px !important;
   }
 
   .shop-info-book p {
-    font-size: 12px;
+    font-size: 12px !important;
   }
 }
