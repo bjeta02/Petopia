@@ -135,7 +135,7 @@ const VetAppointments = () => {
     <div className="vet-appointments-container">
       <Toast ref={toast} position="bottom-right" />
       <h2 className="text-2xl font-bold mb-4">Pending Appointments</h2>
-      <DataTable value={appointments} className="datatable" paginator rows={5}>
+      <DataTable value={appointments} className="datatable" paginator rows={10}>
         <Column field="ownerName" header="Owner Name" />
         <Column field="petDetails" header="Pet Details" />
         <Column field="service_id.name" header="Service Availed" />

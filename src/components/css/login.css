@@ -94,6 +94,17 @@
   text-decoration: underline;
 }
 
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  background: #ffdddd;
+  border: 1px solid red;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 500px) {
   .container-box {

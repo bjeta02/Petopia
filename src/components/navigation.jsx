@@ -105,6 +105,8 @@ const closeNavbar = () => {
     const ownerId = localStorage.getItem('ownerId'); // Retrieve owner ID from local storage
     if (ownerId) {
       navigate(`/profile?id=${ownerId}`); // Navigate to the profile page with owner ID
+    } else {
+      navigate(`/vetprofile`);
     }
   };
 
