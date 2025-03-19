@@ -14,7 +14,6 @@ export const getAppointments = async (req, res) => {
             .populate("guest_id", "firstName lastName email phone pets")
             .populate("pet_id", "name type breed")
             .populate("clinic_id", "name")
-            .populate("vet_id", "name")
             .populate("service_id", "name")
             .sort({ date: -1 });
 
@@ -53,14 +52,22 @@ export const getAppointmentsByOwner = async (req, res) => {
             .populate('owner_id', 'firstname lastname email') // Populate owner details
             .populate('pet_id', 'name type breed') // Populate pet details
             .populate('clinic_id', 'name') // Populate clinic details
-            .populate('vet_id', 'name') // Populate veterinarian details
             .populate('service_id', 'name'); // Populate service details
+
+        if (!appointments || appointments.length === 0) {
+            return res.status(404).json({ message: "No appointments found for this owner." });
+        }
 
         res.status(200).json(appointments);
     } catch (error) {
-        res.status(500).json({ message: "Error fetching appointments", error });
+        console.error("Error fetching appointments:", error); // Log the error in console
+        res.status(500).json({ 
+            message: "Error fetching appointments", 
+            error: error.message // Send detailed error message
+        });
     }
 };
+
 
 export const getAppointmentsByClinic = async (req, res) => {
     const { clinicId } = req.params;

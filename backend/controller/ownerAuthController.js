@@ -4,10 +4,23 @@ import Clinic from "../model/Clinic.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+// passport-setup.js
+import passport from 'passport';
+import GoogleStrategy from 'passport-google-oauth20';
 import { sendOTPEmail } from "../utils/emailService.js";
 
 // Temporary storage for pending user registrations (OTP verification)
 const pendingUsers = new Map();
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error fetching owners:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
 
 /**
  * Register a new user (Owner, Clinic, or Admin) with optional OTP verification.
@@ -131,13 +144,19 @@ export const verifyUserOTP = async (req, res) => {
  */
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
-    console.log("Login attempt:", email, password);
+    console.log("Login attempt:", email);
 
     if (!email || !password) return res.status(400).json({ message: "Email and password are required!" });
 
     try {
         const user = await User.findOne({ email });
         if (!user) return res.status(401).json({ message: "Invalid email or password" });
+
+        // 🔥 Prevent manual login if user signed up with Google
+        if (!user.password) {
+            console.log("❌ This account is linked to Google. Blocking manual login.");
+            return res.status(403).json({ message: "This email is linked to a Google account. Please log in with Google." });
+        }
 
         if (!user.isVerified) return res.status(401).json({ message: "Account not verified. Please verify with OTP." });
 
@@ -154,17 +173,16 @@ export const loginUser = async (req, res) => {
             role: user.role
         };
 
-        // Fetch additional data based on role
         if (user.role === "owner") {
             const owner = await Owner.findOne({ userId: user._id });
             if (owner) {
-                userData.ownerId = owner._id.toString(); // Add ownerId to userData
-                userData.ownerData = owner; // Optionally include other owner data
+                userData.ownerId = owner._id.toString();
+                userData.ownerData = owner;
             }
         } else if (user.role === "clinic") {
             const clinic = await Clinic.findOne({ userId: user._id });
             if (clinic) {
-                userData.clinicId = clinic._id.toString(); // Store clinicId
+                userData.clinicId = clinic._id.toString();
             }
         }
 
@@ -172,5 +190,68 @@ export const loginUser = async (req, res) => {
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).json({ message: error.message });
+    }
+};
+
+
+export const googleLogin = async (req, res) => {
+    try {
+        if (!req.user) {
+            console.error("❌ Google login failed: req.user is undefined");
+            return res.status(401).json({ message: "Authentication failed. No user found." });
+        }
+
+        console.log("✅ Google login successful. User:", req.user);
+
+        // 🔹 Check if user exists
+        let user = await User.findOne({ email: req.user.email });
+
+        if (user) {
+            // 🔥 Prevent Google login if user signed up manually
+            if (user.password) {
+                console.log("❌ This account was registered manually. Blocking Google login.");
+                return res.status(403).json({ message: "This email is registered with a password. Please log in with email and password instead." });
+            }
+
+        } else {
+            // ✅ Create a new Google user if they don’t exist
+            user = new User({
+                googleId: req.user.googleId,
+                email: req.user.email,
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                isVerified: true,
+                role: "owner",
+            });
+
+            await user.save();
+        }
+
+        // ✅ Ensure Owner Profile Exists
+        let owner = await Owner.findOne({ userId: user._id });
+        if (!owner) {
+            console.log("🔹 Owner profile missing. Creating one now...");
+            owner = new Owner({
+                userId: user._id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+            });
+            await owner.save();
+        }
+
+        console.log("✅ Owner profile found/created:", owner._id);
+
+        // ✅ Generate JWT token with `ownerId`
+        const token = jwt.sign(
+            { id: user._id, role: user.role, ownerId: owner._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        return res.status(200).json({ token, user, ownerId: owner._id });
+    } catch (error) {
+        console.error("❌ Error during Google login:", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
 };

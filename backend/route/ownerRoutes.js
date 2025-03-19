@@ -1,8 +1,10 @@
 import express from 'express';
 import { getOwners, getOwnerById, updateOwner, createGuestOwner } from '../controller/ownerController.js';
-import { registerUser, verifyUserOTP, loginUser } from '../controller/ownerAuthController.js';
+import { getUsers, registerUser, verifyUserOTP, loginUser } from '../controller/ownerAuthController.js';
 
 const router = express.Router();
+// Route to register a new owner
+router.get('/users', getUsers);
 
 // Route to register a new owner
 router.post('/owners/register', registerUser);

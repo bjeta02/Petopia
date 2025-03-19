@@ -1,0 +1,12 @@
+/* calendar.css */
+
+.appointment-list {
+    margin-top: 10px;
+  }
+  
+  .appointment-item {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }

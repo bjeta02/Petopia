@@ -28,6 +28,7 @@ import VetDashboard from "./components/VetDashboard";
 import VetAppointments from "./components/VetAppointments";
 import VetHistory from "./components/VetHistory";
 import VetClinic from "./components/vetClinic";
+import GoogleAuthSuccess from "./components/googleAuthSuccess";
 
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
@@ -70,6 +71,7 @@ const App = () => {
         />
         {/* Authentication Routes */}
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/google-auth-success" element={<GoogleAuthSuccess />} />
         <Route path="/register" element={<Register />} />
         <Route path="/findavet" element={<Findavet />} />
         <Route path="/shops" element={<Shops />} />
