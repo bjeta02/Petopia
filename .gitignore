@@ -1,1 +1,4 @@
 /node_modules"backend/.env" 
+node_modules/
+.cache/
+dist/
