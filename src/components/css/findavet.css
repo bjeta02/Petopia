@@ -1,0 +1,318 @@
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem; /* Optional: Adjust the font size globally */
+  color: #333;  /* Optional: Default text color */
+}
+
+
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../../assets/bg.jpg');  /* Correct path to the image */
+    background-size: cover;   /* Make the background image cover the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+     /* Ensure the background stays behind the content */
+  }
+  
+  .findavet-container {
+    display: flex;
+    flex-direction: column;   /* Stack the elements vertically */
+    justify-content: center;  /* Vertically center */
+    align-items: center;      /* Horizontally center */
+    width: 600px;             /* Fixed width */
+    height: 550px;            /* Fixed height */
+    color: white;             /* Set text color to white for contrast */
+    background-color: rgba(254, 254, 254, 0.886); /* Slightly transparent white background */
+    position: fixed;          /* Fix the container in the center of the screen */
+    top: 50%;                 /* Center vertically */
+    left: 50%;                /* Center horizontally */
+    transform: translate(-50%, -50%);  /* Adjust for exact center positioning */
+    border-radius: 15px;      /* Optional: rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* Optional: subtle shadow */
+  }
+  
+  
+  /* Styling for the "Book an Appointment Online" heading */
+  .appointment-heading {
+    font-weight: bold;
+    font-size: 3.5rem;   /* Space between the heading and the invisible box */
+    color: #000000;        /* Adjust text color */
+    text-align: left;
+  }
+  
+  .periwinkle {
+    color: rgba(0, 78, 222); /* Periwinkle color */
+    font-weight: bold; /* Optional: Make the text bold */
+  }
+  
+  /* Styling for the FIND A VET subheading */
+  .appointment-subheading p{
+    font-size: 2rem;
+    color: rgb(0, 78, 222);   
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  /* Styling for the search box container */
+  .search-box-container {
+    position: relative;  /* Ensure child elements (icon & input) position relative to this */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Adjust as needed */
+    background: white;
+    border-radius: 25px;
+    padding: 5px 10px;
+}
+  
+  /* Styling for the search icon */
+  .search-icon {
+    position: absolute;
+    left: 10px;  /* Adjust to align properly */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: rgb(0, 78, 222);
+    padding-left: 15px;
+}
+  
+  /* Styling for the search box */
+  .search-box {
+    flex: 1;
+    padding-left: 40px !important;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-radius: 25px;
+    width: 100%;
+    color: black;
+}
+
+  .search-box:focus {
+    border-color: #0610d0e0;  /* Change border color */
+    box-shadow: 0 0 8px rgba(9, 53, 212, 0.877); /* Add glowing effect */
+    outline: none; /* Removes default outline */
+}
+  
+  /* Invisible box centered in the middle */
+  .invisible-box {
+    display: flex;
+    justify-content: center;   /* Horizontally center the content */
+    align-items: center;       /* Vertically center the content */
+    width: 84%;                /* Use percentage-based width for responsiveness */
+    max-width: 600px;          /* Max width to prevent it from growing too large */
+    height: 200px;              /* Use viewport height for responsiveness */
+    max-height: 400px;         /* Max height to prevent it from growing too large */
+    background-color: rgba(21, 141, 227, 0.159); /* Invisible background */
+    border: 2px solid #0064e6d8; /* Optional: border for visual purposes */
+    box-shadow: 0 0 10px rgba(238, 13, 13, 0.1); /* Subtle shadow */
+    margin-top: 20px;          /* Space between previous content */
+    text-align: center;        /* Center the text inside */
+    border-radius: 20px;
+  }
+  
+  /* Styling for the heading inside invisible-box */
+  .invisible-box h1 {
+    font-size: 2rem;           /* Adjust the font size */
+    color: rgb(0, 0, 1);    /* Periwinkle color for the text */
+    font-weight: bold;         /* Bold text */
+    line-height: 1.4;          /* Line spacing for better readability */
+    margin: 0;                 /* Remove default margin */
+  }
+  
+  .box-logo {
+    width: 70%;                       /* Full width */
+    height: 150px;                     /* Set the height of the logo box */
+    background-image: url('../../assets/vet-logo.png');  /* Path to the logo image */
+    background-size: contain;          /* Ensure the entire image fits within the box */
+    background-repeat: no-repeat;      /* Prevent image repetition */
+    background-position: center;      /* Center the image within the box */
+    display: flex;
+    justify-content: center;           /* Center contents horizontally (if any) */
+    align-items: center;               /* Center contents vertically (if any) */
+  }
+
+  .text-container h1 {
+    font-size: 2.6rem;
+    color: #333;
+    margin-bottom: 20px; /* Space between h1 and p */
+    margin-left: 10px;
+    text-align: left;
+  }
+  
+  /* Styling for the paragraph */
+  .text-container p {
+    font-size: 1.6rem;
+    color: #000000;
+    margin-top: 10px;
+    margin-left: 10px;
+    text-align: left;
+  }
+
+  .browse-shop {
+    background: transparent;
+    border: none;
+    color: #333;
+    font-size: 1.6rem;
+    cursor: pointer;
+    text-align: right;
+    align-self: flex-end; /* Align the link at the bottom of the container */
+    font-weight: bold;
+    margin-right: -25px; /* Default margin */
+  }
+  
+  .browse-shop p {
+    margin-right: 50px;
+    text-align: right;
+    color: rgba(0, 78, 222);
+  }
+  
+/* Styling for the dropdown container */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white; /* Ensure background is white */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+/* Styling for dropdown items */
+.dropdown-item {
+  padding: 10px;
+  font-size: 1.6rem;
+  color: #333; /* Ensure text is dark */
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Hover effect for better visibility */
+.dropdown-item:hover {
+  background: rgba(0, 78, 222, 0.1);
+  color: #004ede; /* Highlight color */
+}
+
+
+  
+  @media screen and (max-width: 768px) {
+    .findavet-container {
+      width: 95%;
+      max-width: 90%;
+      padding: 15px;
+    }
+  
+    .appointment-heading {
+      font-size: 2.5rem;
+    }
+  
+    .appointment-subheading p {
+      font-size: 1.8rem;
+    }
+  
+    .search-box-container {
+      width: 100%;
+    }
+  
+    .search-box {
+      font-size: 1.6rem;
+      padding: 12px 12px 12px 35px;
+    }
+  
+    .search-icon {
+      font-size: 1.6rem;
+      left: 10px;
+    }
+  
+    .invisible-box {
+      width: 100%;
+      max-width: 90%;
+      padding: 10px;
+    }
+  
+    .invisible-box h1 {
+      font-size: 1.8rem;
+    }
+  
+    .box-logo {
+      height: 100px;
+    }
+  
+    .text-container h1 {
+      font-size: 2.2rem;
+    }
+  
+    .text-container p {
+      font-size: 1.4rem;
+    }
+
+    .browse-shop {
+      margin-right: -30px;  /* Adjust margin-right for smaller screens */
+    }
+  
+    .browse-shop p {
+      margin-right: 30px;  /* Adjust paragraph's margin-right for consistency */
+    }
+  }
+  
+  /* For screens smaller than 480px (Mobile Phones) */
+  @media screen and (max-width: 480px) {
+    .findavet-container {
+      width: 95%;
+      max-width: 90%;
+      padding: 15px;
+    }
+  
+    .appointment-heading {
+      font-size: 2.2rem;
+    }
+  
+    .appointment-subheading p {
+      font-size: 1.6rem;
+    }
+  
+    .search-box {
+      font-size: 1.4rem;
+      padding: 10px 10px 10px 30px;
+    }
+  
+    .search-icon {
+      font-size: 1.4rem;
+      left: 8px;
+    }
+  
+    .invisible-box h1 {
+      font-size: 1.6rem;
+    }
+  
+    .box-logo {
+      height: 80px;
+    }
+  
+    .text-container h1 {
+      font-size: 2rem;
+    }
+  
+    .text-container p {
+      font-size: 1.3rem;
+    }
+
+    .browse-shop {
+      margin-right: -20px;  /* Adjust further for mobile phones */
+    }
+  
+    .browse-shop p {
+      margin-right: 20px;  /* Adjust paragraph's margin-right for mobile */
+    }
+  }
+ 
+  

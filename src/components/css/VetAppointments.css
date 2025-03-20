@@ -1,0 +1,245 @@
+/* Container styling */
+.vet-appointments-container {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+/* Title styling */
+.vet-appointments-container h2 {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* DataTable styling */
+.datatable {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f9f9f9;
+    padding: 10px; /* Padding around the DataTable */
+}
+
+/* Add padding to the cells in the DataTable */
+.datatable .p-datatable-tbody > tr > td {
+    padding: 12px; /* Adjust padding as needed */
+}
+
+/* Optional: Add padding to the header cells as well */
+.datatable .p-datatable-thead > tr > th {
+    padding: 12px; /* Adjust padding as needed */
+}
+
+/* Status label styles */
+.status-tag {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+    display: inline-block;
+}
+.status-tag.pending {
+    background-color: #ffc107;
+    color: black;
+}
+.status-tag.confirmed {
+    background-color: #007bff;
+    color: white;
+}
+.status-tag.completed {
+    background-color: #28a745;
+    color: white;
+}
+.status-tag.cancelled {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 3px; /* Increased spacing between buttons */
+}
+
+/* General button styling for action buttons */
+.action-buttons .p-button {
+    padding: 0 !important; /* Remove padding to make it circular */
+    width: 40px; /* Set a fixed width */
+    height: 40px; /* Set a fixed height */
+    font-size: 16px !important; /* Adjust font size for better visibility */
+    border-radius: 50% !important; /* Make it circular */
+    transition: all 0.2s ease-in-out !important;
+    display: flex; /* Center the icon */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    border: 2px solid currentColor !important;
+}
+
+/* Specific styles for action buttons */
+.edit-btn {
+    color: #ffc107 !important;
+    background-color: transparent !important;
+    border: 2px solid #ffc107 !important; /* Ensure border is visible */
+}
+
+.accept-btn {
+    color: #28a745 !important;
+    background-color: transparent !important;
+    border: 2px solid #28a745 !important; /* Ensure border is visible */
+}
+
+.delete-btn {
+    color: #dc3545 !important;
+    background-color: transparent !important;
+    border: 2px solid #dc3545 !important; /* Ensure border is visible */
+}
+
+/* Hover effects for action buttons */
+.action-buttons .p-button:hover {
+    filter: brightness(0.9); /* Slight darkening on hover */
+}
+
+/* General button styling for confirm and cancel buttons */
+.p-button-confirm, .p-button-cancel {
+    padding: 10px 18px !important; /* Standard padding */
+    border-radius: 6px !important; /* Rounded edges */
+}
+
+/* Specific styles for confirm and cancel buttons */
+.p-button-confirm {
+    background-color: #28a745 !important; /* Green for confirm */
+    color: white !important; /* White text */
+}
+
+.p-button-cancel {
+    background-color: #dc3545 !important; /* Red for cancel */
+    color: white !important; /* White text */
+}
+
+/* Hover effects for confirm and cancel buttons */
+.p-button-confirm:hover {
+    background-color: #218838 !important; /* Darker green on hover */
+}
+
+.p-button-cancel:hover {
+    background-color: #c82333 !important; /* Darker red on hover */
+}
+
+/* Improve modal buttons */
+.p-dialog-footer {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* More spacing between buttons */
+}
+
+/* Primary & Secondary button styles */
+.p-button-primary {
+    font-size: 18px;
+    padding: 14px 22px !important;
+    background: #007bff !important;
+}
+
+.p-button-secondary {
+    font-size: 18px;
+    padding: 14px 22px !important;
+    background: #6c757d !important;
+}
+
+.p-button-primary:hover {
+    background: #0056b3 !important;
+}
+
+.p-button-secondary:hover {
+    background: #5a6268 !important;
+}
+
+/* Make dialog wider and more spacious */
+.edit-appointment-dialog {
+    max-width: 650px !important; /* Wider dialog */
+    padding: 25px;
+}
+
+/* Remove unwanted shadow */
+.p-dialog {
+    box-shadow: none !important;
+    border-radius: 8px !important;
+}
+
+/* Ensure the background overlay is correct */
+.p-dialog-mask {
+    background-color: rgba(0, 0, 0, 0.6) !important; /* Darker backdrop */
+}
+
+/* Improve modal content spacing */
+.p-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Increase font size for better readability */
+.p-dialog-header {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+/* Larger input fields */
+.p-inputtext, select {
+    padding: 12px; /* More padding */
+    font-size: 18px;
+    border-radius: 8px;
+}
+
+/* Enhance buttons */
+.p-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+/* Ensure proper background colors */
+.p-button-secondary {
+    background-color: #6c757d !important; /* Dark gray */
+    border-color: #6c757d !important;
+}
+
+.p-button-primary {
+    background-color: #007bff !important; /* Blue */
+    border-color: #007bff !important;
+}
+
+.p-button:hover {
+    filter: brightness(0.9); /* Slight darkening on hover */
+}
+
+.p-button-primary {
+    font-size: 16px;
+    padding: 10px 18px;
+    background: #007bff !important;
+}
+
+.p-button-secondary {
+    font-size: 16px;
+    padding: 10px 18px;
+    background: #6c757d !important;
+}
+
+.p-button-primary:hover {
+    background: #0056b3 !important;
+}
+
+.p-button-secondary:hover {
+    background: #5a6268 !important;
+}
+
+.disabled-btn {
+    background-color: #ccc !important;  /* Light gray */
+    color: #666 !important;  /* Darker text */
+    cursor: not-allowed !important;
+    opacity: 0.6;
+    pointer-events: none;
+}

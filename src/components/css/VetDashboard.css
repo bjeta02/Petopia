@@ -1,0 +1,140 @@
+/* Add Appointment Modal */
+.add-appointment {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+/* Input Fields */
+.add-appointment input,
+.add-appointment .p-calendar {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-appointment input:focus,
+.add-appointment .p-calendar:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+/* Calendar Styling */
+.p-calendar {
+  background: white;
+}
+
+/* Button Styling */
+.add-appointment button {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: #45c18d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.add-appointment button:hover {
+  background-color: #028354;
+}
+
+/* Add Appointment Button */
+.addapp-button {
+  background: #45c18d; /* Blue-green color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.addapp-button:hover {
+  background: #0c9083; /* Darker blue-green on hover */
+  transform: scale(1.05);
+}
+
+.addapp-button:active {
+  background: #048178; /* Even darker shade for click effect */
+  transform: scale(0.98);
+}
+
+/* 🔹 FullCalendar Navigation Buttons (Today, Previous, Next) */
+.fc-toolbar-chunk button {
+  background: #007bff; /* Blue */
+  color: white;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
+}
+
+.fc-toolbar-chunk button:hover {
+  background: #0056b3; /* Darker Blue */
+  transform: scale(1.1);
+}
+
+/* 🔹 Style for the 'Today' Button */
+.fc-toolbar-chunk .fc-today-button {
+  background: #33b67f !important; /* Green */
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.fc-toolbar-chunk .fc-today-button:hover {
+  background: #18824f !important; /* Darker Green */
+}
+
+/* 🔹 Custom Styling for Arrows (Previous & Next) */
+.fc-prev-button, .fc-next-button {
+  background: #34c588 !important; /* Orange */
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.fc-prev-button:hover, .fc-next-button:hover {
+  background: #3ee29b !important; /* Darker Orange */
+  transform: scale(1.1);
+}
+
+/* 🔹 Increase visibility of Calendar Header */
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 🔹 Style for Calendar Events */
+.fc-event {
+  background: #ff9800; /* Orange */
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.fc-event:hover {
+  background: #e68900; /* Darker Orange */
+}
