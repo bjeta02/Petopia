@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../components/css/login.css";
 import { Navigation } from "./navigation";
+import googleLogo from "../assets/google-logo.png";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -110,10 +111,11 @@ const Login = () => {
 
         <div className="google-login">
           <button onClick={handleGoogleLogin} className="google-button">
-            <img src="/path/to/google-logo.png" alt="Google Logo" className="google-logo" />
-            Login with Google
+            <img src={googleLogo} alt="Google Logo" className="google-logo" />
+            
           </button>
         </div>
+
 
         <div className="register-link">
           <p>Don't have an account? <a href="register">Register</a></p>

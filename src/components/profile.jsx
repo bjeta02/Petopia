@@ -14,6 +14,7 @@ import { Calendar } from "primereact/calendar"; // Import Calendar
 import "./css/profile.css";
 import { Dropdown } from "primereact/dropdown";
 
+
 export default function UserProfilePage() {
     const [searchParams] = useSearchParams();
     const ownerId = searchParams.get('id');
@@ -341,41 +342,59 @@ export default function UserProfilePage() {
                         </div>
 
                         <div className="column">
-                        <Card title={<span style={{ fontSize: "25px", fontWeight: "bold" }}>Calendar</span>} className="calendar">
-                          <Calendar
-                                dateFormat="mm/dd/yy"
-                                value={selectedDate}
-                                onChange={handleDateChange}
-                                inline
-                                monthNavigator
-                                yearNavigator
-                                dayTemplate={(date) => {
-                                    const count = appointments.filter(
-                                        (appointment) =>
-                                            format(new Date(appointment.date), "yyyy-MM-dd") ===
-                                            format(new Date(date), "yyyy-MM-dd")
-                                    ).length;
+                        <Card
+                            title={<span style={{ fontSize: "25px", fontWeight: "bold" }}>Calendar</span>}
+                            className="calendar-container"
+                        >
+                            <div className="calendar-content">
+                                {/* Calendar Section */}
+                                <div className="calendar">
+                                <Calendar
+                                    dateFormat="mm/dd/yy"
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                    inline
+                                    monthNavigator
+                                    yearNavigator
+                                    dayTemplate={(date) => {
+                                        const dailyAppointments = appointments.filter(
+                                            (appointment) =>
+                                                format(new Date(appointment.date), "yyyy-MM-dd") ===
+                                                format(new Date(date), "yyyy-MM-dd")
+                                        );
 
-                                    return (
-                                        <div className="calendar-day">
-                                            <span>{date.getDate()}</span>
-                                            {count > 0 && <span className="appointment-count">{count}</span>}
-                                        </div>
-                                    );
-                                }}
-                            />
-                            <div>
-                                {filteredAppointments.length > 0 ? (
-                                    <ul>
-                                        {filteredAppointments.map((appointment, index) => (
-                                            <li key={index}>{appointment.notes} - {formatDateTime(appointment.date)}</li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <div>No appointments for this date</div>
-                                )}
+                                        return (
+                                            <div className="calendar-day" onClick={() => setFilteredAppointments(dailyAppointments)}>
+                                                <span>{date.getDate()}</span>
+                                                {dailyAppointments.length > 0 && (
+                                                    <span className="appointment-indicator">{dailyAppointments.length}</span>
+                                                )}
+                                            </div>
+                                        );
+                                    }}
+                                />
+
+
+                                </div>
+
+                                {/* Appointment Details Section */}
+                                <div className="appointment-details">
+                                    <h3>Appointment Details</h3>
+                                    {filteredAppointments.length > 0 ? (
+                                        filteredAppointments.map((appointment, index) => (
+                                            <div key={index} className="appointment-detail">
+                                                <p><strong>Notes:</strong> {appointment.notes}</p>
+                                                <p><strong>Date:</strong> {formatDateTime(appointment.date)}</p>
+                                                <p><strong>Status:</strong> {appointment.status}</p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p>No appointments selected.</p>
+                                    )}
+                                </div>
                             </div>
                         </Card>
+
                     </div>
                 </div>
 

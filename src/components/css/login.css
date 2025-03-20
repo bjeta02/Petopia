@@ -105,6 +105,40 @@
   border-radius: 5px;
 }
 
+.google-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.google-button {
+  width: 50px; /* Adjust size */
+  height: 50px;
+  border-radius: 50%; /* Make it a circle */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Ensure perfect centering */
+  border: 1px solid #ccc; /* ✅ Add a subtle border */
+  background-color: white;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+  padding: 0; /* Remove any default padding */
+}
+
+.google-button:hover {
+  background-color: #f7f7f7;
+  transform: scale(1.1);
+}
+
+.google-logo {
+  width: 24px; /* Adjust logo size */
+  height: 24px;
+}
+
+
+
+
+
 /* Responsive adjustments */
 @media (max-width: 500px) {
   .container-box {
