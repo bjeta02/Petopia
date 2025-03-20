@@ -3,3 +3,5 @@
 *.jsx text eol=lf
 *.css text eol=lf
 *.json text eol=lf
+*.pack filter=lfs diff=lfs merge=lfs -text
+node_modules/.cache/default-development/*.pack filter=lfs diff=lfs merge=lfs -text
