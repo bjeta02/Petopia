@@ -1,0 +1,110 @@
+/* register.css */
+
+/* Center the register container */
+.register-center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: #f1f9ff;
+    padding: 20px;
+    padding-top: 100px;
+  }
+  
+  /* Stylish register box */
+  .register-container-box {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin-top: 100px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px; /* Slightly wider container */
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .register-container-box:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Wider input fields */
+  .register-input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .register-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+    font-size: 1.5rem;
+  }
+  
+  .register-input-group input {
+    width: 100%; /* Ensures input takes full width */
+    height: 50px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1.5rem;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .register-input-group input:focus {
+    border-color: #14967f;
+    outline: none;
+    box-shadow: 0 0 6px rgba(108, 92, 231, 0.5);
+  }
+  
+  /* Register button */
+  .register-button {
+    width: 100%;
+    padding: 14px;
+    background: #14967f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .register-button:hover {
+    background: #00b08f;
+    transform: scale(1.05);
+  }
+  
+  /* Register link */
+  .register-link {
+    margin-top: 1rem;
+  }
+  
+  .register-link p {
+    color: #333333;
+  }
+  
+  .register-link a {
+    color: #1627e7;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .register-link a:hover {
+    color: #4834d4;
+    text-decoration: underline;
+  }
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    background: #ffdddd;
+    border: 1px solid red;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }

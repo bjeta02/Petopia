@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #308ae4, #6c31eb);
+  background: #f1f9ff;
   padding: 20px;
   padding-top: 100px;
 }
@@ -59,7 +59,7 @@
 .login-button {
   width: 100%;
   padding: 14px;
-  background: #0e4aef;
+  background: #14967f;
   color: white;
   border: none;
   border-radius: 6px;
@@ -69,7 +69,7 @@
 }
 
 .login-button:hover {
-  background: #4834d4;
+  background: #00b08f;
   transform: scale(1.05);
 }
 
