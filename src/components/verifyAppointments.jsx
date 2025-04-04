@@ -14,7 +14,7 @@ const VerifyAppointment = () => {
 
   useEffect(() => {
     if (appointmentId) {
-      axios.get(`http://192.168.0.22:5000/api/appointments/qr/${appointmentId}`)
+      axios.get(`http://localhost:5000/api/appointments/qr/${appointmentId}`)
         .then(res => setAppointment(res.data))
         .catch(err => console.error(err));
     }
