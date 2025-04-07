@@ -63,6 +63,17 @@
     gap: 3px; /* Increased spacing between buttons */
 }
 
+.custom-qr-btn {
+    background-color: #28bd8e; /* Purple */
+    color: #fff; /* White text */
+    border: none;
+  }
+  
+  .custom-qr-btn:hover {
+    background-color: #18b37f; /* Darker purple on hover */
+  }
+  
+
 /* General button styling for action buttons */
 .action-buttons .p-button {
     padding: 0 !important; /* Remove padding to make it circular */

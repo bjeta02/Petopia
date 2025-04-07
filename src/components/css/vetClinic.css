@@ -8,6 +8,49 @@
     padding: 5px;
 }
 
+/* Location and Contact Info */
+.locandcont, .serv {
+  width: 100%; /* Ensures both take the full available width */
+  max-width: 600px; /* Or a value that fits your layout */
+  margin: 0 auto; /* Centers them horizontally */
+}
+
+/* Optionally add padding to cards for consistent spacing */
+.locandcont {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.serv {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* In your CSS file */
+.custom-save-btn {
+  background-color: #4caf50; /* Green */
+  color: white;
+  border: none;
+}
+
+.custom-edit-btn {
+  background-color: #15b87c; /* Orange */
+  color: white;
+  border: none;
+}
+
+.custom-save-btn:hover {
+  background-color: #45a049; /* Darker Green */
+}
+
+.custom-edit-btn:hover {
+  background-color: #069764; /* Darker Orange */
+}
+
 /* Services Section */
 .services-title {
     font-size: 1.8rem; /* Larger and more readable */

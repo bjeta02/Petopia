@@ -78,7 +78,7 @@
 }
 
 .step.active {
-  background: #007bff;
+  background: #15c593;
   color: white;
 }
 
@@ -126,7 +126,7 @@
 }
 
 .gender-options .selected {
-  background: #007bff;
+  background: #15c593;
   color: white;
 }
 
@@ -134,7 +134,7 @@
 .action-button {
   width: 60%;
   margin-top: 20px;
-  background: #653deb;
+  background: #15c593;
   color: white;
   padding: 10px;
   border: none;
@@ -142,6 +142,12 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6; /* Optional: makes it look dimmed */
+}
+
 
 /* Back Button */
 .back-button {

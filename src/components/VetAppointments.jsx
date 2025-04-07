@@ -203,7 +203,13 @@ const VetAppointments = () => {
   return (
     <div className="vet-appointments-container">
       <Toast ref={toast} position="bottom-right" />
-      <Button label="Scan QR Code" icon="pi pi-qrcode" onClick={() => setQrDialog(true)} className="p-button-success mb-4" />
+      <Button
+        label="Scan QR Code"
+        icon="pi pi-qrcode"
+        onClick={() => setQrDialog(true)}
+        className="custom-qr-btn mb-4"
+      />
+
       <h2 className="text-2xl font-bold mb-4">Pending Appointments</h2>
       <DataTable value={appointments} className="datatable" paginator rows={10}>
         <Column field="ownerName" header="Owner Name" />

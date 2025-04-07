@@ -46,14 +46,14 @@ body {
   }
   
   .periwinkle {
-    color: rgba(0, 78, 222); /* Periwinkle color */
+    color: #0fc18e; /* Periwinkle color */
     font-weight: bold; /* Optional: Make the text bold */
   }
   
   /* Styling for the FIND A VET subheading */
   .appointment-subheading p{
     font-size: 2rem;
-    color: rgb(0, 78, 222);   
+    color: #0fc18e;   
     text-align: left;
     font-weight: bold;
   }
@@ -77,7 +77,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     font-size: 16px;
-    color: rgb(0, 78, 222);
+    color: #0fc18e;
     padding-left: 15px;
 }
   
@@ -94,8 +94,8 @@ body {
 }
 
   .search-box:focus {
-    border-color: #0610d0e0;  /* Change border color */
-    box-shadow: 0 0 8px rgba(9, 53, 212, 0.877); /* Add glowing effect */
+    border-color: #0fc18e;  /* Change border color */
+    box-shadow: 0 0 8px #139470; /* Add glowing effect */
     outline: none; /* Removes default outline */
 }
   
@@ -108,8 +108,8 @@ body {
     max-width: 600px;          /* Max width to prevent it from growing too large */
     height: 200px;              /* Use viewport height for responsiveness */
     max-height: 400px;         /* Max height to prevent it from growing too large */
-    background-color: rgba(21, 141, 227, 0.159); /* Invisible background */
-    border: 2px solid #0064e6d8; /* Optional: border for visual purposes */
+    background-color: rgba(80, 224, 200, 0.159); /* Invisible background */
+    border: 2px solid #0fc18e; /* Optional: border for visual purposes */
     box-shadow: 0 0 10px rgba(238, 13, 13, 0.1); /* Subtle shadow */
     margin-top: 20px;          /* Space between previous content */
     text-align: center;        /* Center the text inside */
@@ -169,7 +169,7 @@ body {
   .browse-shop p {
     margin-right: 50px;
     text-align: right;
-    color: rgba(0, 78, 222);
+    color: #0fc18e;
   }
   
 /* Styling for the dropdown container */

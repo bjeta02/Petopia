@@ -7,6 +7,9 @@
   import { useAuth } from "./utils/auth"
   import axios from "axios";
   import "../components/css/vetClinic.css";
+  import { InputTextarea } from 'primereact/inputtextarea';
+  import { InputText } from 'primereact/inputtext';
+  import { InputNumber } from 'primereact/inputnumber';
 
   const ClinicProfile = () => {
     const { role, clinicId } = useAuth();
@@ -185,104 +188,188 @@
 
     return (
       <div className="p-6">
-        <Toast ref={toast} position="bottom-right" />
-        <div className="bg-white rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
-          
-          {/* Clinic Name and Logo */}
-          <Card className="p-4 text-center">
-            <img src={`http://localhost:5000${clinic.logo}`} alt="Clinic Logo" className="cliniclogo" />
-            <h1 className="text-xl font-bold">{clinic.name}</h1>
-          </Card>
-
-          {/* Location and Contact Info */}
-          <Card className="p-4">
-            <h3 className="text-lg font-bold">Location & Contact</h3>
-            {isEditing ? (
-              <>
-                <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-field2" />
-                <input type="text" name="contact_number" value={formData.contact_number} onChange={handleInputChange} className="input-field2" />
-                <input type="text" name="description" value={formData.description} onChange={handleInputChange} className="input-field2" />
-                <input type="text" name="days" value={formData.days} onChange={handleInputChange} className="input-field2" />
-                <input type="time" name="open_time" value={formData.open_time} onChange={handleInputChange} className="input-field2" />
-                <input type="time" name="close_time" value={formData.close_time} onChange={handleInputChange} className="input-field2" />
-              </>
-            ) : (
-              <>
-                <p><strong>Address:</strong> {clinic.address}</p>
-                <p><strong>Contact:</strong> {clinic.contact_number}</p>
-                <p><strong>Description:</strong> {clinic.description}</p>
-                <p><strong>Schedule:</strong> {clinic.days}, {clinic.open_time} - {clinic.close_time}</p>
-              </>
-            )}
-          </Card>
-
-          {/* Services Offered */}
-          <Card className="p-4 md:col-span-2">
-              <h3 className="services-title">Services Offered</h3>
-              {isEditing ? (
-                  <div className="edit-mode">
-                      {formData.services.map((service, index) => (
-                        <div key={index} className="border p-4 rounded-lg mb-4 bg-white shadow-sm">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                            <input
-                              type="text"
-                              placeholder="Service Name"
-                              value={service.name}
-                              onChange={(e) => handleServiceChange(index, "name", e.target.value)}
-                              className="input-field2"
-                            />
-                            <input
-                              type="text"
-                              placeholder="Description"
-                              value={service.description}
-                              onChange={(e) => handleServiceChange(index, "description", e.target.value)}
-                              className="input-field2"
-                            />
-                            <input
-                              type="number"
-                              placeholder="Estimated Duration (minutes)"
-                              value={service.estimated_duration}
-                              onChange={(e) => handleServiceChange(index, "estimated_duration", e.target.value)}
-                              className="input-field2"
-                            />
-                            <input
-                              type="text"
-                              placeholder="Rate"
-                              value={service.rate}
-                              onChange={(e) => handleServiceChange(index, "rate", e.target.value)}
-                              className="input-field2"
-                            />
-                          </div>
-                          <Button
-                            icon="pi pi-trash"
-                            className="p-button-danger"
-                            onClick={() => removeService(index)}
-                            label="Remove Service"
-                          />
-                        </div>
-                      ))}
-                      <Button label="Add Service" className="add-service-btn" onClick={addService} />
-                  </div>
-              ) : (
-                <ul className="services-list list-disc list-inside">
-                {clinic.services?.map((service, index) => (
-                  <li key={index}>{service.name}</li>
-                ))}
-              </ul>              
-              )}
-          </Card>
-
-          <div className="edit-container md:col-span-2">
-              {isEditing ? (
-                  <Button label="Save Changes" className="save-button" onClick={handleSave} />
-              ) : (
-                  <Button label="Edit Profile" className="edit-button" onClick={() => setIsEditing(true)} />
-              )}
-          </div>
-
-
-        </div>
+      <Toast ref={toast} position="bottom-right" />
+      
+      {/* Clinic Header */}
+      <div className="text-center mb-6">
+        <img src={`http://localhost:5000${clinic.logo}`} alt="Clinic Logo" className="cliniclogo mb-4" />
+        <h1 className="text-xl font-bold">{clinic.name}</h1>
       </div>
+
+      <div className="grid-container grid gap-6">
+
+        {/* Clinic Information */}
+        <Card className="p-4" style={{ maxWidth: '100%', width: '500px', margin: '0 auto' }}>
+          <h1 className="text-lg font-bold mb-6">Location & Contact</h1>
+
+          {isEditing ? (
+            <>
+              <div className="p-field">
+                <label htmlFor="address">Address</label>
+                <InputText
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className="p-inputtext p-component w-full"
+                />
+              </div>
+              <div className="p-field">
+                <label htmlFor="contact_number">Contact Number</label>
+                <InputText
+                  id="contact_number"
+                  name="contact_number"
+                  value={formData.contact_number}
+                  onChange={handleInputChange}
+                  className="p-inputtext p-component w-full"
+                />
+              </div>
+              <div className="p-field">
+                <label htmlFor="description">Description</label>
+                <InputTextarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full"
+                />
+              </div>
+              <div className="p-field">
+                <label htmlFor="days">Days</label>
+                <InputText
+                  id="days"
+                  name="days"
+                  value={formData.days}
+                  onChange={handleInputChange}
+                  className="p-inputtext p-component w-full"
+                />
+              </div>
+              <div className="grid gap-4">
+                <div className="p-field">
+                  <label htmlFor="open_time">Opening Time</label>
+                  <InputText
+                    id="open_time"
+                    type="time"
+                    name="open_time"
+                    value={formData.open_time}
+                    onChange={handleInputChange}
+                    className="p-inputtext p-component w-full"
+                  />
+                </div>
+                <div className="p-field">
+                  <label htmlFor="close_time">Closing Time</label>
+                  <InputText
+                    id="close_time"
+                    type="time"
+                    name="close_time"
+                    value={formData.close_time}
+                    onChange={handleInputChange}
+                    className="p-inputtext p-component w-full"
+                  />
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <h3><strong>Address:</strong> {clinic.address}</h3>
+              <h3><strong>Contact:</strong> {clinic.contact_number}</h3>
+              <h3><strong>Description:</strong> {clinic.description}</h3>
+              <h3><strong>Schedule:</strong> {clinic.days}, {clinic.open_time} - {clinic.close_time}</h3>
+            </>
+          )}
+        </Card>
+
+        {/* Services Offered */}
+        <Card className="p-4" style={{ maxWidth: '100%', width: '500px', margin: '0 auto' }}>
+          <h1 className="services-title text-lg font-bold mb-4">Services Offered</h1>
+          {isEditing ? (
+            <>
+              {formData.services.map((service, index) => (
+                <div key={index} 
+                className="border p-4 rounded-lg mb-6 bg-white shadow-sm"
+                style={{ marginBottom: "1.5rem" }}
+                >
+                  <div className="grid gap-4">
+                    <div className="p-field">
+                      <label htmlFor={`service-name-${index}`}>Service Name</label>
+                      <InputText
+                        id={`service-name-${index}`}
+                        placeholder="Service Name"
+                        value={service.name}
+                        onChange={(e) => handleServiceChange(index, "name", e.target.value)}
+                        className="p-inputtext p-component w-full"
+                      />
+                    </div>
+                    <div className="p-field">
+                      <label htmlFor={`service-description-${index}`}>Description</label>
+                      <InputTextarea
+                        id={`service-description-${index}`}
+                        placeholder="Service Description"
+                        value={service.description}
+                        onChange={(e) => handleServiceChange(index, "description", e.target.value)}
+                        rows={3}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="p-field">
+                      <label htmlFor={`service-duration-${index}`}>Estimated Duration</label>
+                      <InputNumber
+                        id={`service-duration-${index}`}
+                        placeholder="Duration (minutes)"
+                        value={service.estimated_duration}
+                        onValueChange={(e) => handleServiceChange(index, "estimated_duration", e.value)}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="p-field">
+                      <label htmlFor={`service-rate-${index}`}>Rate</label>
+                      <InputText
+                        id={`service-rate-${index}`}
+                        placeholder="Rate"
+                        value={service.rate}
+                        onChange={(e) => handleServiceChange(index, "rate", e.target.value)}
+                        className="p-inputtext p-component w-full"
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    icon="pi pi-trash"
+                    className="p-button-danger p-button-outlined"
+                    onClick={() => removeService(index)}
+                    label="Remove Service"
+                  />
+                  <h3>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</h3>
+                </div>
+                
+              ))}
+              <Button
+                label="Add Service"
+                icon="pi pi-plus"
+                className="p-button-success"
+                onClick={addService}
+              />
+            </>
+          ) : (
+            <ul className="services-list list-disc list-inside">
+              {clinic.services?.map((service, index) => (
+                <li key={index}>{service.name}</li>
+              ))}
+            </ul>
+          )}
+        </Card>
+
+        {/* Edit or Save Button */}
+        <div className="bubutton">
+          {isEditing ? (
+            <Button label="Save Changes" className="custom-save-btn" onClick={handleSave} />
+          ) : (
+            <Button label="Edit Profile" className="custom-edit-btn" onClick={() => setIsEditing(true)} />
+          )}
+        </div>
+
+      </div>
+    </div>
     );
   };
 

@@ -28,7 +28,9 @@ export default function UserProfilePage() {
     const [selectedDate, setSelectedDate] = useState(null);
     const [filteredAppointments, setFilteredAppointments] = useState([]);
     const toast = useRef(null);
+    const [searchQuery, setSearchQuery] = useState("");
 
+    
     const [owner, setOwner] = useState({
         firstname: "",
         lastname: "",
@@ -281,6 +283,21 @@ export default function UserProfilePage() {
         setFilteredAppointments(filtered);
     };
 
+    const AppointmentHistory = ({ appointments }) => {
+        const [searchQuery, setSearchQuery] = useState(""); // State for search query
+        
+        const filteredAppointments = searchQuery
+        ? appointments.filter((appt) => appt.pet_id?.name === searchQuery)
+        : appointments;
+    }
+
+    const petOptions = pets.map((pet) => ({
+        label: pet.name,
+        value: pet.name,
+      }));
+
+
+      
 
     return (
         <div>
@@ -458,15 +475,37 @@ export default function UserProfilePage() {
 
                     <Card 
                         title={<span style={{ fontSize: "25px", fontWeight: "bold" }}>Appointment History</span>} 
-                        className="appointment-history">
-                        <DataTable value={appointments} paginator rows={6} className="p-datatable-striped p-datatable-gridlines">
-                            <Column field="date" header="📅 Date" sortable style={{ minWidth: '12rem', padding: '0.75rem' }} body={(rowData) => formatDateTime(rowData.date)}/>
-                            <Column field="pet_id.name" header="🐾 Pet Name" sortable style={{ minWidth: '12rem', padding: '0.75rem' }} />
-                            <Column field="notes" header="🩺 Reason" sortable style={{ minWidth: '12rem', padding: '0.75rem' }} />
-                            <Column field="vetName" header="👨‍⚕️ Vet Name" sortable style={{ minWidth: '12rem', padding: '0.75rem' }} />
-                            <Column field="status" header="Status" sortable style={{ minWidth: '12rem', padding: '0.75rem' }} />
+                        className="appointment-history"
+                        >
+                        {/* Force-align search box to the right */}
+                        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem" }}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <span style={{ fontWeight: "bold", marginRight: "0.5rem" }}>Choose a Pet:</span>
+                            <Dropdown
+                            value={searchQuery}
+                            options={petOptions}
+                            onChange={(e) => setSearchQuery(e.value)}
+                            placeholder="Select a Pet"
+                            className="p-inputtext-sm"
+                            style={{ width: "200px", height: "50px" }}
+                            showClear
+                            />
+                        </div>
+                        </div>
+
+                        <DataTable
+                            value={appointments}
+                            paginator
+                            rows={6}
+                            className="p-datatable-striped p-datatable-gridlines"
+                        >
+                            <Column field="date" header="📅 Date" sortable body={(rowData) => formatDateTime(rowData.date)} />
+                            <Column field="pet_id.name" header="🐾 Pet Name" sortable />
+                            <Column field="notes" header="🩺 Reason" sortable />
+                            <Column field="vetName" header="👨‍⚕️ Vet Name" sortable />
+                            <Column field="status" header="Status" sortable />
                         </DataTable>
-                    </Card>
+                     </Card>
                 </div>
             </div>
     );

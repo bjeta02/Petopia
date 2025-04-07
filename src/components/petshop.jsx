@@ -454,7 +454,7 @@ function PetShop() {
               >
                 {loading ? (
                   <span className="loading-text">
-                    Booking... <span className="pet-emoji">🐱💨</span>
+                    Booking <span className="pet-emoji">...</span>
                   </span>
                 ) : "SUBMIT"}
               </button>
