@@ -364,9 +364,35 @@ const VetAppointments = () => {
         </div>  
       </Dialog>
 
-      <Dialog visible={qrDialog} header="Scan QR Code" onHide={() => setQrDialog(false)}>
-      <QrReader delay={300} onError={handleError} onScan={handleScan} style={{ width: "100%" }} />
-    </Dialog>
+      <Dialog visible={qrDialog} header="Scan QR Code" onHide={() => setQrDialog(false)} style={{ width: '100%', maxWidth: '600px' }}>
+        <div style={{ width: '100%', height: '400px' }}>
+        <QrReader
+          constraints={{ facingMode: 'environment' }}
+          onResult={(result, error) => {
+            if (!!result) {
+              const scannedText = result.getText?.(); // Safe call for newer versions
+              console.log("✅ QR Code Scanned:", scannedText);
+
+              if (scannedText) {
+                // Optional: check if it's a URL
+                if (scannedText.startsWith("http://") || scannedText.startsWith("https://")) {
+                  setQrDialog(false); // close the QR dialog first
+                  window.location.href = scannedText; // redirect to the URL
+                } else {
+                  console.warn("Scanned data is not a valid URL:", scannedText);
+                }
+              }
+            }
+
+            if (!!error) {
+              // Optional: suppress spammy errors
+              // console.warn("QR scanning error:", error);
+            }
+          }}
+          style={{ width: '100%', height: '100%' }}
+        />
+        </div>
+      </Dialog>
     </div>
   );
 };

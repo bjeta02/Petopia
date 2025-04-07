@@ -1,9 +1,21 @@
 import express from "express";
-import { getAppointments, getAppointmentsByOwner, getAppointmentsByClinic, getOwnersWithAppointmentsInClinic, bookAppointment, bookAppointmentForClinic, verifyAppointmentOTP,  updateAppointment, deleteAppointment } from "../controller/appointmentController.js";
+import { 
+    getAppointments, 
+    getAppointmentById,  // ✅ Keep only one instance
+    getAppointmentsByOwner, 
+    getAppointmentsByClinic, 
+    getOwnersWithAppointmentsInClinic, 
+    bookAppointment, 
+    bookAppointmentForClinic, 
+    verifyAppointmentOTP,  
+    updateAppointment, 
+    deleteAppointment 
+} from "../controller/appointmentController.js";
 
 const router = express.Router();
 
 router.get("/appointments", getAppointments);
+router.get("/appointments/qr/:id", getAppointmentById);
 router.get("/appointments/:ownerId", getAppointmentsByOwner);
 router.get("/appointments/clinics/:clinicId", getAppointmentsByClinic);
 router.get("/appointments/owners/:clinicId", getOwnersWithAppointmentsInClinic);

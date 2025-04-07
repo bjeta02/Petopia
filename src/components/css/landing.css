@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #3988d6, #6038b6);
+  background: linear-gradient(135deg, #3988d6, #14967f);
   padding: 20px;
 }
 
@@ -61,7 +61,7 @@
 .button-landing {
   margin-top: 15px;
   padding: 14px 24px;
-  background: #6c5ce7;
+  background: #14967f;
   color: white;
   border: none;
   border-radius: 8px;
@@ -74,7 +74,7 @@
 }
 
 .button-landing:hover {
-  background: #4834d4;
+  background: #0e7a66;
   transform: scale(1.05);
 }
 

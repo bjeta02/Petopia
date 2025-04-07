@@ -79,7 +79,9 @@ export const getAppointmentById = async (req, res) => {
         const appointmentWithDetails = {
             ...appointment.toObject(),
             ownerName,
-            petDetails
+            petDetails,
+            petName: petDetails, // if you want petName separately
+            owner: ownerName // if you want owner separately
         };
 
         res.status(200).json(appointmentWithDetails);
@@ -296,7 +298,7 @@ export const bookAppointment = async (req, res) => {
             Owner.findById(owner_id)
         ]);
 
-        const verifyUrl = `http://192.168.0.22:3000/verify?appointmentId=${savedAppointment._id}`;
+        const verifyUrl = `http://localhost:3000/verify?appointmentId=${savedAppointment._id}`;
         const qrCode = await generateQRCode(verifyUrl);
 
         // ✅ Generate PDF

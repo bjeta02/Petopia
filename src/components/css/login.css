@@ -12,7 +12,7 @@
 /* Stylish login box */
 .container-box {
   background: white;
-  padding: 2.5rem;
+  padding: 2rem 4rem 4rem 4rem;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -25,9 +25,26 @@
   transform: translateY(-5px);
 }
 
+.container-box h1 {
+  font-size: 3.5rem;
+  color: #000000;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing: 0.5px;
+  text-align: start;
+}
+
+.container-box p {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 2rem;
+  text-align: start;
+}
+
 /* Wider input fields */
 .input-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
   text-align: left;
   width: 100%;
 }
@@ -50,9 +67,9 @@
 }
 
 .input-group input:focus {
-  border-color: #6c5ce7;
+  border-color: #14967f;
   outline: none;
-  box-shadow: 0 0 6px rgba(108, 92, 231, 0.5);
+  box-shadow: 0 0 6px rgba(18, 197, 164, 0.5)
 }
 
 /* Login button */
@@ -74,23 +91,26 @@
 }
 
 /* Register link */
-.register-link {
-  margin-top: 1rem;
+.login-link {
+  margin-top: 1.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.register-link p {
+.login-link p {
   color: #333333;
 }
 
-.register-link a {
-  color: #1627e7;
+.login-link a {
+  color: #14967f;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;
 }
 
-.register-link a:hover {
-  color: #4834d4;
+.login-link a:hover {
+  color: #14967f;
   text-decoration: underline;
 }
 
@@ -105,35 +125,109 @@
   border-radius: 5px;
 }
 
-.google-login {
+/* Add straight line separator style */
+.or-separator {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.or-separator::before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.or-separator span {
+  margin: 0 10px; /* Space between the text and the lines */
+  font-size: 1.5rem;
+  color: #737373;
+}
+
+.or-separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.google-login {
+  width: 100%; /* Make it take the full width */
+  margin-top: 1rem;
 }
 
 .google-button {
-  width: 50px; /* Adjust size */
-  height: 50px;
-  border-radius: 50%; /* Make it a circle */
+  width: 100%; /* Take up full width like the login button */
+  padding: 14px; /* Same padding as the login button */
+  background: #ffffff; /* Google blue background */
+  color: rgb(0, 0, 0);
+  border: 2px solid #ccc;
+  border-radius: 6px; /* Same border radius as login button */
+  font-size: 1.5rem; /* Match font size */
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
   display: flex;
   align-items: center;
-  justify-content: center; /* Ensure perfect centering */
-  border: 1px solid #ccc; /* ✅ Add a subtle border */
-  background-color: white;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s;
-  padding: 0; /* Remove any default padding */
+  justify-content: center;
+  gap: 1rem;
 }
 
 .google-button:hover {
-  background-color: #f7f7f7;
-  transform: scale(1.1);
+  background: #efefef; /* Slightly darker blue when hovered */
+  transform: scale(1.05); /* Slight scaling effect on hover */
 }
 
 .google-logo {
   width: 24px; /* Adjust logo size */
   height: 24px;
 }
+
+/* Flexbox container for Remember Me and Forgot Password */
+.remember-forgot-container {
+  display: flex;
+  justify-content: space-between; /* Space out the items */
+  align-items: center; /* Align items vertically in the center */
+  margin-top: 0.5rem; /* Adjust the top margin if necessary */
+  margin-bottom: 0.5rem; /* Adjust the bottom margin if necessary */
+}
+
+/* Remember Me checkbox */
+.remember-me {
+  display: flex;
+  align-items: center; /* Align checkbox and label horizontally */
+  gap: 0.5rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.remember-me label {
+  font-size: 1.2rem; /* Adjust the font size to match Forgot Password */
+  color: #333;
+  line-height: 1.5; /* Adjust line-height to better center label with checkbox */
+  margin-top: 0.6rem;
+}
+
+.remember-me input[type="checkbox"] {
+  vertical-align: middle; /* Align checkbox vertically in the center */
+}
+
+/* Forgot Password link */
+.forgot-password-link {
+  font-size: 1rem; /* Match font size with Remember Me */
+}
+
+.forgot-password-link a {
+  font-size: 1.2rem;
+  color: blue;
+  text-decoration: none;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 500px) {

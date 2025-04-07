@@ -1,0 +1,63 @@
+.terms-and-conditions {
+    max-width: 800px; /* Set a maximum width for the content */
+    min-height: 100vh;
+    margin: 20px auto; /* Center the content horizontally */
+    padding: 20px; /* Add padding around the content */
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    font-family: 'Source Sans Pro', sans-serif; 
+    line-height: 1.6; /* Increase line height for readability */
+    margin-bottom: 50px;
+  }
+  
+  h1 {
+    font-size: 2.5em; /* Larger font size for the main heading */
+    color: #333; /* Dark color for the heading */
+    margin-bottom: 20px; /* Space below the heading */
+  }
+  
+  h2 {
+    font-size: 1em; /* Font size for subheadings */
+    color: #555; /* Slightly lighter color for subheadings */
+    font-weight: 600;
+    margin-top: 20px; /* Space above subheadings */
+    margin-bottom: 10px; /* Space below subheadings */
+  }
+  
+  p {
+    font-size: 1em; /* Standard font size for paragraphs */
+    color: #666; /* Medium gray color for text */
+    margin-bottom: 15px; /* Space below paragraphs */
+  }
+  
+  ul {
+    margin-left: 20px; /* Indent unordered lists */
+    margin-bottom: 15px; /* Space below lists */
+  }
+  
+  li {
+    margin-bottom: 10px; /* Space between list items */
+  }
+  
+  strong {
+    color: #000; /* Bold text color */
+  }
+  
+  @media (max-width: 600px) {
+    .terms-and-conditions {
+      padding: 15px; /* Reduce padding on smaller screens */
+    }
+  
+    h1 {
+      font-size: 2em; /* Adjust heading size for smaller screens */
+    }
+  
+    h2 {
+      font-size: 1.5em; /* Adjust subheading size for smaller screens */
+    }
+  
+    p, li {
+      font-size: 0.9em; /* Adjust font size for smaller screens */
+    }
+  }

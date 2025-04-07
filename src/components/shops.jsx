@@ -16,6 +16,7 @@ function Shops() {
   const [searchQuery, setSearchQuery] = useState("");  // Search query state
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");  // Debounced search query
   const navigate = useNavigate();
+  const [locationPermission, setLocationPermission] = useState(null); // State for location access
   const [userLocation, setUserLocation] = useState(null); // State for user's location
   const [storeHours, setStoreHours] = useState({ open_time: "", close_time: "" });
 
@@ -38,27 +39,28 @@ useEffect(() => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
-          console.log(`Location found: Lat ${position.coords.latitude}, Lng ${position.coords.longitude}`);
+          setLocationPermission(true); // User accepted location access
         },
         (error) => {
-          console.error("Error getti  ng location:", error);
+          setLocationPermission(false);
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              alert("Location access denied. Enable location services or allow location permissions in your browser settings.");
+              console.log("Location access denied. Enable location services or allow location permissions in your browser settings.");
               break;
             case error.POSITION_UNAVAILABLE:
-              alert("Location information is unavailable.");
+              console.log("Location information is unavailable.");
               break;
             case error.TIMEOUT:
-              alert("Location request timed out. Try again.");
+              console.log("Location request timed out. Try again.");
               break;
             default:
-              alert("An unknown error occurred while retrieving location.");
+              console.log("An unknown error occurred while retrieving location.");
           }
         }
       );
     } else {
       alert("Geolocation is not supported by this browser.");
+      setLocationPermission(false);
     }
   };
 
@@ -66,6 +68,7 @@ useEffect(() => {
 }, []);
 
 
+// Fetch Shops based on filters
 useEffect(() => {
   const fetchShops = async () => {
     try {
@@ -74,7 +77,7 @@ useEffect(() => {
           location: selectedLocation,
           service: selectedService,
           search: debouncedSearchQuery,
-        }
+        },
       });
 
       console.log("Shops response:", response.data);
@@ -101,14 +104,14 @@ useEffect(() => {
       const shopsWithTime = activeShops.map(shop => ({
         ...shop,
         open_time: formatTime(shop.open_time),
-        close_time: formatTime(shop.close_time)
+        close_time: formatTime(shop.close_time),
       }));
 
-      // Calculate distance for each shop
+      // Calculate distance for each shop if location permission is granted
       const shopsWithDistance = await Promise.all(shopsWithTime.map(async (shop) => {
         let distance = Infinity; // Default to Infinity
 
-        if (shop.latitude && shop.longitude) {
+        if (userLocation && locationPermission) {
           distance = calculateDistance(userLocation, {
             latitude: shop.latitude,
             longitude: shop.longitude,
@@ -137,10 +140,8 @@ useEffect(() => {
     }
   };
 
-  if (userLocation) {
-    fetchShops();
-  }
-}, [selectedLocation, selectedService, debouncedSearchQuery, userLocation]);
+  fetchShops();
+}, [selectedLocation, selectedService, debouncedSearchQuery, userLocation, locationPermission]);
 
 
   const geocodeAddress = async (address) => {
@@ -336,7 +337,9 @@ useEffect(() => {
               <div className="shop-schedule">
                 <p>📅 Schedule: {shop.days}</p>
                 <p>🕘 {shop.open_time} - {shop.close_time}</p>
-                <p>📍 Distance: {shop.distance !== undefined ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
+                {locationPermission && shop.distance !== undefined && (
+                    <p>📍 Distance: {shop.distance !== Infinity ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
+                  )}
               </div>
               <div className="shop-actions">
                 <button 

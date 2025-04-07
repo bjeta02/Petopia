@@ -26,8 +26,11 @@ import VetLayout from "./components/VetLayout";
 import VetDashboard from "./components/VetDashboard";
 import VetAppointments from "./components/VetAppointments";
 import VetHistory from "./components/VetHistory";
+import TermsServices from "./components/terms-conditions";
+import PrivacyPolicy from "./components/privacy-policy";
 import VetClinic from "./components/vetClinic";
 import GoogleAuthSuccess from "./components/googleAuthSuccess";
+import VerifyAppointment from "./components/verifyAppointments";
 import { AuthProvider } from "./components/utils/auth"; // Import the AuthProvider
 import ProtectedRoute from "./middleware/protectedRoute"; // Import protected route
 import PublicRoute from "./middleware/publicRoute"; // Import public route
@@ -67,6 +70,10 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/google-auth-success" element={<GoogleAuthSuccess />} />
         </Route>
+
+        <Route path="/verify" element={<VerifyAppointment />} />
+        <Route path="/terms-services" element={<TermsServices />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
         <Route path="/findavet" element={<Findavet />} />
         <Route path="/shops" element={<Shops />} />

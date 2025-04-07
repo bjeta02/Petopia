@@ -3,14 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../components/css/register.css";
 
+
 const Register = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // 🔹 Added useNavigate for redirection
+  const navigate = useNavigate();
+
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -22,24 +25,22 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-  
+
     try {
       const response = await axios.post("http://localhost:5000/api/owners/register", {
         firstname,
         lastname,
         email,
         password,
-        role: "owner"  // 🔹 Explicitly set role as "owner"
+        role: "owner"
       });
-  
+
       alert(response.data.message);
-  
-      // 🔹 Redirect to OTP verification page
       navigate(`/otp?email=${encodeURIComponent(email)}`);
     } catch (error) {
       console.error(
@@ -49,14 +50,14 @@ const Register = () => {
       alert(error.response ? error.response.data.message : "An error occurred. Please try again.");
     }
   };
-  
 
   return (
     <div className="register-center-container">
       <div className="register-container-box">
-        <h1>Register</h1>
+        <h1 className="register-title">Sign Up</h1>
+        <p className="register-subtitle">Please fill the form below to create your account.</p>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
+          <div className="register-input-group">
             <label htmlFor="firstname">First Name</label>
             <input
               type="text"
@@ -67,7 +68,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="register-input-group">
             <label htmlFor="lastname">Last Name</label>
             <input
               type="text"
@@ -78,7 +79,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="register-input-group">
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -89,7 +90,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="register-input-group">
             <label htmlFor="password">Password</label>
             <input
               type="password"
@@ -100,7 +101,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="register-input-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               type="password"
@@ -112,7 +113,26 @@ const Register = () => {
             />
           </div>
 
-          <button type="submit" className="login-button">Register</button>
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="privacy"
+              checked={agreePrivacy}
+              onChange={(e) => setAgreePrivacy(e.target.checked)}
+              required
+            />
+            <label htmlFor="privacy">
+              By signing up you agree to our <a href="/terms-services" target="_blank">Terms and conditions</a> and <a href="/privacy-policy" target="_blank">Privacy policy</a>.
+            </label>
+          </div>
+
+          <button 
+            type="submit" 
+            className="register-button" 
+            disabled={!agreePrivacy} // Disable the button when agreePrivacy is false
+          >
+            Sign Up
+          </button>
         </form>
 
         <div className="register-link">

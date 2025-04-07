@@ -39,6 +39,7 @@
     "primeicons": "^7.0.0",
     "primereact": "^10.9.2",
     "qrcode": "^1.5.4",
+    "qrcode.react": "^4.2.0",
     "react": "^17.0.1",
     "react-bootstrap": "^2.10.5",
     "react-datepicker": "^8.0.0",

@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false); // State for Remember Me checkbox
   const navigate = useNavigate();
   const { role, setUserInfo } = useAuth(); // Ensure setUser Info is available
 
@@ -76,6 +77,7 @@ const Login = () => {
       <Navigation />
       <div className="container-box">
         <h1>Login</h1>
+        <p className="register-subtitle">Please login your account to continue.</p>
 
         {error && <p className="error-message">{error}</p>} {/* 🔥 Display Error */}
 
@@ -102,18 +104,42 @@ const Login = () => {
               required
             />
           </div>
+
+          {/* Remember Me and Forgot Password in two rows */}
+          <div className="remember-forgot-container">
+            <div className="remember-me">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <label htmlFor="rememberMe">Remember Me</label>
+            </div>
+
+            <div className="forgot-password-link">
+              <a href="/forgot-password">Forgot Password?</a>
+            </div>
+          </div>
+
           <button type="submit" className="login-button" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
+        {/* Or Login With Separator */}
+        <div className="or-separator">
+          <span>Or login with</span>
+        </div>
+
         <div className="google-login">
           <button onClick={handleGoogleLogin} className="google-button" disabled={loading}>
             <img src={googleLogo} alt="Google Logo" className="google-logo" />
+            <span>Login with Google</span>
           </button>
         </div>
 
-        <div className="register-link">
+        <div className="login-link">
           <p>Don't have an account? <a href="register">Register</a></p>
         </div>
       </div>

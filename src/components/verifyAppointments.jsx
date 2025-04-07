@@ -36,8 +36,8 @@ const VerifyAppointment = () => {
     <div>
       <h2>Verify Appointment</h2>
       <VerificationQRCode appointmentId={appointmentId} />
-      <p>Pet: {appointment.petName}</p>
-      <p>Owner: {appointment.owner}</p>
+      <p>Pet: {appointment.petDetails}</p> {/* or petName if you decide to use it */}
+      <p>Owner: {appointment.ownerName}</p>
       <p>Date: {appointment.date}</p>
 
       {/* Show Accept/Reject buttons only to clinics */}
