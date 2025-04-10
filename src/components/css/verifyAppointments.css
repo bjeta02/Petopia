@@ -1,0 +1,71 @@
+.verify-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f4f8;
+    padding: 20px;
+  }
+  
+  .verify-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .verify-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .qr-box {
+    margin-bottom: 20px;
+  }
+  
+  .info {
+    text-align: left;
+    margin-bottom: 20px;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+  }
+  
+  .verify-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+  }
+  
+  .verify-button.accept {
+    background-color: #4caf50;
+  }
+  
+  .verify-button.reject {
+    background-color: #f44336;
+  }
+  
+  .note {
+    margin-top: 20px;
+    color: #ff9800;
+  }
+  
+  .loading-text {
+    font-size: 18px;
+    color: #888;
+  }
+  

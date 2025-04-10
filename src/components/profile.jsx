@@ -480,7 +480,6 @@ export default function UserProfilePage() {
                         {/* Force-align search box to the right */}
                         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1rem" }}>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ fontWeight: "bold", marginRight: "0.5rem" }}>Choose a Pet:</span>
                             <Dropdown
                             value={searchQuery}
                             options={petOptions}

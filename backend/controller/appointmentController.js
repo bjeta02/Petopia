@@ -298,7 +298,7 @@ export const bookAppointment = async (req, res) => {
             Owner.findById(owner_id)
         ]);
 
-        const verifyUrl = `http://localhost:3000/verify?appointmentId=${savedAppointment._id}`;
+        const verifyUrl = `http://192.168.1.13:3000/verify?appointmentId=${savedAppointment._id}`;
         const qrCode = await generateQRCode(verifyUrl);
 
         // ✅ Generate PDF

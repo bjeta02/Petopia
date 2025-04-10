@@ -370,35 +370,67 @@ const VetAppointments = () => {
         </div>  
       </Dialog>
 
-      <Dialog visible={qrDialog} header="Scan QR Code" onHide={() => setQrDialog(false)} style={{ width: '100%', maxWidth: '600px' }}>
-        <div style={{ width: '100%', height: '400px' }}>
-        <QrReader
-          constraints={{ facingMode: 'environment' }}
-          onResult={(result, error) => {
-            if (!!result) {
-              const scannedText = result.getText?.(); // Safe call for newer versions
-              console.log("✅ QR Code Scanned:", scannedText);
-
-              if (scannedText) {
-                // Optional: check if it's a URL
-                if (scannedText.startsWith("http://") || scannedText.startsWith("https://")) {
-                  setQrDialog(false); // close the QR dialog first
-                  window.location.href = scannedText; // redirect to the URL
-                } else {
-                  console.warn("Scanned data is not a valid URL:", scannedText);
+      <Dialog 
+        visible={qrDialog} 
+        header="Scan QR Code" 
+        onHide={() => setQrDialog(false)} 
+        style={{ width: '800px', height: '800px', maxWidth: 'none', margin: 0, padding: 0 }}
+        modal 
+        closable={true}
+        dismissableMask={true}
+        draggable={false}
+        resizable={false}
+        contentStyle={{ padding: 0, overflow: 'hidden', height: '100%' }}
+      >
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          backgroundColor: '#000'
+        }}>
+          <QrReader
+            constraints={{ facingMode: 'environment' }}
+            videoStyle={{ objectFit: 'cover', width: '100%', height: '100%' }} // <--- this part!
+            containerStyle={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '100%' }}
+            onResult={(result, error) => {
+              if (!!result) {
+                const scannedText = result.getText?.();
+                console.log("✅ QR Code Scanned:", scannedText);
+                if (scannedText) {
+                  if (scannedText.startsWith("http://") || scannedText.startsWith("https://")) {
+                    setQrDialog(false);
+                    window.location.href = scannedText;
+                  } else {
+                    console.warn("Scanned data is not a valid URL:", scannedText);
+                  }
                 }
               }
-            }
+              if (!!error) {
+                // handle error if needed
+              }
+            }}
+          />
 
-            if (!!error) {
-              // Optional: suppress spammy errors
-              // console.warn("QR scanning error:", error);
-            }
-          }}
-          style={{ width: '100%', height: '100%' }}
-        />
+          {/* Green guide box overlay */}
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '260px',
+            height: '260px',
+            transform: 'translate(-50%, -50%)',
+            border: '4px solid limegreen',
+            borderRadius: '12px',
+            boxShadow: '0 0 20px rgba(0, 255, 0, 0.5)',
+            zIndex: 10,
+            pointerEvents: 'none',
+          }} />
         </div>
       </Dialog>
+
+
     </div>
   );
 };
