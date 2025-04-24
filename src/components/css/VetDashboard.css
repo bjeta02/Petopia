@@ -1,140 +1,267 @@
-/* Add Appointment Modal */
-.add-appointment {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  background: #ffffff;
-  border-radius: 8px;
+.clinic-dashboard {
+  padding: 0 0 0 0;
+  margin-top: -19px;
 }
 
-/* Input Fields */
-.add-appointment input,
-.add-appointment .p-calendar {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: all 0.3s ease-in-out;
-}
-
-.add-appointment input:focus,
-.add-appointment .p-calendar:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: none;
-}
-
-/* Calendar Styling */
-.p-calendar {
-  background: white;
-}
-
-/* Button Styling */
-.add-appointment button {
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  background-color: #45c18d;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease-in-out;
-}
-
-.add-appointment button:hover {
-  background-color: #028354;
-}
-
-/* Add Appointment Button */
-.addapp-button {
-  background: #45c18d; /* Blue-green color */
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease-in-out, transform 0.2s;
-}
-
-.addapp-button:hover {
-  background: #0c9083; /* Darker blue-green on hover */
-  transform: scale(1.05);
-}
-
-.addapp-button:active {
-  background: #048178; /* Even darker shade for click effect */
-  transform: scale(0.98);
-}
-
-/* 🔹 FullCalendar Navigation Buttons (Today, Previous, Next) */
-.fc-toolbar-chunk button {
-  background: #007bff; /* Blue */
-  color: white;
-  border-radius: 5px;
-  padding: 8px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  transition: 0.3s ease-in-out;
-  border: none;
-  cursor: pointer;
-}
-
-.fc-toolbar-chunk button:hover {
-  background: #0056b3; /* Darker Blue */
-  transform: scale(1.1);
-}
-
-/* 🔹 Style for the 'Today' Button */
-.fc-toolbar-chunk .fc-today-button {
-  background: #33b67f !important; /* Green */
-  border-radius: 5px;
-  padding: 8px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  transition: 0.3s ease-in-out;
-}
-
-.fc-toolbar-chunk .fc-today-button:hover {
-  background: #18824f !important; /* Darker Green */
-}
-
-/* 🔹 Custom Styling for Arrows (Previous & Next) */
-.fc-prev-button, .fc-next-button {
-  background: #34c588 !important; /* Orange */
-  border-radius: 5px;
-  padding: 8px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  transition: 0.3s ease-in-out;
-}
-
-.fc-prev-button:hover, .fc-next-button:hover {
-  background: #3ee29b !important; /* Darker Orange */
-  transform: scale(1.1);
-}
-
-/* 🔹 Increase visibility of Calendar Header */
-.fc-toolbar-title {
-  font-size: 20px;
-  font-weight: bold;
+.dashboard-title {
+  text-align: start;
+  margin-bottom: 0px;
   color: #333;
 }
 
-/* 🔹 Style for Calendar Events */
-.fc-event {
-  background: #ff9800; /* Orange */
-  border: none;
-  color: white;
-  font-size: 14px;
-  border-radius: 4px;
-  padding: 4px;
+
+/* General grid container */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-top: 20px;
 }
 
-.fc-event:hover {
-  background: #e68900; /* Darker Orange */
+/* General grid item */
+.grid-item {  
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start; /* Center content vertically */
+}
+
+/* Header Row Styles */
+.header-card {
+  padding: 5px;
+  border-radius: 10px;
+  color: #fff;
+  text-align: start;
+  background-color: #ffffff; /* Green background for header cards */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Fixed height for header cards */
+  width: 100%;
+}
+
+.header-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;  /* You can also set this if you want to override default */
+  margin: 0;
+}
+
+.header-card p {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #015142;  /* Change this to whatever color you prefer */
+  margin: 0;
+}
+
+/* Middle Row Styles */
+.middle-card {
+  padding: 5px;
+  border-radius: 10px;
+  color: #333;
+  text-align: start;
+  background-color: #fff; /* White background for middle cards */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Fixed height for header cards */
+  width: 100%;
+}
+
+.middle-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  color: #333;  /* You can also set this if you want to override default */
+}
+
+.middle-card ul {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0f7764;  /* Change this to whatever color you prefer */
+  margin: 0;
+}
+
+.middle-card .p-card-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
+.appointment-header {
+  display: flex;
+  justify-content: flex-start;
+  font-weight: bold;
+  padding: 0.2rem 0;
+  padding-top: 0;
+  font-size: 13px;
+  gap: 35px;
+  
+}
+
+.appointment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #eef7f5;
+}
+
+.patient-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+  margin-left: 5px;
+}
+
+.patient-info {
+  flex: 1;
+  margin-left: 2rem;
+}
+
+.patient-info strong {
+  display: block;
+  color: #0f7764;
+}
+
+.patient-info p {
+  margin: 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.appointment-time {
+  border: 1px solid #ffffff;
+  background-color: #eef7f5;
+  padding: 0.3rem 0.6rem;
+  margin-right: 15px;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.see-all-link {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.see-all-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.see-all-link a:hover {
+  text-decoration: underline;
+}
+
+.next-patient-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.next-patient-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.next-patient-header {
+  display: flex;
+  align-items: center;
+}
+
+.patient-image img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.patient-basic {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.patient-basic strong {
+  display: block;
+  font-size: 16px;
+}
+
+.patient-id span {
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.next-patient-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.next-patient-details div {
+  display: flex;
+  flex-direction: column;
+}
+
+.next-patient-details span {
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.next-patient-details p {
+  margin: 0;
+  font-size: 12px;
+}
+
+
+
+/* Footer Row Styles */
+.footer-card {
+  padding: 5px;
+  border-radius: 10px;
+  color: #333;
+  text-align: start;
+  background-color: #ffffff; /* Orange background for footer cards */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Fixed height for header cards */
+  width: 100%;
+}
+
+.footer-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;  /* You can also set this if you want to override default */
+  margin: 0;
+}
+
+.footer-card p {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #14967f;  /* Change this to whatever color you prefer */
+  margin: 0;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.card-icon {
+  font-size: 5rem; /* Bigger icon */
+  color: #0e705e;  /* Blue shade */
+  
+}
+
+.icon-wrapper {
+  width: 100px;
+  height: 100px;
+  border: 4px solid #0e705e; /* Adjust the bar width here */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
 }

@@ -9,7 +9,7 @@ const PublicRoute = () => {
   if (userId) {
     // Redirect based on role
     return role === "admin" || role === "clinic" ? (
-      <Navigate to="/dashboard" replace />
+      <Navigate to="/vet-dashboard" replace />
     ) : (
       <Navigate to="/home" replace />
     );

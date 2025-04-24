@@ -38,8 +38,9 @@ function Findavet() {
 
   const handleServiceSelect = (service) => {
     setSelectedService(service);
-    setShowDropdown(false); // Hide dropdown when a service is selected
+    console.log("Navigating to:", `/shops?service=${service}`);
     navigate(`/shops?service=${service}`); // Navigate to the shops page with the selected service
+    setShowDropdown(false); // Hide dropdown when a service is selected
   };
 
   const handleInputFocus = () => {
@@ -86,7 +87,7 @@ function Findavet() {
                 <div 
                   key={index} 
                   className="dropdown-item"
-                  onClick={() => handleServiceSelect(service)} // Select a service on click
+                  onMouseDown={() => handleServiceSelect(service)}
                 >
                   {service}
                 </div>

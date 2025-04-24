@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Navigation } from "./navigation";
 import { useAuth } from "./utils/auth"
 import axios from "axios";
+import { Toast } from "primereact/toast"; // Import Toast
 import "../components/css/petshop.css";
 
 function PetShop() {
@@ -32,6 +33,7 @@ function PetShop() {
   const [selectedPet, setSelectedPet] = useState("");
   const [loading, setLoading] = useState(false); // New state for loading
   const [storeHours, setStoreHours] = useState({ open_time: "", close_time: "" });
+  const toast = useRef(null); // Create a ref for Toast
 
   useEffect(() => {
     const fetchClinicData = async () => {
@@ -65,6 +67,7 @@ function PetShop() {
         setServices(servicesResponse.data);
       } catch (error) {
         console.error("Error fetching clinic or services:", error);
+        toast.current.show({ severity: "error", summary: "Error", detail: "Failed to fetch clinic data." }); // Show error toast
       }
     };
 
@@ -91,6 +94,7 @@ function PetShop() {
           }
         } catch (error) {
           console.error("Error fetching owner data:", error);
+          toast.current.show({ severity: "error", summary: "Error", detail: "Failed to fetch owner data." });
         }
       }
     };
@@ -113,47 +117,13 @@ function PetShop() {
         setPets(response.data);
       } catch (error) {
         console.error("❌ Error fetching pets:", error.response ? error.response.data : error.message);
+        toast.current.show({ severity: "error", summary: "Error", detail: "Failed to fetch pets." }); // Show error toast
       }
     };    
 
     fetchClinicData();
     fetchOwnerData();
   }, [clinicId, ownerId, isGuest]);
-
-  // Function to fetch pet details based on selected pet ID
-  const fetchPetDetails = async (petId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:5000/api/pets/details/${petId}`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      // Assuming the response contains the pet details
-      const petDetails = response.data; // Adjust based on your API response structure
-      setPetBreed(petDetails.breed);
-      setPetGender(petDetails.gender);
-      setPetAge(petDetails.age);
-      setPetType(petDetails.type);
-    } catch (error) {
-      console.error("Error fetching pet details:", error);
-    }
-  };
-
-  // Convert 24-hour time to 12-hour format with AM/PM
-  const formatTime = (time) => {
-    const [hour, minute] = time.split(":");
-    const hourInt = parseInt(hour, 10);
-    const formattedHour = (hourInt % 12 || 12); // Convert 13 -> 1, 14 -> 2, etc.
-    const period = hourInt >= 12 ? "PM" : "AM";
-    return `${formattedHour}:${minute} ${period}`;
-  };
-
-
-
-  
 
   const handleSubmit = async () => {
     let newErrors = {};
@@ -197,21 +167,27 @@ function PetShop() {
   
       console.log("🚀 Sending appointment data:", appointmentData);
   
+      const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
+    
       if (isGuest) {
-        const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
-        alert(response.data.message);
+        if (toast.current) {
+          toast.current.show({ severity: "info", summary: "Info", detail: response.data.message });
+        }
         setOtpSent(true);
         setStep(4);
       } else {
-        const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
-        alert("✅ Appointment booked successfully!");
+        if (toast.current) {
+          toast.current.show({ severity: "success", summary: "Success", detail: "✅ Appointment booked successfully!" });
+        }
         navigate(`/home`);
       }
     } catch (error) {
       console.error("❌ Error creating appointment:", error);
-      alert("An error occurred while booking the appointment.");
+      if (toast.current) {
+        toast.current.show({ severity: "error", summary: "Error", detail: "An error occurred while booking the appointment." });
+      }
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -222,11 +198,11 @@ function PetShop() {
         otp,
       });
 
-      alert(response.data.message);
+      toast.current.show({ severity: "success", summary: "Success", detail: response.data.message }); // Show success toast
       navigate(`/appointment`);
     } catch (error) {
       console.error("Error verifying OTP:", error);
-      alert("Invalid or expired OTP.");
+      toast.current.show({ severity: "error", summary: "Error", detail: "Invalid or expired OTP." }); // Show error toast
     }
   };
 
@@ -256,29 +232,17 @@ function PetShop() {
   };
   
   return (
-    <div className="page-container">
-      <Navigation />
+    <div className={`page-container ${(step === 2 || step === 3) ? 'step-2-3-margin' : ''}`}>
+      <Toast ref={toast} position="bottom-right" />
       <div className="petshop-container">
-        {clinic && (
-          <div className="shop-info-book">
-            <img
-              src={`http://localhost:5000${clinic.logo}`}  // Fetch the logo dynamically
-              className="shop-logo-book" 
-            />
-            <h3>{clinic.name}</h3>
-            <p>{clinic.description}</p>
-          </div>
-        )}
-
-        <div className="form-container">
-          <div className="step-indicator">
-            <span className={step === 1 ? "step active" : "step"}>1</span>
-            <span className={step === 2 ? "step active" : "step"}>2</span>
-            <span className={step === 3 ? "step active" : "step"}>3</span>
-          </div>
-
+        <div className={`form-container ${step === 3 ? 'step-3-active' : ''}`}>
           {step === 1 && (
             <>
+              <div className="step-indicator">
+                <span className={step === 1 ? "step active" : "step"}>1</span>
+                <span className={step === 2 ? "step active" : "step"}>2</span>
+                <span className={step === 3 ? "step active" : "step"}>3</span>
+              </div>
               <h3>Welcome!</h3>
               <p>To book a service, please provide your details.</p>
               <button className="action-button" onClick={() => setStep(2)}>
@@ -290,6 +254,11 @@ function PetShop() {
           {step === 2 && (
             <>
               <button className="back-button" onClick={() => setStep(1)}>← Back</button>
+              <div className="step-indicator">
+                <span className={step === 1 ? "step active" : "step"}>1</span>
+                <span className={step === 2 ? "step active" : "step"}>2</span>
+                <span className={step === 3 ? "step active" : "step"}>3</span>
+              </div>
               <h3>Appointment Details</h3>
               <p><strong>Store hours: {storeHours.open_time} - {storeHours.close_time}</strong></p>
               <label className="form-label">SCHEDULED ON</label>
@@ -324,6 +293,11 @@ function PetShop() {
               <button className="back-button" onClick={() => setStep(2)}>
                 ← Back
               </button>
+              <div className="step-indicator">
+                <span className={step === 1 ? "step active" : "step"}>1</span>
+                <span className={step === 2 ? "step active" : "step"}>2</span>
+                <span className={step === 3 ? "step active" : "step"}>3</span>
+              </div>
               <h3>Pet & Owner Details</h3>
               <p>Please provide information about yourself and your pet.</p>
 
@@ -334,6 +308,7 @@ function PetShop() {
                   className={`input-field ${errors.firstname ? "error-field" : ""}`}
                   value={firstname}
                   onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Enter your firstname"
                 />
                 {errors.firstname && <p className="error-text ">{errors.firstname}</p>}
 
@@ -343,6 +318,7 @@ function PetShop() {
                   className={`input-field ${errors.lastname ? "error-field" : ""}`}
                   value={lastname}
                   onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Enter your lastname"
                 />
                 {errors.lastname && <p className="error-text">{errors.lastname}</p>}
 
@@ -352,6 +328,7 @@ function PetShop() {
                   className={`input-field ${errors.email ? "error-field" : ""}`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
                 />
                 {errors.email && <p className="error-text">{errors.email}</p>}
 
@@ -359,16 +336,21 @@ function PetShop() {
                 {ownerId ? (
                   <select
                     className={`input-field ${errors.petName ? "error-field" : ""}`}
-                    value={petName}
+                    value={selectedPet} // Bind the value to petName state
                     onChange={(e) => {
                       const selectedPetId = e.target.value; // Get selected pet ID
+                      setSelectedPet(selectedPetId); // Update state for selected pet
                       const selectedPet = pets.find(pet => pet._id === selectedPetId); // Find the pet object
                   
                       if (selectedPet) {
-                        setPetName(selectedPet.name); // Set petName correctly
-                        fetchPetDetails(selectedPetId); // Fetch details using the pet ID
+                        setPetName(selectedPet.name || ""); // Set petName to the selected pet's name
+                        setPetBreed(selectedPet.breed || ""); // Set pet breed
+                        setPetGender(selectedPet.gender || ""); // Set pet gender
+                        setPetAge(selectedPet.age || ""); // Set pet age
+                        setPetType(selectedPet.type || ""); // Set pet type
                       } else {
                         // Reset if no pet selected
+                        setPetName(""); // Reset petName
                         setPetBreed("");
                         setPetGender("");
                         setPetAge("");
@@ -418,9 +400,10 @@ function PetShop() {
                   className="input-field"
                   value={petBreed}
                   onChange={(e) => setPetBreed(e.target.value)}
+                  placeholder="Enter pet breed"
                 />
                 
-                <label className="form-label">Pet Gender *</label>
+                <label className="form-label">Pet Gender</label>
                 <div className="gender-options">
                   <button 
                     type="button"
@@ -444,6 +427,7 @@ function PetShop() {
                   className="input-field"
                   value={petAge}
                   onChange={(e) => setPetAge(e.target.value)}
+                  placeholder="Enter pet age"
                 />
               </div>
 
@@ -454,7 +438,7 @@ function PetShop() {
               >
                 {loading ? (
                   <span className="loading-text">
-                    Booking... <span className="pet-emoji">🐱💨</span>
+                    Booking <span className="pet-emoji">...</span>
                   </span>
                 ) : "SUBMIT"}
               </button>

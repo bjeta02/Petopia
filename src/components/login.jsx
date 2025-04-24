@@ -42,7 +42,7 @@ const Login = () => {
       if (user.role === "owner") {
         navigate("/home");
       } else if (user.role === "clinic" || user.role === "admin") {
-        navigate("/dashboard");
+        navigate("/vet-dashboard");
         window.location.reload();
       } else {
         navigate("/home");

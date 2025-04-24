@@ -23,35 +23,35 @@ export const getServicesByClinic = async (req, res) => {
     }
 };
 
-export const postService = async (req, res) => {
-    try {
-        const services = req.body; // Expecting an array of service objects
+    export const postService = async (req, res) => {
+        try {
+            const services = req.body; // Expecting an array of service objects
 
-        if (!Array.isArray(services) || services.length === 0) {
-            return res.status(400).json({ message: "Invalid input: Expecting an array of services." });
-        }
-
-        // Validate clinic_id for each service
-        for (let service of services) {
-            if (!service.clinic_id || !service.name) {
-                return res.status(400).json({ message: "Clinic ID and service name are required." });
+            if (!Array.isArray(services) || services.length === 0) {
+                return res.status(400).json({ message: "Invalid input: Expecting an array of services." });
             }
 
-            // Check if clinic exists
-            const clinicExists = await Clinic.findById(service.clinic_id);
-            if (!clinicExists) {
-                return res.status(404).json({ message: `Clinic with ID ${service.clinic_id} not found.` });
-            }
-        }
+            // Validate clinic_id for each service
+            for (let service of services) {
+                if (!service.clinic_id || !service.name) {
+                    return res.status(400).json({ message: "Clinic ID and service name are required." });
+                }
 
-        // Insert all valid services
-        const savedServices = await Service.insertMany(services);
-        res.status(201).json({ message: "Services added successfully", data: savedServices });
-    } catch (error) {
-        console.error("Error posting services:", error);
-        res.status(500).json({ message: error.message });
-    }
-};
+                // Check if clinic exists
+                const clinicExists = await Clinic.findById(service.clinic_id);
+                if (!clinicExists) {
+                    return res.status(404).json({ message: `Clinic with ID ${service.clinic_id} not found.` });
+                }
+            }
+
+            // Insert all valid services
+            const savedServices = await Service.insertMany(services);
+            res.status(201).json({ message: "Services added successfully", data: savedServices });
+        } catch (error) {
+            console.error("Error posting services:", error);
+            res.status(500).json({ message: error.message });
+        }
+    };
 
 // Update a specific service by ID
 export const updateService = async (req, res) => {

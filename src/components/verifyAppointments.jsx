@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../components/utils/auth"; // Assuming you have auth context
+import { useAuth } from "../components/utils/auth";
 import VerificationQRCode from "../components/VerificationQRCode";
+import "./css/verifyAppointment.css"; // ⬅️ Import the CSS
 
 const VerifyAppointment = () => {
   const auth = useAuth();
-  const role = auth?.role || null; // Ensure role exists    
+  const role = auth?.role || null;
   const [searchParams] = useSearchParams();
   const appointmentId = searchParams.get("appointmentId");
   const [appointment, setAppointment] = useState(null);
@@ -14,9 +15,10 @@ const VerifyAppointment = () => {
 
   useEffect(() => {
     if (appointmentId) {
-      axios.get(`http://localhost:5000/api/appointments/qr/${appointmentId}`)
-        .then(res => setAppointment(res.data))
-        .catch(err => console.error(err));
+      axios
+        .get(`http://10.0.14.50:5000/api/appointments/qr/${appointmentId}`)
+        .then((res) => setAppointment(res.data))
+        .catch((err) => console.error(err));
     }
   }, [appointmentId]);
 
@@ -24,34 +26,53 @@ const VerifyAppointment = () => {
     try {
       await axios.put(`/api/appointments/${appointmentId}`, { status });
       alert(`Appointment marked as ${status}`);
-      navigate("/dashboard"); // Redirect after update
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
 
-  if (!appointment) return <p>Loading...</p>;
+  if (!appointment) {
+    return (
+      <div className="verify-container">
+        <p className="loading-text">Loading appointment details...</p>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <h2>Verify Appointment</h2>
-      <VerificationQRCode appointmentId={appointmentId} />
-      <p>Pet: {appointment.petDetails}</p> {/* or petName if you decide to use it */}
-      <p>Owner: {appointment.ownerName}</p>
-      <p>Date: {appointment.date}</p>
+    <div className="verify-container">
+      <div className="verify-card">
+        <h2 className="verify-title">📅 Verify Appointment</h2>
 
-      {/* Show Accept/Reject buttons only to clinics */}
-      {role === "clinic" && (
-        <>
-          <button onClick={() => updateStatus("confirmed")}>✅ Accept</button>
-          <button onClick={() => updateStatus("rejected")}>❌ Reject</button>
-        </>
-      )}
+        <div className="info">
+          <p><strong>🐶 Pet:</strong> {appointment.petDetails}</p>
+          <p><strong>🐶 Service:</strong> {appointment.service_id.name}</p>
+          <p><strong>👤 Owner:</strong> {appointment.ownerName}</p>
+          <p><strong>📆 Date:</strong> {appointment.date}</p>
+        </div>
 
-      {/* Optionally, you can show a message for non-clinic users */}
-      {role !== "clinic" && (
-        <p>You do not have permission to modify this appointment.</p>
-      )}
+        {role === "clinic" ? (
+          <div className="button-group">
+            <button
+              className="verify-button accept"
+              onClick={() => updateStatus("confirmed")}
+            >
+              Accept
+            </button>
+            <button
+              className="verify-button reject"
+              onClick={() => updateStatus("rejected")}
+            >
+              Reject
+            </button>
+          </div>
+        ) : (
+          <p className="note">
+            ⚠️ You do not have permission to modify this appointment.
+          </p>
+        )}
+      </div>
     </div>
   );
 };

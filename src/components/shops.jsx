@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch, FaMapMarkerAlt, FaFilter } from "react-icons/fa";
 import { Navigation } from "./navigation";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import "../components/css/shops.css";
+import "./css/shops.css";
 import { useAuth } from "./utils/auth"
 
 function Shops() {
   const { ownerId } = useAuth();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialSelectedService = queryParams.get("service");
   const [shops, setShops] = useState([]);
   const [locations, setLocations] = useState([]);
   const [services, setServices] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedService, setSelectedService] = useState("");
+  const [selectedService, setSelectedService] = useState(initialSelectedService || "");
   const [searchQuery, setSearchQuery] = useState("");  // Search query state
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");  // Debounced search query
   const navigate = useNavigate();
@@ -68,21 +71,18 @@ useEffect(() => {
 }, []);
 
 
-// Fetch Shops based on filters
 useEffect(() => {
   const fetchShops = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/clinics", {
         params: {
           location: selectedLocation,
-          service: selectedService,
           search: debouncedSearchQuery,
         },
       });
 
-      console.log("Shops response:", response.data);
+      console.log(response.data)
 
-      // Check if the response contains clinics
       if (!Array.isArray(response.data.clinics)) {
         console.error("Invalid response format, expected array of clinics.");
         return;
@@ -90,49 +90,62 @@ useEffect(() => {
 
       const activeShops = response.data.clinics.filter(shop => shop.status !== "Inactive");
 
-      // Convert 24-hour time to 12-hour format with AM/PM
       const formatTime = (time) => {
-        if (!time) return ""; // Avoid errors if time is missing
+        if (!time) return "";
         const [hour, minute] = time.split(":");
         const hourInt = parseInt(hour, 10);
-        const formattedHour = (hourInt % 12 || 12); // Convert 13 -> 1, 14 -> 2, etc.
+        const formattedHour = (hourInt % 12 || 12);
         const period = hourInt >= 12 ? "PM" : "AM";
         return `${formattedHour}:${minute} ${period}`;
       };
 
-      // Update each shop with converted time
       const shopsWithTime = activeShops.map(shop => ({
         ...shop,
         open_time: formatTime(shop.open_time),
         close_time: formatTime(shop.close_time),
       }));
 
-      // Calculate distance for each shop if location permission is granted
-      const shopsWithDistance = await Promise.all(shopsWithTime.map(async (shop) => {
-        let distance = Infinity; // Default to Infinity
+      // Filter by selected service
+      const filteredShops = selectedService
+        ? shopsWithTime.filter(shop => 
+            shop.services && shop.services.some(service => 
+              service.trim().toLowerCase() === selectedService.trim().toLowerCase()
+            )
+          )
+        : shopsWithTime;
 
-        if (userLocation && locationPermission) {
-          distance = calculateDistance(userLocation, {
-            latitude: shop.latitude,
-            longitude: shop.longitude,
-          });
-        } else {
-          try {
-            const clinicLocation = await geocodeAddress(shop.address);
-            if (clinicLocation) {
-              distance = calculateDistance(userLocation, clinicLocation);
-              console.log("Geocoded location:", clinicLocation);
+      // Calculate distance only if no filters are applied
+      const filtersApplied = selectedLocation || selectedService || debouncedSearchQuery;
+
+      let finalShops = filteredShops;
+
+      if (!filtersApplied) {
+        const shopsWithDistance = await Promise.all(filteredShops.map(async (shop) => {
+          let distance = Infinity;
+
+          if (userLocation && locationPermission) {
+            distance = calculateDistance(userLocation, {
+              latitude: shop.latitude,
+              longitude: shop.longitude,
+            });
+          } else {
+            try {
+              const clinicLocation = await geocodeAddress(shop.address);
+              if (clinicLocation) {
+                distance = calculateDistance(userLocation, clinicLocation);
+              }
+            } catch (error) {
+              console.error("Error geocoding address:", error);
             }
-          } catch (error) {
-            console.error("Error geocoding address:", error);
           }
-        }
 
-        return { ...shop, distance };
-      }));
+          return { ...shop, distance };
+        }));
 
-      shopsWithDistance.sort((a, b) => a.distance - b.distance);
-      setShops(shopsWithDistance);
+        finalShops = shopsWithDistance.sort((a, b) => a.distance - b.distance);
+      }
+
+      setShops(finalShops);
       setLocations(response.data.locations);
       setServices(response.data.services);
     } catch (error) {
@@ -255,7 +268,6 @@ useEffect(() => {
         navigate(`/petshop?id=${shopId}&guest=true`); // Use & to separate parameters
     }
   };
-  
 
   return (
     <div>
@@ -317,7 +329,7 @@ useEffect(() => {
             >
               <div className="shop-info">
                 <img
-                  src={`http://localhost:5000${shop.logo}`}  
+                  src={`http://localhost:5000${shop.logo}`} 
                   className="shop-logo" 
                 />
                 <div className="shop-text">
@@ -327,7 +339,7 @@ useEffect(() => {
                       shop.services.length > 0 &&
                       shop.services.slice(0, 2).map((service, index) => (
                         <span key={index}>
-                          {index > 0 && " | "} {service}
+                          {index > 0 && " | "} {service.name} {/* Correctly accessing the name */}
                         </span>
                       ))}
                     {shop.services.length > 2 && " | More..."}

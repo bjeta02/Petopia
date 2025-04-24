@@ -57,14 +57,14 @@ const closeNavbar = () => {
 
   const styles = {
     navbar: {
-      backgroundColor: 'rgba(255, 255, 255, 0.71)',
-      backdropFilter: 'blur(10px)',
+      backgroundColor: 'white',
       border: 'none',
       transition: 'background-color 0.3s',
       position: 'fixed',
       width: '100%',
       zIndex: 1000,
       top: '0px',
+      borderRadius: '0px',
     },
     navLink: {
       color: 'black',
@@ -111,7 +111,7 @@ const closeNavbar = () => {
     if (role === 'owner') {
       navigate(`/profile`); // Navigate to the profile page with owner ID
     } else {
-      navigate(`/vetprofile`);
+      navigate(`/vet-profile`);
     }
   };
 

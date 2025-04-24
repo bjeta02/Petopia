@@ -2,6 +2,7 @@ import Clinic from "../model/Clinic.js";
 import Service from "../model/Service.js"; // Import Service model
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
 
 // Serve static logos from the 'logos' folder
 export const getClinics = async (req, res) => {
@@ -30,17 +31,25 @@ export const getClinics = async (req, res) => {
         const clinicsWithServices = await Promise.all(
             clinics.map(async (clinic) => {
                 const services = await Service.find({ clinic_id: clinic._id })
-                    .limit(3)  // Limit to 3 services
-                    .select("name");
+                    .limit(20)  // Limit to 3 services
+                    .select("name description estimated_duration rate"); // Select additional fields
 
                 // Filter clinics by selected service
-                if (service && !services.some((s) => s.name.toLowerCase() === service.toLowerCase())) {
-                    return null;  // If service doesn't match, skip this clinic
+                if (service && !services.some((s) =>
+                    s.name.trim().toLowerCase().includes(service.trim().toLowerCase())
+                )) {
+                    return null;
                 }
 
                 return {
                     ...clinic,
-                    services: services.map((s) => s.name),  // Include service name
+                    services: services.map((s) => ({
+                        _id: s._id,
+                        name: s.name,
+                        description: s.description,
+                        estimated_duration: s.estimated_duration,
+                        rate: s.rate
+                    })),  // Include detailed service information
                 };
             })
         );
@@ -50,10 +59,10 @@ export const getClinics = async (req, res) => {
 
         // Get distinct addresses and services for frontend use
         const addresses = await Clinic.distinct("address"); // Get distinct clinic addresses
-        const services = await Service.distinct("name"); // Get distinct service names
+        const serviceNames = await Service.distinct("name"); // Get distinct service names
 
         // Send filtered clinics, addresses, and services to frontend
-        res.json({ clinics: filteredClinics, locations: addresses, services });
+        res.json({ clinics: filteredClinics, locations: addresses, services: serviceNames });
     } catch (error) {
         console.error("Error fetching clinics with services:", error);
         res.status(500).json({ message: "Failed to retrieve clinics and services." });
@@ -62,34 +71,40 @@ export const getClinics = async (req, res) => {
 
 export const getClinicById = async (req, res) => {
     try {
-      const { id } = req.params;
-  
-      const clinic = await Clinic.findById(id).lean();
-  
-      if (!clinic) {
-        return res.status(404).json({ message: "Clinic not found." });
-      }
-  
-      const services = await Service.find({ clinic_id: id });
-  
-      const response = {
-        ...clinic,
-        services: services.map((s) => ({
-          _id: s._id,
-          name: s.name,
-          description: s.description,
-          estimated_duration: s.estimated_duration,
-          rate: s.rate,
-        })),
-      };
-      
-      console.log("fetched Data", response);
-      res.json(response);
+        const { id } = req.params;
+
+        // Check if the id is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid clinic ID." });
+        }
+
+        const clinic = await Clinic.findById(id).lean();
+
+        if (!clinic) {
+            return res.status(404).json({ message: "Clinic not found." });
+        }
+
+        const services = await Service.find({ clinic_id: id });
+
+        const response = {
+            ...clinic,
+            services: services.map((s) => ({
+                _id: s._id,
+                name: s.name,
+                description: s.description,
+                estimated_duration: s.estimated_duration,
+                rate: s.rate,
+            })),
+            logo: clinic.logo,
+        };
+
+        console.log("Fetched Data", response);
+        res.json(response);
     } catch (error) {
-      console.error("Error fetching clinic:", error);
-      res.status(500).json({ message: "Failed to retrieve clinic." });
+        console.error("Error fetching clinic:", error);
+        res.status(500).json({ message: "Failed to retrieve clinic." });
     }
-  };
+};
   
 
 export const registerClinic = async (req, res) => {

@@ -151,8 +151,13 @@ const VetAppointments = () => {
   };
 
   const formatStatus = (rowData) => {
-    return <span className={`status-tag ${rowData.status.toLowerCase()}`}>{rowData.status.toUpperCase()}</span>;
-  };
+    return (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
+            <span className={`status-circle ${rowData.status.toLowerCase()}`} style={{ marginRight: "8px" }} />
+            <span>{rowData.status}</span>
+        </div>
+    );
+};
 
   const actionTemplate = (rowData) => {
     return (
@@ -199,13 +204,57 @@ const VetAppointments = () => {
   const handleError = (err) => {
     console.error("QR Scan Error:", err);
   };
+
+  // Status legend component with circles for each status
+  const statusLegend = (
+    <div className="status-legend" style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center", marginBottom: '0px'}}>
+        <div className="status-item" style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
+            <span className="status-circle pending" />
+            <span>Pending</span>
+        </div>
+        <div className="status-item" style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
+            <span className="status-circle confirmed" />
+            <span>Confirmed</span>
+        </div>
+        <div className="status-item" style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
+            <span className="status-circle in-progress" />
+            <span>In Progress</span>
+        </div>
+        <div className="status-item" style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
+            <span className="status-circle ready-for-pickup" />
+            <span>Ready for Pickup</span>
+        </div>
+        <div className="status-item" style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
+            <span className="status-circle completed" />
+            <span>Completed</span>
+        </div>
+        <div className="status-item" style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
+            <span className="status-circle cancelled" />
+            <span>Cancelled</span>
+        </div>
+    </div>
+);
   
   return (
     <div className="vet-appointments-container">
       <Toast ref={toast} position="bottom-right" />
-      <Button label="Scan QR Code" icon="pi pi-qrcode" onClick={() => setQrDialog(true)} className="p-button-success mb-4" />
-      <h2 className="text-2xl font-bold mb-4">Pending Appointments</h2>
-      <DataTable value={appointments} className="datatable" paginator rows={10}>
+
+      <div className="patients-label">
+          <p>All Patients: {appointments.length}</p>
+          <div>
+              {statusLegend}
+          </div>
+      </div>
+      <span className="datatable-line"></span>
+
+      <Button
+        label="Scan QR Code"
+        icon="pi pi-qrcode"
+        onClick={() => setQrDialog(true)}
+        className="custom-qr-btn mb-4"
+      />
+
+      <DataTable value={appointments} className="datatable" paginator rows={20}>
         <Column field="ownerName" header="Owner Name" />
         <Column field="petDetails" header="Pet Details" />
         <Column field="service_id.name" header="Service Availed" />
@@ -364,37 +413,55 @@ const VetAppointments = () => {
         </div>  
       </Dialog>
 
-      <Dialog visible={qrDialog} header="Scan QR Code" onHide={() => setQrDialog(false)} style={{ width: '100%', maxWidth: '600px' }}>
-        <div style={{ width: '100%', height: '400px' }}>
-        <QrReader
-          constraints={{ facingMode: 'environment' }}
-          onResult={(result, error) => {
-            if (!!result) {
-              const scannedText = result.getText?.(); // Safe call for newer versions
-              console.log("✅ QR Code Scanned:", scannedText);
+      <Dialog
+        visible={qrDialog}
+        header="Scan QR Code"
+        onHide={() => setQrDialog(false)}
+        style={{ width: "100%", maxWidth: "500px"}}
+      >
+        <div style={{ position: "relative",  width: "100%", maxWidth: '500px', height: "100%", maxHeight: '500px' }}>
+          {/* QR Reader */}
+          <QrReader
+            constraints={{ facingMode: "environment" }}
+            onResult={(result, error) => {
+              if (result) {
+                const scannedText = result.getText?.();
+                console.log("✅ QR Code Scanned:", scannedText);
 
-              if (scannedText) {
-                // Optional: check if it's a URL
-                if (scannedText.startsWith("http://") || scannedText.startsWith("https://")) {
-                  setQrDialog(false); // close the QR dialog first
-                  window.location.href = scannedText; // redirect to the URL
-                } else {
-                  console.warn("Scanned data is not a valid URL:", scannedText);
+                if (scannedText) {
+                  if (scannedText.startsWith("http://") || scannedText.startsWith("https://")) {
+                    setQrDialog(false);
+                    window.location.href = scannedText;
+                  } else {
+                    console.warn("Scanned data is not a valid URL:", scannedText);
+                  }
                 }
               }
-            }
+            }}
+            style={{ width: "100%", height: "100%" }}
+          />
 
-            if (!!error) {
-              // Optional: suppress spammy errors
-              // console.warn("QR scanning error:", error);
-            }
-          }}
-          style={{ width: '100%', height: '100%' }}
-        />
+          {/* Overlays to darken everything except the scan box */}
+          <div className="overlay-top" />
+          <div className="overlay-bottom" />
+          <div className="overlay-left" />
+          <div className="overlay-right" />
+
+          {/* The visible scan box in the center */}
+          <div className="scan-box">
+            <span className="corner top-left" />
+            <span className="corner top-right" />
+            <span className="corner bottom-left" />
+            <span className="corner bottom-right" />
+          </div>
+
+          {/* Animated green line */}
+          <div className="green-laser" />
         </div>
       </Dialog>
+
     </div>
   );
 };
 
-export default VetAppointments;
+export default VetAppointments; 

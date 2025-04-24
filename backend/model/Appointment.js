@@ -9,11 +9,12 @@ const appointmentSchema = new mongoose.Schema(
         vet_id: { type: mongoose.Schema.Types.ObjectId, ref: "Veterinarian", required: false },
         service_id: { type: mongoose.Schema.Types.ObjectId, ref: "Service", required: true },
         date: Date,
-        status: { type: String, enum: ["Pending", "Confirmed", "Completed", "Canceled"], default: "Pending" },
+        status: { type: String, enum: ["Pending", "Confirmed", "In-progress", "Ready-for-pickup", "Completed", "Canceled"], default: "Pending" },
         notes: String,
         confirmedAt: Date,
         completedAt: Date,
         rejectedAt: Date,
+        price: { type: String },
 
         // OTP fields
         otp: { type: String },

@@ -52,7 +52,7 @@
         <h2 className="table-title">Appointment History</h2>
 
         <div className="table-wrapper">
-          <DataTable value={history} paginator rows={6} className="custom-table">
+          <DataTable value={history} paginator rows={50} className="custom-table">
             <Column field="_id" header="Appointment ID" sortable />
             <Column field="ownerName" header="Owner Name" />
             <Column field="petDetails" header="Pet Details" />

@@ -4,7 +4,7 @@
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px;
+    margin: 0px;
 }
 
 /* Title styling */
@@ -48,6 +48,14 @@
     background-color: #007bff;
     color: white;
 }
+.status-tag.In-progress {
+    background-color: #FF9800;
+    color: black;
+}
+.status-tag.Ready-for-pickup {
+    background-color: #9c27b0;
+    color: white;
+}
 .status-tag.completed {
     background-color: #28a745;
     color: white;
@@ -62,6 +70,44 @@
     display: flex;
     gap: 3px; /* Increased spacing between buttons */
 }
+
+.custom-qr-btn {
+    background-color: #14967f; /* Purple */
+    color: #fff; /* White text */
+    border: none;
+    margin-bottom: 15px;
+    margin-top: 5px;
+  }
+  
+  .custom-qr-btn:hover {
+    background-color: #18b37f; /* Darker purple on hover */
+  }
+
+  /* Label for "All patients:" */
+.patients-label {
+    font-size: 16px;
+    color: #747474; /* Adjust text color */
+    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .patients-label p {
+    margin-bottom: 0px;
+  }
+
+/* Gray line above the DataTable as a span */
+.datatable-line {
+    display: block;       /* Make span behave like a block element */
+    width: 100%;
+    height: 1.5px;
+    background-color: #ccc;  /* Gray color for the line */
+    margin-top: 15px;
+    margin-bottom: 10px;  /* Space between the line and DataTable */
+  }
+  
 
 /* General button styling for action buttons */
 .action-buttons .p-button {
@@ -243,3 +289,124 @@
     opacity: 0.6;
     pointer-events: none;
 }
+
+/* Container is 100% wide, 500px tall (from your inline style) */
+
+/* 1) The scanning box in the center */
+.scan-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 250px;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  /* Style for the corners of the scan box */
+  .scan-box .corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgb(255, 255, 255);
+    }
+  
+  /* Top Left */
+  .scan-box .top-left {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  /* Top Right */
+  .scan-box .top-right {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+  
+  /* Bottom Left */
+  .scan-box .bottom-left {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+  }
+  
+  /* Bottom Right */
+  .scan-box .bottom-right {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+    }
+  
+  /* 2) Overlays: top, bottom, left, right 
+     Each overlay is black with opacity, 
+     positioned around the .scan-box
+  */
+  .overlay-top,
+  .overlay-bottom,
+  .overlay-left,
+  .overlay-right {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7); /* Darken the overlay */
+    z-index: 2; /* Below scan-box but above QrReader feed */
+  }
+  
+  /* - Top overlay covers top area above the box */
+  .overlay-top {
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(50% - 185px);
+  }
+  
+  /* - Bottom overlay covers area below the box */
+  .overlay-bottom {
+    bottom: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(50% - 185px);
+    }
+  
+  /* - Left overlay covers left side around the box */
+  .overlay-left {
+    top: calc(50% - 125px);
+    left: 0;
+    width: calc(50% - 125px);
+    height: 250px;
+  }
+  
+  /* - Right overlay covers right side around the box */
+  .overlay-right {
+    top: calc(50% - 125px);
+    right: 0;
+    width: calc(50% - 125px);
+    height: 250px;
+  }
+  
+  /* 3) The green laser scanning line */
+  .green-laser {
+    position: absolute;
+    top: calc(50% - 125px); /* Start near top of scan box */
+    left: 50%;
+    width: 220px; /* slightly smaller than box */
+    height: 2px;
+    background: limegreen;
+    transform: translateX(-50%);
+    animation: scan-move 2s linear infinite;
+    z-index: 4; /* above the box */
+  }
+  
+  @keyframes scan-move {
+    0% {
+      top: calc(50% - 120px);
+    }
+    100% {
+      top: calc(50% + 120px);
+    }
+  }

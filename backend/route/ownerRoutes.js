@@ -1,6 +1,8 @@
 import express from 'express';
-import { getOwners, getOwnerById, updateOwner, createGuestOwner } from '../controller/ownerController.js';
+import { getOwners, getOwnerById, updateOwner, uploadOwnerAvatar, createGuestOwner } from '../controller/ownerController.js';
 import { getUsers, registerUser, verifyUserOTP, loginUser } from '../controller/ownerAuthController.js';
+import { uploadAvatar } from "../middleware/uploadAvatar.js";
+
 
 const router = express.Router();
 // Route to register a new owner
@@ -14,6 +16,9 @@ router.post('/owners/create', createGuestOwner)
 
 //Route for OTP 
 router.post('/owners/verify-otp', verifyUserOTP);
+
+//Route for Upload-avatar
+router.post("/owners/upload-avatar/:id", uploadAvatar.single("avatar"), uploadOwnerAvatar);
 
 // Route to get all owners
 router.get('/owners', getOwners);

@@ -14,7 +14,10 @@ import Register from "./components/register";
 import JsonData from "./data/data.json";
 import SmoothScroll from "smooth-scroll";
 import "./App.css";
-import ProfilePage from "./components/profile";
+import OwnerDashboard from "./components/ownerDashboard";
+import OwnerProfile from "./components/ownerProfile";
+import PetProfile from "./components/petProfile";
+import PetAppointments from "./components/petAppointments";
 import Footer from "./components/footer";
 import LandingPage from "./components/landing";
 import Findavet from "./components/findavet";
@@ -23,9 +26,13 @@ import PetShop from "./components/petshop";
 import ShopProfile from "./components/shopprofile";
 import OtpPage from "./components/otppage";
 import VetLayout from "./components/VetLayout";
+import ProfileSidebar from "./components/profileSidebar";
+import VetSchedules from "./components/vetSchedules";
+import PetSchedules from "./components/petSchedules";
 import VetDashboard from "./components/VetDashboard";
 import VetAppointments from "./components/VetAppointments";
 import VetHistory from "./components/VetHistory";
+import VetServiceManagement from "./components/ServiceManagement";
 import TermsServices from "./components/terms-conditions";
 import PrivacyPolicy from "./components/privacy-policy";
 import VetClinic from "./components/vetClinic";
@@ -81,19 +88,30 @@ const App = () => {
         <Route path="/shopprofile" element={<ShopProfile />} />
         <Route path="/otp" element={<OtpPage />} />
 
-        {/* Vet Routes (Protected) */}
         <Route element={<ProtectedRoute allowedRoles={["admin", "clinic"]} />}>
           <Route element={<VetLayout />}>
-            <Route path="/dashboard" element={<VetDashboard />} />
-            <Route path="/appointments" element={<VetAppointments />} />
-            <Route path="/history" element={<VetHistory />} />
-            <Route path="/vetprofile" element={<VetClinic />} />
+            <Route path="/vet-dashboard" element={<VetDashboard />} />
+            <Route path="/vet-schedules" element={<VetSchedules />} />
+            <Route path="/vet-appointments" element={<VetAppointments />} />
+            <Route path="/vet-history" element={<VetHistory />} />
+            <Route path="/vet-profile" element={<VetClinic />} />
+            
+            {/* Only allow admin to access the vet service management */}
+            <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+              <Route path="/vet-service" element={<VetServiceManagement />} />
+            </Route>
           </Route>
         </Route>
 
         {/* Owner Routes (Protected) */}
-        <Route element={<ProtectedRoute allowedRoles={["owner", "admin", "clinic"]} />}>
-          <Route path="/profile" element={<ProfilePage />} />
+        <Route element={<ProtectedRoute allowedRoles={["owner"]} />}>
+          <Route element={<ProfileSidebar />}>
+            <Route path="/dashboard" element={<OwnerDashboard />} />
+            <Route path="/profile" element={<OwnerProfile />} />
+            <Route path="/pet-profile" element={<PetProfile />} />
+            <Route path="/pet-schedules" element={<PetSchedules />} />
+            <Route path="/pet-appointments" element={<PetAppointments />} />
+          </Route>
         </Route>
       </Routes>
     </>

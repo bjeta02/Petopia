@@ -72,7 +72,7 @@ export const createGuestOwner = async (req, res) => {
  */
 export const updateOwner = async (req, res) => {
     const { id } = req.params;
-    const { firstname, lastname, email, phone, password } = req.body;
+    const { firstname, lastname, email, phone, address, password } = req.body;
     try {
         const owner = await Owner.findById(id);
         if (!owner) return res.status(404).json({ message: "Owner not found" });
@@ -81,6 +81,7 @@ export const updateOwner = async (req, res) => {
         if (lastname) owner.lastname = lastname;
         if (email) owner.email = email;
         if (phone) owner.phone = phone;
+        if (address) owner.address = address;
         if (password) owner.password = await bcrypt.hash(password, 10);
 
         const updatedOwner = await owner.save();
@@ -90,3 +91,36 @@ export const updateOwner = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const uploadOwnerAvatar = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const owner = await Owner.findById(id);
+        if (!owner) {
+            return res.status(404).json({ success: false, message: "Owner not found" });
+        }
+
+        // Check if file was uploaded
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No file uploaded" });
+        }
+
+        // Construct the full URL for the uploaded avatar
+        const avatarUrl = `/avatars/${req.file.filename}`;
+        owner.avatar = avatarUrl;
+
+        // Save to database
+        await owner.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Avatar uploaded successfully",
+            avatarUrl: owner.avatar,
+        });
+    } catch (error) {
+        console.error("Error uploading avatar:", error);
+        res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+    }
+};
+

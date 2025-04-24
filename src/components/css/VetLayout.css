@@ -1,90 +1,112 @@
+/* Layout Wrapper */
 .vet-container {
   display: flex;
   min-height: 100vh;
   padding-top: 80px;
 }
 
-
 .sidebar2 {
-  width: 250px;
-  background: #ffffff; 
-  padding: 20px;
   position: fixed;
-  top: 80px;
-  left: 0;
-  height: calc(100vh - 80px); 
-  overflow-y: auto;
-  border-right: 2px solid #e0e0e0; 
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease-in-out;
+  top: 80px;           /* adjust this to match your header height */
+  left: 15px;          /* or 0, depending on your layout */
+  width: 300px;
+  height: 84%;
+  background: #ffffff;
+  padding: 20px;
+  padding-left: 0px;
+  overflow-y: auto;    /* this will make inner content scrollable */
+  border-radius: 20px;
+  border-right: 2px solid #e0e0e0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  border-radius: 20px;
+}
+
+.sidebar2 h1 {
+  font-size: 20px;
+  margin-bottom: 20px;
 }
 
 .sidebar2 ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.sidebar2 ul li {
-  margin-bottom: 15px;
+.sidebar2 li {
+  margin-bottom: 10px;
 }
 
-.sidebar2 ul li a {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
+.sidebar2 a {
   text-decoration: none;
   color: #333;
-  font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
   border-radius: 6px;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.2s ease;
 }
 
-.sidebar2 ul li a:hover,
-.sidebar2 ul li a.active {
-  background: #45c18d; 
+.sidebar2 a.active,
+.sidebar2 a:hover {
+  background: #14967f;
   color: white;
 }
 
-/* / Icons inside links (if applicable) / */
-.sidebar2 ul li a i {
-  margin-right: 10px;
-  font-size: 18px;
-  color: inherit;
-}
-
-.sidebar2 ul li a.active {
-  background: #45c18d;
-  color: white;
-}
-
-
+/* Main content area */
 .vet-content {
   flex-grow: 1; 
-  padding: 20px;
-  margin-left: 250px; 
+    padding: 20px;
+    margin-left: 320px; 
 }
 
+/* 🔽 Mobile Styles */
+@media (max-width: 768px) {
+  .vet-container {
+    flex-direction: column;
+  }
 
-.sidebar {
-  position: fixed;
-  top: 80px; 
-  left: 0;
-  width: 250px;
-  height: calc(100vh - 80px); 
-  background: #f4f4f4;
-  padding: 20px;
-  overflow-y: auto;
-}
+  .sidebar2 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid #ccc;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    z-index: 1000;
+  }
 
+  .sidebar2 h1 {
+    display: none;
+  }
 
-.navbar-fixed {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 80px;
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  .sidebar2 ul {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar2 li {
+    margin: 0;
+    flex: 1;
+    text-align: center;
+  }
+
+  .sidebar2 a {
+    padding: 6px 0;
+    font-size: 14px;
+    border-radius: 0;
+  }
+
+  .vet-content {
+    margin-bottom: 60px; /* Give space for the bottom nav */
+  }
 }

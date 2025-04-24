@@ -4,6 +4,12 @@ import Owner from '../model/Owner.js';
 
 export const registerPet = async (req, res) => {
   const { name, type, breed, age, gender, owner_id } = req.body;
+  let avatar = null;
+
+  // Check if a file was uploaded
+  if (req.file) {
+    avatar = `/pet_avatars/${req.file.filename}`; // Set avatar URL
+  }
 
   // Simple validation for owner_id
   if (!owner_id || !mongoose.Types.ObjectId.isValid(owner_id)) {
@@ -25,6 +31,7 @@ export const registerPet = async (req, res) => {
       age,
       gender,
       owner_id,  // Store the owner_id in the pet document
+      avatar,
     });
 
     const savedPet = await newPet.save();
@@ -118,5 +125,37 @@ export const updatePet = async (req, res) => {
     res.status(200).json(updatedPet);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const uploadPetAvatar = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const pet = await Pet.findById(id);
+      if (!pet) {
+          return res.status(404).json({ success: false, message: "Pet not found" });
+      }
+
+      // Check if file was uploaded
+      if (!req.file) {
+          return res.status(400).json({ success: false, message: "No file uploaded" });
+      }
+
+      // Construct the full URL or relative path for the uploaded avatar
+      const avatarUrl = `/pet_avatars/${req.file.filename}`;
+      pet.avatar = avatarUrl;
+
+      // Save to database
+      await pet.save();
+
+      res.status(200).json({
+          success: true,
+          message: "Pet avatar uploaded successfully",
+          avatarUrl: pet.avatar,
+      });
+  } catch (error) {
+      console.error("Error uploading pet avatar:", error);
+      res.status(500).json({ success: false, message: "Internal server error", error: error.message });
   }
 };

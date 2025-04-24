@@ -1,0 +1,305 @@
+/* General Styles */
+body {
+    background-color: #eef7f5; /* Light alternative to white */
+}
+
+/* Container Styles */
+.pet-profile-container {
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 0px 40px auto;
+}
+
+/* Header Styles */
+.pet-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Card Styles */
+.pet-cards-container {
+    display: flex;
+    margin-right: 40px;
+    flex-wrap: wrap; /* Allow wrapping to the next line if necessary */
+    gap: 20px; /* Space between cards */
+    justify-content: flex-start; /* Align items to the start */
+}
+
+.pet-card {
+    flex: 1 1 400px; /* Allow cards to grow and shrink, with a base width of 300px */
+    border-radius: 12px; /* Rounded corners */
+    padding: 20px; /* Padding inside the card */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #ffffff; /* White background for cards */
+    transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.pet-card:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+}
+
+.pet-profile-image-container {
+    position: relative;
+    width: 100px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    margin: 0 auto; /* Center the image */
+}
+
+
+.avatar-icon {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.pet-avatar {
+    width: 100px; /* Adjusted size for better appearance */
+    height: 100px;
+    border-radius: 50%; /* Circular avatar */
+    object-fit: cover;
+}
+
+/* Hidden File Input */
+.pet-hidden-file-input {
+    display: none !important;
+}
+
+/* Pet Info Styles */
+.pet-info {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
+    font-family: 'Open Sans', sans-serif; /* Font family */
+    font-size: 1.2rem; /* Font size */
+    color: #333; /* Text color */
+}
+
+.pet-info h4 {
+    font-weight: bold; /* Bold font for pet name */
+    margin: 0; /* Remove default margin */
+}
+
+.pet-info p {
+    margin: 5px 0; /* Space between paragraphs */
+    color: #666; /* Lighter color for breed */
+}
+
+/* Pet Details Styles */
+.pet-details {
+    margin-top: 10px; /* Space above details */
+    font-family: 'Open Sans', sans-serif; /* Font family */
+    font-size: 1.2rem; /* Font size */
+    color: #333; /* Text color */
+}
+
+.pet-details p {
+    margin: 5px 0; /* Space between paragraphs */
+    color: #666; /* Lighter color for details */
+}
+
+/* Action Buttons Styles */
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Space between action buttons */
+    margin-top: 15px; /* Space above buttons */
+    align-items: flex-end;
+}
+
+/* Button Styles */
+.custom-add-button {
+    background-color: #28a745 !important; /* Green */
+    color: white !important; /* White text */
+    font-size: 1.2rem !important; /* Bigger font */
+    padding: 12px 20px !important; /* More padding */
+    border-radius: 8px !important; /* Rounded edges */
+    border: none !important; /* No border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-add-button:hover {
+    background-color: #218838 !important; /* Darker green on hover */
+}
+
+/* Dialog Styles */
+.custom-dialog {
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 600px;
+}
+
+.dialog-title {
+    font-size: 1.8rem; /* Bigger title */
+    font-weight: bold;
+    text-align: center;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Edit the dialog styles below */
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-btn, .cancel-btn {
+    font-size: 1.2rem; /* Bigger button text */
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.save-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn {
+    background-color: #ddd;
+    color: #333;
+}
+
+.cancel-btn:hover {
+    background-color: #bbb;
+}
+
+.dialog-pet-avatar {
+    width: 100%; /* Full width of the container */  
+    height: 100%; /* Full height of the container */
+    border-radius: 50%; /* Make it circular */
+    object-fit: cover; /* Ensure the image covers the area */
+    border: 2px solid #ccc; /* Optional: Add a border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+/* Input Fields - Force size */
+.custom-input {
+    width: 100% !important;
+    max-width: 500px;
+    height: 50px !important;
+    font-size: 1.2rem !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    border: 2px solid #ccc !important;
+    box-sizing: border-box !important;
+}
+
+/* Dropdown - Force size */
+.custom-dropdown {
+    width: 100% !important;
+    max-width: 500px;
+    height: 50px !important;
+    font-size: 1.2rem !important;
+    border-radius: 8px !important;
+}
+
+.custom-dropdown .p-dropdown-label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem !important;
+    padding: 0 12px !important;
+}
+
+
+/* Dropdown Panel Items */
+.custom-dropdown-panel {
+    font-size: 1rem !important;
+    padding: 2px !important;
+}
+
+.custom-dropdown-panel .p-dropdown-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-left: 0 !important;   /* Remove left padding */
+}
+
+
+.p-dropdown-item {
+    font-size: 1rem !important;
+    padding: 12px !important;
+    margin: 0 0 0 0;
+    width: 100%;
+}
+
+
+/* Custom Button Styles */
+.custom-save-button, .custom-edit-button {
+    background-color: green !important;
+    color: black !important;
+    border: none;
+    font-weight: bold;
+    font-size: 1.2rem; /* Increases text size */
+    border-radius: 8px; /* Adds rounded corners */
+    width: 130px; /* Adjust width */
+}
+
+.custom-save-button {
+    background-color: green !important;
+    color: rgb(3, 3, 3) !important;
+}
+
+.custom-edit-button {
+    background-color: green !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+/* Appointment History Styles */
+.appointment-history {
+    margin-top: 20px;
+}
+
+.calendar-day {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.appointment-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Additional Card Styles */
+.pet-card {
+    padding: 1.5rem;
+    background: #fdfdfd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}

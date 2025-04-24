@@ -1,0 +1,16 @@
+.service-management {
+    padding: 20px;
+  }
+
+  .logo-clinic {
+    width: 10px;          /* Adjust the width */
+    height: 10px;         /* Adjust the height */
+    border-radius: 50%;   /* Makes it circular */
+    object-fit: cover;    /* Ensures the image covers the space without distortion */
+    margin-right: 8px;    /* Adds space between the logo and the clinic name */
+  }
+  
+  .service-actions {
+    display: flex;
+    justify-content: space-between;
+  }

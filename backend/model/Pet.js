@@ -7,6 +7,7 @@ const petSchema = new mongoose.Schema({
     breed: String,
     age: Number,
     gender: String,
+    avatar: { type: String, default: 'https://cdn-icons-png.flaticon.com/512/847/847969.png', },
     medical_history: String
 }, { timestamps: true });
 

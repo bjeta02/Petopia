@@ -76,7 +76,7 @@ export const sendAppointmentEmail = async (email, appointmentDetails, pdfBuffer)
 
 
 // Send Appointment Status Update Email
-export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails, status) => {
+export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails, status, pdfBuffer) => {
     try {
         let subject;
         let message;

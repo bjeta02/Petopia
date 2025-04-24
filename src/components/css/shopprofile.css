@@ -1,15 +1,13 @@
 /* Page Layout */
 .page-container {
   min-height: 100vh;
-  overflow-y: auto;
-  padding-top: 80px; /* Adjusted to avoid navbar issues */
+  padding-top: 100px; /* Adjusted to avoid navbar issues */
   padding-bottom: 20px;
   background-color: #f3f4f6;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
-
-
 
 /* Grid Layout */
 .grid-container {

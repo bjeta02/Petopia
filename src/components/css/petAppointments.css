@@ -1,0 +1,97 @@
+.pet-appointment{
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 -3px 30px auto;
+    padding: 20px;
+    background-color: #ffffff; /* Light background for contrast */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Status label styles */
+.status-tag {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    display: inline-block;
+    text-align: center;
+}
+
+.status-tag.pending {
+    background-color: #ffc107;
+    color: black;
+}
+.status-tag.confirmed {
+    background-color: #007bff;
+    color: white;
+}
+.status-tag.in-progress {
+    background-color: #ff6347; /* Coral */
+    color: white;
+}
+.status-tag.ready-for-pickup {
+    background-color: #9c27b0;
+    color: white;
+}
+.status-tag.completed {
+    background-color: #28a745;
+    color: white;
+}
+.status-tag.cancelled {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Status Circle Styles */
+.status-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Status Circle Styles */
+.status-legend {
+    display: flex;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    align-items: flex-end;
+}
+
+.status-item {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.status-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.status-circle.pending {
+    background-color: #ffc107;
+}
+
+.status-circle.confirmed {
+    background-color: #007bff;
+}
+
+.status-circle.in-progress {
+    background-color: #ff6347;
+}
+
+.status-circle.ready-for-pickup {
+    background-color: #9c27b0;
+}
+
+.status-circle.completed {
+    background-color: #28a745;
+}
+
+.status-circle.cancelled {
+    background-color: #dc3545;
+}

@@ -1,322 +1,252 @@
-import { useState, useEffect } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import axios from "axios";
-import { Dialog } from "primereact/dialog";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
-import { Dropdown } from "primereact/dropdown";
-import { User, Dog, ClipboardList } from "lucide-react"; // Icons
-import "../components/css/VetDashboard.css";
-import { useAuth } from "./utils/auth"
+    import React, { useEffect, useState } from 'react';
+    import axios from 'axios';
+    import { Card } from 'primereact/card';
+    import { Button } from 'primereact/button';
+    import { Calendar } from 'primereact/calendar';
+    import { Chart } from 'primereact/chart';
+    import { FaUsers, FaUserPlus, FaCalendarCheck } from 'react-icons/fa';  // Import icons
+    import { Link } from 'react-router-dom';
+    import './css/VetDashboard.css'; // Import your custom CSS for styling
+    import { useAuth } from "./utils/auth"; // Import useAuth to get role and clinicId
 
+    const VetSchedules = () => {
+        const { role, clinicId } = useAuth(); // Get role and clinicId from auth context
+        const [appointments, setAppointments] = useState([]);
+        const [newPatients, setNewPatients] = useState([]);
+        const [loading, setLoading] = useState(true);
 
-const VetDashboard = () => {
-  const { role, clinicId } = useAuth();
-  const [appointments, setAppointments] = useState([]);
-  const [error, setError] = useState(null);
-  const [selectedAppointments, setSelectedAppointments] = useState([]);
-  const [isDialogVisible, setIsDialogVisible] = useState(false);
-  const [isAddDialogVisible, setIsAddDialogVisible] = useState(false);
-  const [owners, setOwners] = useState([]);
-  const [pets, setPets] = useState([]);
-  const [availableServices, setAvailableServices] = useState([]);
-  const [selectedOwnerId, setSelectedOwnerId] = useState(null);
-  const [selectedPetId, setSelectedPetId] = useState(null);
-  const [selectedServiceId, setSelectedServiceId] = useState(null);
+        const [donutData, setDonutData] = useState({
+            labels: ['Guest Patients', 'Returning Patients', 'Pending Patients'],
+            datasets: [{
+                data: [0, 0, 0], // Initialize with zeros
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                ],
+                hoverBackgroundColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)',
+                ],
+            }],
+        });
 
-  
-  // Form State for Adding Appointment
-  const [newAppointment, setNewAppointment] = useState({
-    ownerName: "",
-    petName: "",
-    petType: "",
-    services: "",
-    date: null,
-  });
+        const donutOptions = {
+            responsive: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    align: 'start',
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14,
+                            weight: 550,
+                        },
+                        boxWidth: 15,
+                        boxHeight: 15,
+                        padding: 15,
+                        maxWidth: 100, 
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    bottom: -10,
+                }
+            },
+            cutout: '50%'
+        };
 
-  useEffect(() => {
-    console.log("Clinic ID:", clinicId, "Role:", role); // 🧪 add this
+        useEffect(() => {
+            const fetchAppointments = async () => {
+                try {
+                    let response;
+                    if (role === "admin") {
+                        response = await axios.get('http://localhost:5000/api/appointments'); // Fetch all appointments for admin
+                    } else if (role === "clinic" && clinicId) {
+                        response = await axios.get(`http://localhost:5000/api/appointments/clinics/${clinicId}`); // Fetch appointments for specific clinic
+                    } else {
+                        console.warn("❌ clinicId is null, skipping API call.");
+                        return; // Stop the function if there's no clinicId for non-admins
+                    }
+    
+                    const data = response.data;
+                    setAppointments(data); // Set all fetched appointments here
+    
+                    // Calculate counts for the donut chart
+                    const guestPatientsCount = data.filter(app => app.status === "Confirmed" && app.owner?.isGuest).length; // Assuming isNew is a property to identify new patients
+                    const returningPatientsCount = data.filter(app => app.status === "Confirmed" && !app.owner?.isGuest).length; // Assuming returning patients are those who are not new
+                    const pendingPatientsCount = data.filter(app => app.status === "Pending").length;
+    
+                   // Update donut data
+                    setDonutData(prevData => ({
+                        ...prevData,
+                        datasets: [{
+                            ...prevData.datasets[0],
+                            data: [guestPatientsCount, returningPatientsCount, pendingPatientsCount],
+                        }],
+                    }));
+                } catch (error) {
+                    console.error("Error fetching appointments:", error);
+                } finally {
+                    setLoading(false); // Set loading to false after fetching
+                }
+            };
+    
+            fetchAppointments();
+        }, [role, clinicId]); // Fetch appointments when role or clinicId changes
 
-    if (clinicId && role === "clinic") {
-      fetchOwners();
-    }
-    console.log("Clinic ID:", clinicId, "Role:", role); // 🧪 add this
-
-    fetchAppointments();
-  }, [clinicId, role]);
-
-  const fetchOwners = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/api/appointments/owners/${clinicId}`);
-      setOwners(response.data);
-    } catch (error) {
-      console.error("Error fetching owners:", error);
-    }
-  };
-
-
-  const fetchAppointments = async () => {
-
-    if (role !== "admin" && !clinicId) {
-      console.warn("❌ clinicId is null, skipping API call.");
-      return; // Stop the function if there's no clinicId for non-admins
-    }
-    try {
-      let response;
-      if (role === "admin") {
-        response = await axios.get(`http://localhost:5000/api/appointments/`);
-      } else if (role === "clinic") {
-        if (!clinicId) {
-          setError("Clinic ID is not available for this role.");
-          return;
+        if (loading) {
+            return <p>Loading...</p>; // Show loading state
         }
-        response = await axios.get(`http://localhost:5000/api/appointments/clinics/${clinicId}`);
-      } else {
-        setError("Invalid role.");
-        return;
-      }
-  
-      if (!response || !response.data) {
-        setError("No appointments found.");
-        return;
-      }
-  
-      const filteredAppointments = response.data.filter(appt => {
-        const status = appt.status ? appt.status.toLowerCase() : "";
-        return status === "pending" || status === "confirmed";
-      });
-  
-      setAppointments(filteredAppointments);
-    } catch (error) {
-      console.error("Error fetching appointments:", error);
-      setError("Error fetching appointments. Please try again later.");
-    }
-  };
 
-  const handleOwnerSelect = (e) => {
-    const ownerId = e.value;
-    const owner = owners.find(o => o._id === ownerId);
-    console.log("Selected Owner:", owner);
-  
-    setSelectedOwnerId(owner);
-    setPets(owner?.pets || []);
-  
-    // 🆕 Set the services available to this owner
-    setAvailableServices(owner?.services || []);
-  
-    setNewAppointment({ 
-      ...newAppointment,
-      ownerId,
-      ownerName: `${owner?.firstname} ${owner?.lastname}`,
-    });
-  };
-  
+        // Calculate upcoming appointments and pending appointments
+        const today = new Date();
+        const todayDate = today.toISOString().split('T')[0];
 
-  const handlePetSelect = (e) => {
-    const petId = e.value;
-    const pet = pets.find(p => p._id === petId);
-    setSelectedPetId(petId);
-    setNewAppointment({
-      ...newAppointment,
-      petId,
-      petName: pet.name,
-      petType: pet.type,
-    });
-  };
+        const upcomingAppointments = appointments.filter(app => 
+            app.status === "Confirmed" && new Date(app.date) >= today
+        );
 
-  // Group appointments by date
-  const groupedAppointments = appointments.reduce((acc, apt) => {
-    const date = apt.date.split("T")[0];
-    if (!acc[date]) acc[date] = [];
-    acc[date].push(apt);
-    return acc;
-  }, {});
+        const pendingAppointments = appointments.filter(app => 
+            app.status === "Pending" && new Date(app.date) >= today
+        );
 
-  // Format data for FullCalendar
-  const calendarEvents = Object.keys(groupedAppointments).map((date) => ({
-    title: `${groupedAppointments[date].length} Appointments`,
-    start: date,
-    allDay: true,
-    extendedProps: { details: groupedAppointments[date] },
-  }));
+        // Get the next 4 confirmed patients
+        const nextPatients = newPatients.slice(0, 4);
 
-  // Show details when clicking on an event
-  const handleEventClick = (info) => {
-    setSelectedAppointments(info.event.extendedProps.details);
-    setIsDialogVisible(true);
-  };
+        return (
+            <div className="clinic-dashboard">
+                <div className="grid-container">
+                    {/* First Row (Header) */}
+                    <div className="grid-item">
+                        <Card className="header-card">
+                            <div className=" card-content">
+                                <div className="icon-wrapper">
+                                    <FaUsers className="card-icon" />
+                                </div>
+                                <div className="info-text">
+                                    <h3>Total Patients</h3>
+                                    <p>{appointments.length}</p>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
 
-  const handleAddAppointment = async () => {
-    if (!selectedOwnerId || !selectedPetId || !selectedServiceId || !newAppointment.date) {
-      alert("Please fill out all required fields.");
-      return;
-    }
-  
-    try {
-      const response = await axios.post(`http://localhost:5000/api/appointments/clinic-book`, {
-        owner_id: selectedOwnerId._id || selectedOwnerId,
-        pet_id: selectedPetId,
-        clinic_id: clinicId,
-        service_id: selectedServiceId,
-        date: newAppointment.date.toISOString(),
-        // Optional:
-        vet_id: null,      // or pass actual vet if applicable
-        notes: "",         // or pass a note if you support it
-      });
-  
-      setAppointments([...appointments, response.data.appointment]); // fixed .appointment
-      setIsAddDialogVisible(false);
-      setNewAppointment({
-        ownerName: "",
-        petName: "",
-        petType: "",
-        services: "",
-        date: null,
-      });
-      setSelectedOwnerId(null);
-      setSelectedPetId(null);
-      setSelectedServiceId(null);
-    } catch (error) {
-      console.error("Error adding appointment:", error);
-      alert("Error adding appointment. Please try again.");
-    }
-  };
-  
+                    <div className="grid-item">
+                        <Card className="header-card">
+                            <div className="card-content">
+                                <div className="icon-wrapper">
+                                    <FaUserPlus className="card-icon" />
+                                </div>
+                                <div>
+                                    <h3>Upcoming Appointments</h3>
+                                    <p>{upcomingAppointments.length}</p>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
 
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Appointment Schedule</h2>
-      {error && <p className="text-red-500">{error}</p>}
+                    <div className="grid-item">
+                        <Card className="header-card">
+                            <div className="card-content">
+                                <div className="icon-wrapper">
+                                    <FaCalendarCheck className="card-icon" />
+                                </div>
+                                <div>
+                                    <h3>Pending Appointments</h3>
+                                    <p>{pendingAppointments.length}</p>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
 
-      {/* Add Appointment Button (Only for Clinics) */}
-      {role === "clinic" && (
-        <Button label="Add Appointment" className="addapp-button" onClick={() => setIsAddDialogVisible(true)} />
-      )}
+                    {/* Second Row (Middle) */}
+                    <div className="grid-item">
+                        <Card className="middle-card">
+                            <h3>Patient Summary in Year</h3>
+                            <div style={{ marginTop: '20px' }}>
+                                <Chart type="doughnut" data={donutData} options={donutOptions} />
+                            </div>
+                        </Card>
+                    </div>
+                    <div className="grid-item">
+                        <Card className="middle-card">
+                            <h3>Upcoming Patients</h3>
+                            <div className="appointment-list">
+                                <div className="appointment-header">
+                                    <span>Patient</span>
+                                    <span>Name / Service</span>
+                                    <span>Time</span>
+                                </div>
+                                <ul>
+                                    {nextPatients.map((patient, index) => (
+                                        <li key={index} className="appointment-item">
+                                            <div className="patient-profile">
+                                                <img src={
+                                                patient.pet_id?.avatar && patient.pet_id?.avatar.startsWith("http")
+                                                    ? patient.pet_id?.avatar
+                                                    : patient.pet_id?.avatar
+                                                    ? `http://localhost:5000${patient.pet_id?.avatar}`
+                                                    : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                                            } alt={patient.pet_id?.name} />
+                                            </div>
+                                            <div className="patient-info">
+                                                <strong>{patient.pet_id?.name}</strong>
+                                                <p>{patient.service_id.name}</p>
+                                            </div>
+                                            <div className="appointment-time">
+                                                {new Date(patient.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="see-all-link">
+                                    <Link to="/vet-appointments">See All</Link>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
 
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={calendarEvents}
-        eventClick={handleEventClick}
-        height="600px"
-        eventContent={(eventInfo) => (
-          <div style={{ cursor: "pointer" }}>
-            {eventInfo.event.title}
-          </div>
-        )}
-      />
+                    <div className="grid-item">
+                        <Card className="middle-card">
+                            <h3>Next Patient Details</h3>
+                            {newPatients.length > 0 ? (
+                                <div className="next-patient-wrapper">
+                                    <div className="next-patient-header">
+                                        <div className="patient-image">
+                                            <img src={
+                                                newPatients[0].pet_id?.avatar && newPatients[0].pet_id?.avatar.startsWith("http")
+                                                    ? newPatients[0].pet_id?.avatar
+                                                    : newPatients[0].pet_id?.avatar
+                                                    ? `http://localhost:5000${newPatients[0].pet_id?.avatar}`
+                                                    : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                                            } alt={newPatients[0].pet_id?.name} />
+                                        </div>
+                                        <div className="patient-basic">
+                                            <strong>{newPatients[0].pet_id?.name}</strong>
+                                            <p>{newPatients[0].service_id.name}</p>
+                                        </div>
+                                    </div>
 
-      {/* Appointment Details Modal */}
-      <Dialog
-        header={
-          <div className="flex items-center justify-between">
-            <span className="text-xl font-semibold text-gray-800">Appointment Details</span>
-          </div>
-        }
-        visible={isDialogVisible}
-        onHide={() => setIsDialogVisible(false)}
-        className="p-6 rounded-xl bg-white shadow-lg"
-        style={{ width: "400px", maxWidth: "90%" }}
-      >
-        <div className="space-y-6">
-          {selectedAppointments.map((apt, index) => (
-            <div key={index} className="relative bg-white p-5 rounded-xl shadow-md border border-gray-300">
-              {/* Owner Name */}
-              <p className="flex items-center gap-3 text-lg font-semibold text-blue-600">
-                <User size={20} className="text-blue-500" /> {apt.ownerName || "Guest"}
-              </p>
-              
-              {/* Pet Details */}
-              <p className="flex items-center gap-3 text-gray-700 mt-2">
-                <Dog size={20} className="text-green-500" />
-                <span className="font-medium">{apt.petDetails || "No Pets"}</span>
-              </p>
-
-              {/* Service Name */}
-              <p className="flex items-center gap-3 text-gray-700 mt-2">
-                <ClipboardList size={20} className="text-purple-500" />
-                <span className="font-medium">{apt.service_id?.name || "No Services Listed"}</span>
-              </p>
-
-              {/* Separator for multiple appointments */}
-              {index < selectedAppointments.length - 1 && (
-                <div className="relative flex justify-center items-center my-6">
-                  <div className="w-3/4 border-t border-gray-300"></div>
-                  <span className="absolute bg-white px-2 text-gray-500 text-sm">- - - - - - - - - - - - - - - - - -</span>
+                                    <div className="next-patient-details">
+                                        <div><span>Owner Name:</span><p>{newPatients[0].ownerName}</p></div>
+                                        <div><span>Sex:</span><p>{newPatients[0].pet_id?.gender || 'N/A'}</p></div>
+                                        <div><span>Age:</span><p>{newPatients[0].pet_id?.age || 'Unknown'}</p></div>
+                                        <div><span>Breed:</span><p>{newPatients[0].pet_id?.breed || 'Unknown'}</p></div>
+                                        <div><span>Type:</span><p>{newPatients[0].pet_id?.type || 'Unknown'}</p></div>
+                                    </div>
+                                </ div>
+                            ) : (
+                                <p>No upcoming patients.</p>
+                            )}
+                        </Card>
+                    </div>
                 </div>
-              )}
             </div>
-          ))}
-        </div>
-      </Dialog>
+        );
+    };
 
-
-
-
-      {/* Add Appointment Modal */}
-      <Dialog
-          header="Add Appointment"
-          visible={isAddDialogVisible}
-          onHide={() => setIsAddDialogVisible(false)}
-          className="p-4"
-        >
-          <div className="add-appointment space-y-3">
-            <Dropdown
-              value={selectedOwnerId}
-              options={owners.map(o => ({ label: `${o.firstname} ${o.lastname}`, value: o._id }))}
-              placeholder="Select Owner"
-              className="w-full"
-              onChange={handleOwnerSelect}
-            />
-
-            <Dropdown
-              value={selectedPetId}
-              options={pets.map(p => ({ label: p.name, value: p._id }))}
-              placeholder="Select Pet"
-              className="w-full"
-              onChange={handlePetSelect}
-              disabled={!selectedOwnerId}
-            />
-
-            <Dropdown
-              value={selectedServiceId}
-              options={availableServices.map(s => 
-                typeof s === 'string' 
-                  ? { label: s, value: s } 
-                  : { label: s.name, value: s._id }
-              )}
-              placeholder="Select Service"
-              className="w-full"
-              onChange={(e) => {
-                const selected = availableServices.find(s => 
-                  typeof s === 'string' ? s === e.value : s._id === e.value
-                );
-                
-                setSelectedServiceId(e.value);
-                setNewAppointment({
-                  ...newAppointment,
-                  services: typeof selected === 'string' ? selected : selected.name,
-                });
-              }}
-              disabled={!availableServices.length}
-            />
-
-            <Calendar
-              placeholder="Select Date"
-              value={newAppointment.date}
-              onChange={(e) => setNewAppointment({ ...newAppointment, date: e.value })}
-              showIcon
-              className="w-full"
-            />
-
-            <Button label="Add Appointment" className="addapp-button" onClick={handleAddAppointment} />
-          </div>
-        </Dialog>
-    </div>
-  );
-};
-
-export default VetDashboard;
+    export default VetSchedules;

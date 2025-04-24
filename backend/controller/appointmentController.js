@@ -15,7 +15,7 @@ export const getAppointments = async (req, res) => {
         const appointments = await Appointment.find()
             .populate("owner_id", "firstname lastname email")
             .populate("guest_id", "firstName lastName email phone pets")
-            .populate("pet_id", "name type breed")
+            .populate("pet_id", "name type breed age gender avatar")
             .populate("clinic_id", "name")
             .populate("service_id", "name")
             .sort({ date: -1 });
@@ -54,7 +54,7 @@ export const getAppointmentById = async (req, res) => {
         const appointment = await Appointment.findById(id)
             .populate("owner_id", "firstname lastname email")
             .populate("guest_id", "firstName lastName email phone pets")
-            .populate("pet_id", "name type breed")
+            .populate("pet_id", "name type breed age gender avatar")
             .populate("clinic_id", "name")
             .populate("service_id", "name");
 
@@ -97,7 +97,7 @@ export const getAppointmentsByOwner = async (req, res) => {
     try {
         const appointments = await Appointment.find({ owner_id: ownerId })
             .populate('owner_id', 'firstname lastname email') // Populate owner details
-            .populate('pet_id', 'name type breed') // Populate pet details
+            .populate("pet_id", "name type breed age gender avatar")
             .populate('clinic_id', 'name') // Populate clinic details
             .populate('service_id', 'name'); // Populate service details
 
@@ -123,11 +123,11 @@ export const getAppointmentsByClinic = async (req, res) => {
         const appointments = await Appointment.find({ clinic_id: clinicId })
             .populate("owner_id", "firstname lastname email")
             .populate("guest_id", "firstName lastName email phone pets")
-            .populate("pet_id", "name type breed")
+            .populate("pet_id", "name type breed age gender avatar")
             .populate("service_id", "name")
             .sort({ date: -1 });
             
-            // Create a unified owner name field and include pet details
+        // Create a unified owner name field and include pet details
         const appointmentsWithDetails = appointments.map(appointment => {
             // Check if owner_id or guest_id is present
             const ownerName = appointment.owner_id
@@ -136,14 +136,28 @@ export const getAppointmentsByClinic = async (req, res) => {
                 ? `${appointment.guest_id.firstName} ${appointment.guest_id.lastName}`
                 : 'Unknown Owner'; // Fallback if neither is present
 
-            const petDetails = appointment.guest_id && appointment.guest_id.pets && appointment.guest_id.pets.length > 0
-                ? appointment.guest_id.pets.map(pet => `${pet.name} (${pet.type})`).join(', ')
-                : appointment.pet_id ? `${appointment.pet_id.name} (${appointment.pet_id.type})` : 'No Pet';
+            // Extract pet details
+            let petDetails = 'No Pet';
+            let petAvatar = null;
+            let petAge = null;
+            let petGender = null;
+
+            if (appointment.guest_id && appointment.guest_id.pets && appointment.guest_id.pets.length > 0) {
+                petDetails = appointment.guest_id.pets.map(pet => `${pet.name} (${pet.type})`).join(', ');
+            } else if (appointment.pet_id) {
+                petDetails = `${appointment.pet_id.name} (${appointment.pet_id.type})`;
+                petAvatar = appointment.pet_id.avatar; // Get pet avatar
+                petAge = appointment.pet_id.age; // Get pet age
+                petGender = appointment.pet_id.gender; // Get pet gender
+            }
 
             return {
                 ...appointment.toObject(),
                 ownerName,
-                petDetails
+                petDetails,
+                petAvatar, // Include pet avatar in the response
+                petAge,    // Include pet age in the response
+                petGender  // Include pet gender in the response
             };
         });
 
@@ -167,7 +181,7 @@ export const getOwnersWithAppointmentsInClinic = async (req, res) => {
         owner_id: { $ne: null }, // Ensure only valid owners
       })
         .populate("owner_id", "firstname lastname email")
-        .populate("pet_id")
+        .populate("pet_id", "name type breed age gender avatar")
         .populate("service_id");
   
       if (!appointments.length) {
@@ -248,7 +262,7 @@ export const bookAppointment = async (req, res) => {
             });
 
             // Send OTP
-            await sendOTPEmail(email, otp);
+            sendOTPEmail(email, otp);
             return res.status(200).json({ message: "OTP sent to your email. Please verify to complete your booking." });
         }
 
@@ -315,7 +329,7 @@ export const bookAppointment = async (req, res) => {
         }, qrCode);
 
         // ✅ Send Confirmation Email (With PDF Attachment)
-        await sendAppointmentEmail(owner.email, {
+        sendAppointmentEmail(owner.email, {
             appointmentId: savedAppointment._id,
             clinicName: clinic?.name || "Your Clinic Name",
             clinicAddress: clinic?.address || "Your Address",
@@ -375,7 +389,7 @@ export const bookAppointmentForClinic = async (req, res) => {
         // Send follow-up checkup email notification
         const followUpDate = new Date(savedAppointment.date);
         followUpDate.setDate(followUpDate.getDate() + 7); // Set follow-up date to 7 days later
-        await sendFollowUpEmailToClinic(clinic.email, {
+        sendFollowUpEmailToClinic(clinic.email, {
             appointmentId: savedAppointment._id,
             clinicName: clinic ? clinic.name : "Your Clinic Name",
             firstName: owner ? owner.firstname : "Valued Customer",
@@ -444,17 +458,35 @@ export const verifyAppointmentOTP = async (req, res) => {
         const clinic = await Clinic.findById(pendingAppointment.clinic_id);
         const service = await Service.findById(pendingAppointment.service_id);
 
-        // Send confirmation email with all appointment details
-        await sendAppointmentEmail(requestEmail, {
-            appointmentId: savedAppointment._id, // Appointment ID
-            clinicName: clinic ? clinic.name : null, // Clinic name
-            clinicAddress: clinic ? clinic.address : null, // Clinic address
-            date: new Date(passedDate).toLocaleString(), // Format the date
-            serviceName: service ? service.name : null, // Service name
-            petName: pendingAppointment.pet.name,
-            notes: pendingAppointment.notes || "No additional notes provided.", // Any notes provided
-            firstName: pendingAppointment.firstName || "Guest", // Pass the first name here
-        });
+        // ✅ Generate QR Code
+        const verifyUrl = `http://localhost:3000/verify?appointmentId=${savedAppointment._id}`;
+        const qrCode = await generateQRCode(verifyUrl);
+
+        // ✅ Generate PDF
+        const pdfBuffer = await createPDF({
+            appointmentId: savedAppointment._id,
+            clinicName: clinic?.name || "Your Clinic Name",
+            clinicAddress: clinic?.address || "Your Address",
+            date: new Date(passedDate).toLocaleString(),
+            serviceName: service?.name || "Your Service Name",
+            petName: petName,
+            petType: petType,
+            notes: notes || "No additional notes provided.",
+            firstName: owner?.firstname || "Valued Customer"
+        }, qrCode);
+
+        // ✅ Send Confirmation Email (With PDF Attachment)
+        sendAppointmentEmail(owner.email, {
+            appointmentId: savedAppointment._id,
+            clinicName: clinic?.name || "Your Clinic Name",
+            clinicAddress: clinic?.address || "Your Address",
+            date: new Date(passedDate).toLocaleString(),
+            serviceName: service?.name || "Your Service Name",
+            petName: petName,
+            petType: petType,
+            notes: notes || "No additional notes provided.",
+            firstName: owner?.firstname || "Valued Customer",
+        }, pdfBuffer);
 
         // Remove pending appointment after success
         pendingAppointments.delete(requestEmail);
@@ -552,6 +584,8 @@ export const updateAppointment = async (req, res) => {
             .populate("service_id", "name")
             .populate("pet_id", "name");
 
+        console.log("Updated appointment:", updatedAppointment); // Log the updated appointment
+
         if (!updatedAppointment) {
             return res.status(404).json({ message: "Appointment not found" });
         }
@@ -599,7 +633,7 @@ export const updateAppointment = async (req, res) => {
         // Send email
         if (recipientEmail) {
             try {
-                await sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, status, pdfBuffer);
+                sendAppointmentStatusUpdateEmail(recipientEmail, emailDetails, status, pdfBuffer);
                 console.log("Email sent successfully to:", recipientEmail);
             } catch (emailError) {
                 console.error("Error sending email:", emailError);

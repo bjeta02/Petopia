@@ -4,8 +4,6 @@
   align-items: center;
   height: 100vh;
   padding: 20px; 
-  min-height: 800px; /* Increased height */
-  max-height: none; /* Remove fixed max-height */
   overflow-y: auto; /* Allow scrolling */
 }
 
@@ -19,8 +17,9 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   padding: 40px;
   max-width: 900px; /* Adjust width to fit content */
-  min-height: 700px;
-  justify-content: space-between;
+  max-height: 90vh; /* Set a max height */
+  overflow-y: auto; /* Allow scrolling if content exceeds max height */
+  margin-top: 20px; /* Use a smaller margin */
   align-items: center;
 }
 
@@ -37,27 +36,12 @@
 }
 
 .form-container {
-  width: 55%; /* Allocate more space for the form */
+  width: 100%; /* Allocate more space for the form */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Align items to the top */
   text-align: center;
-}
-
-/* Shop Info & Form */
-.shop-info-book, .form-container {
-  padding: 20px;
-}
-
-/* Shop Info */
-.shop-info-book {
-  width: 100%; /* Full width for better layout */
-}
-
-/* Form Container */
-.form-container {
-  width: 100%;
 }
 
 /* Step Indicator */
@@ -78,10 +62,17 @@
 }
 
 .step.active {
-  background: #007bff;
+  background: #15c593;
   color: white;
 }
 
+.step-2-3-margin {
+  margin-top: 5rem; /* adjust as needed */
+}
+
+.step-3-active {
+  margin-top: 15rem;
+}
 /* Form Fields */
 .form-label {
   display: block;
@@ -126,7 +117,7 @@
 }
 
 .gender-options .selected {
-  background: #007bff;
+  background: #15c593;
   color: white;
 }
 
@@ -134,13 +125,18 @@
 .action-button {
   width: 60%;
   margin-top: 20px;
-  background: #653deb;
+  background: #15c593;
   color: white;
   padding: 10px;
   border: none;
   font-size: 18px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6; /* Optional: makes it look dimmed */
 }
 
 /* Back Button */
@@ -151,14 +147,6 @@
   cursor: pointer;
   align-self: flex-start; /* Moves button to the left */
   margin-top: 20px; /* Adds spacing */
-}
-
-
-.shop-logo-book {
-  width: 100px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
 }
 
 /* Step 3 Scrollable Section */
@@ -178,28 +166,14 @@
   margin-top: 2px;
 }
 
-.step-3-active .petshop-container {
-  margin-top: 100px !important;
-}
-
-.pet-emoji {
-  display: inline-block;
-  animation: run 0.8s linear infinite;
-}
-
-@keyframes run {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(20px); }
-}
-
-
 /* 🔽 Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
   .petshop-container {
     flex-direction: column;
-    width: 90%;
+ width: 90%;
     padding: 15px;
-    min-height: auto;
+    max-height: none; /* Remove max-height for mobile */
+    margin-top: 20px; /* Adjust margin for mobile */
   }
 
   .shop-info-book, .form-container {
@@ -240,5 +214,13 @@
 
   .shop-info-book p {
     font-size: 12px;
+  }
+  
+  .step-2-3-margin {
+    margin-top: 5rem; /* adjust as needed */
+  }
+  
+  .step-3-active {
+    margin-top: 15rem;
   }
 }

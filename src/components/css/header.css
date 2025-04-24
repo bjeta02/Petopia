@@ -8,6 +8,10 @@
     align-items: center;
     justify-content: center;
   }
+
+  .body{
+    background-color: #eef7f5;
+  }
   
   .intro {
     text-align: center;

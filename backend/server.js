@@ -38,6 +38,8 @@ const __dirname = dirname(__filename);
 
 // Serve uploaded logos
 app.use("/logos", express.static(path.join(__dirname, "logos")));
+app.use("/avatars", express.static(path.join(__dirname, "avatars")));
+app.use("/pet_avatars", express.static(path.join(__dirname, "pet_avatars")));
 
 // Routes
 app.use("/api", OwnerRoutes);
