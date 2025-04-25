@@ -19,7 +19,7 @@
     transition: all 0.3s ease-in-out;
     border-radius: 20px;
     margin-left: 15px;
-    height: 84%;
+    z-index: 999;
   }
   
   .pet-sidebar2 ul {
@@ -92,3 +92,55 @@
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
   }
+
+  /* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .pet-sidebar2 {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 2px solid #e0e0e0;
+    border-right: none;
+    border-radius: 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    margin-left: 0;
+    
+  }
+
+  .pet-sidebar2 ul {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .pet-sidebar2 ul li {
+    margin-bottom: 0;
+  }
+
+  .pet-sidebar2 ul li a {
+    flex-direction: column;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .pet-sidebar2 ul li a i {
+    font-size: 16px;
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .pet-content {
+    margin-left: 0;
+    padding-bottom: 80px; /* make room for bottom nav */
+  }
+}

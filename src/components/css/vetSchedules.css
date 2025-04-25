@@ -101,76 +101,116 @@
   }
   
   /* 🔹 FullCalendar Navigation Buttons (Today, Previous, Next) */
-  .fc-toolbar-chunk button {
-    background: #14967f; /* Blue */
-    color: white;
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .fc-toolbar-chunk button:hover {
-    background: #18824f; /* Darker Blue */
-    transform: scale(1.1);
-  }
-  
-  /* 🔹 Style for the 'Today' Button */
-  .fc-toolbar-chunk .fc-today-button {
-    background: #14967f !important; /* Green */
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .fc-toolbar-chunk .fc-today-button:hover {
-    background: #18824f !important; /* Darker Green */
-  }
-  
-  /* 🔹 Custom Styling for Arrows (Previous & Next) */
-  .fc-prev-button, .fc-next-button {
-    background: #14967f !important; /* Orange */
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .fc-prev-button:hover, .fc-next-button:hover {
-    background: #18824f !important; /* Darker Orange */
-    transform: scale(1.1);
-  }
-  
-  /* 🔹 Increase visibility of Calendar Header */
-  .fc-toolbar-title {
-    font-size: 1rem;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
-    color: #000000;
-    text-transform: capitalize;
-  }
-  
-  /* 🔹 Style for Calendar Events */
-  .fc-event {
-    background: #14967f; /* Orange */
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    padding: 4px;
-  }
-  
-  .fc-event:hover {
-    background: #18824f; /* Darker Orange */
-  }
+/* Style for the toolbar chunk */
+.fc-toolbar-chunk {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Align items to the center */
+  justify-content: center; /* Center items */
+  width: 100%;
+  height: 50px; /* Fixed height for the toolbar */
+  padding: 0 1rem; /* Add padding to give some space from edges */
+}
+
+/* Other Styles for Buttons */
+.fc-toolbar-chunk button {
+  background: #14967f; /* Blue */
+  color: white;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover effect for the buttons */
+.fc-toolbar-chunk button:hover {
+  background: #18824f; /* Darker Blue */
+  transform: scale(1.1);
+}
+
+/* Style for the 'Today' Button */
+.fc-toolbar-chunk .fc-today-button {
+  background: #14967f !important; /* Green */
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  margin-bottom: 10px; /* Add space below the 'Today' button */
+}
+
+/* Hover effect for 'Today' Button */
+.fc-toolbar-chunk .fc-today-button:hover {
+  background: #18824f !important; /* Darker Green */
+}
+
+/* Custom Styling for Arrows (Previous & Next) */
+.fc-prev-button, .fc-next-button {
+  background: #14967f !important; 
+  border-radius: 5px;
+  padding: 8px 15px !important;
+  font-size: 13px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  margin-top: 10px; /* Add space above the arrows */
+  margin-right: 10px; /* Add space between the left and right arrows */
+}
+
+/* Hover effect for Arrows */
+.fc-prev-button:hover, .fc-next-button:hover {
+  background: #18824f !important;
+  transform: scale(1.1);
+}
+
+
+/* Calendar Header Styling */
+.fc-toolbar-title {
+  font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  color: #000000;
+  text-transform: capitalize;
+}
+
+/* Style for Calendar Events */
+.fc-event {
+  background: #14967f; 
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.fc-event:hover {
+  background: #18824f; /* Darker Orange */
+}
+
 
 .p-dropdown .p-dropdown-label {
     border: none !important; /* Remove border from the label */
     box-shadow: none !important; /* Remove shadow from the label */
+}
+
+/* General style for the month/year text */
+.fc-toolbar-title {
+  font-size: 1.2rem; /* Default font size for larger screens */
+}
+
+
+/* Smaller font size for mobile devices (max-width: 768px) */
+@media (max-width: 768px) {
+  .fc-toolbar-title {
+    font-size: 1.2em !important; /* Adjust font size for mobile */
+  }
+}
+
+/* Even smaller font size for very small mobile screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .fc-toolbar-title {
+    font-size: 1.2em !important; /* Further reduce font size for very small screens */
+  }
 }

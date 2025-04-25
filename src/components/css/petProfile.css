@@ -109,7 +109,6 @@ body {
 .action-buttons {
     display: flex;
     gap: 10px; /* Space between action buttons */
-    margin-top: 15px; /* Space above buttons */
     align-items: flex-end;
 }
 
@@ -302,4 +301,22 @@ body {
     padding: 1.5rem;
     background: #fdfdfd;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive Styles for Mobile Devices */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: row !important; /* Ensure buttons stay in a row on mobile devices */
+        align-items: center; /* Keep buttons aligned properly */
+        justify-content: flex-start; /* Align to the left */
+    }
+
+    .custom-add-button, .save-btn, .cancel-btn {
+        width: auto; /* Keep buttons their natural width on mobile */
+        margin-bottom: 0; /* Remove space between stacked buttons */
+    }
+
+    .save-btn, .cancel-btn {
+        margin-right: 10px; /* Space between the edit and delete buttons */
+    }
 }

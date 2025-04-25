@@ -84,15 +84,16 @@
   }
 
   /* Label for "All patients:" */
+/* Default margin for larger screens */
 .patients-label {
     font-size: 16px;
-    color: #747474; /* Adjust text color */
-    display: inline-block;
+    color: #747474;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
-  }
+    margin-top: 10px;
+}
 
   .patients-label p {
     margin-bottom: 0px;
@@ -402,6 +403,20 @@
     z-index: 4; /* above the box */
   }
   
+/* Adjust margin for mobile devices */
+@media (max-width: 768px) {
+    .patients-label {
+        flex-direction: column;
+        align-items: flex-start; /* Align to the left */
+        margin-top: 20px; /* Increase the top margin for mobile screens */
+    }
+
+    .patients-label p {
+        font-size: 14px; /* Adjust font size for mobile */
+        margin-bottom: 10px; /* Add some bottom space to separate the title from the legend */
+    }
+}
+
   @keyframes scan-move {
     0% {
       top: calc(50% - 120px);

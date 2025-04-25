@@ -209,7 +209,7 @@ const VetSchedules = () => {
         initialView="dayGridMonth"
         events={calendarEvents}
         eventClick={handleEventClick}
-        height="600px"
+        height="500px"
         eventContent={(eventInfo) => (
           <div style={{ cursor: "pointer" }}>
             {eventInfo.event.title}

@@ -1,11 +1,11 @@
-.pet-appointment{
+.pet-appointment {
     width: 100%;
     max-width: 1050px;
-    margin: 0 -3px 30px auto;
+    margin: 0 auto 30px auto;
     padding: 20px;
-    background-color: #ffffff; /* Light background for contrast */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Status label styles */
@@ -27,7 +27,7 @@
     color: white;
 }
 .status-tag.in-progress {
-    background-color: #ff6347; /* Coral */
+    background-color: #ff6347;
     color: white;
 }
 .status-tag.ready-for-pickup {
@@ -45,13 +45,31 @@
 
 /* Status Circle Styles */
 .status-circle {
-    width: 16px;
-    height: 16px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: 10px;
 }
 
-/* Status Circle Styles */
+.status-circle.pending {
+    background-color: #ffc107;
+}
+.status-circle.confirmed {
+    background-color: #007bff;
+}
+.status-circle.in-progress {
+    background-color: #ff6347;
+}
+.status-circle.ready-for-pickup {
+    background-color: #9c27b0;
+}
+.status-circle.completed {
+    background-color: #28a745;
+}
+.status-circle.cancelled {
+    background-color: #dc3545;
+}
+
 .status-legend {
     display: flex;
     font-size: 14px;
@@ -65,33 +83,57 @@
     margin-bottom: 10px;
 }
 
-.status-circle {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 10px;
+.patients-label {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 0.5rem;
 }
 
-.status-circle.pending {
-    background-color: #ffc107;
+
+/* Add keyframes animation */
+@keyframes scan-move {
+    0% {
+        top: calc(50% - 120px);
+    }
+    100% {
+        top: calc(50% + 120px);
+    }
 }
 
-.status-circle.confirmed {
-    background-color: #007bff;
-}
+/* Responsive styles */
+@media (max-width: 768px) {
+    .pet-appointment {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto 20px auto;
+        padding: 15px;
+        box-sizing: border-box;
+    }
 
-.status-circle.in-progress {
-    background-color: #ff6347;
-}
+    .filters-container {
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100%;
+    }
 
-.status-circle.ready-for-pickup {
-    background-color: #9c27b0;
-}
+    .filters-container > div {
+        width: 100%;
+    }
 
-.status-circle.completed {
-    background-color: #28a745;
-}
+    .p-dropdown {
+        width: 100% !important;
+    }
 
-.status-circle.cancelled {
-    background-color: #dc3545;
+    /* Patients label responsive adjustments */
+    .patients-label {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+
+    .patients-label p {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
 }

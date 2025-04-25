@@ -1,57 +1,105 @@
 /* Container styling */
 .vet-history-container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Title Styling */
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styling */
+.table-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Custom Table */
+.custom-table {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+/* PrimeReact DataTable Styling */
+.custom-table .p-datatable-thead > tr > th {
+  background-color: #24b89f;
+  color: white;
+  text-align: left;
+  padding: 10px;
+}
+
+.custom-table .p-datatable-tbody > tr {
+  transition: background 0.3s ease;
+}
+
+.custom-table .p-datatable-tbody > tr:hover {
+  background: #f1f1f1;
+}
+
+/* Table Borders */
+.custom-table .p-datatable-tbody > tr > td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .table-title {
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
+    font-size: 18px; /* Smaller font size for mobile */
   }
-  
-  /* Table Wrapper */
+
+  .custom-table .p-datatable-thead > tr > th {
+    padding: 8px; /* Smaller padding for headers */
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
+  .custom-table .p-datatable-tbody > tr > td {
+    padding: 10px; /* Smaller padding for data cells */
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+
   .table-wrapper {
     overflow-x: auto;
   }
-  
-  /* Custom Table */
+
+  /* Make the table scrollable horizontally */
   .custom-table {
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    overflow: hidden;
+    width: 100%;
+    display: block;
+    overflow-x: auto;
   }
-  
-  /* PrimeReact DataTable Styling */
+
+  /* Optionally, hide less important columns on smaller screens */
+  .custom-table .p-datatable-tbody .status-column,
+  .custom-table .p-datatable-tbody .pet-details-column {
+    display: none; /* Hide these columns for small screens */
+  }
+
+  .custom-table .p-datatable-tbody .appointment-id-column {
+    width: 100%; /* Ensure Appointment ID takes full width */
+  }
+}
+
+/* Extremely small screens */
+@media (max-width: 480px) {
   .custom-table .p-datatable-thead > tr > th {
-    background-color: #24b89f;
-    color: white;
-    text-align: left;
-    padding: 10px;
+    font-size: 12px; /* Even smaller font size */
+    padding: 6px; /* Smaller padding */
   }
-  
-  .custom-table .p-datatable-tbody > tr {
-    transition: background 0.3s ease;
-  }
-  
-  .custom-table .p-datatable-tbody > tr:hover {
-    background: #f1f1f1;
-  }
-  
-  /* Table Borders */
+
   .custom-table .p-datatable-tbody > tr > td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
+    font-size: 12px; /* Adjust font size for smaller screens */
+    padding: 8px; /* Smaller padding */
   }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .table-wrapper {
-      overflow-x: auto;
-    }
+
+  .table-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
   }
-  
+}

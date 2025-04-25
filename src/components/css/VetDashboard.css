@@ -265,3 +265,54 @@
   align-items: center;
   background-color: transparent;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .next-patient-details {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .icon-wrapper {
+    width: 70px;
+    height: 70px;
+  }
+
+  .card-icon {
+    font-size: 3rem;
+  }
+
+  .appointment-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .appointment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .next-patient-details {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-image img {
+    width: 80px;
+    height: 80px;
+  }
+}

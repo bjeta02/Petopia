@@ -536,39 +536,78 @@
   color: #777; /* Lighter color for service details */
 }
 
-/* Optional: Add some responsiveness */
-@media (max-width: 600px) {
-  .clinic-logo {
-      width: 80px; /* Smaller logo on small screens */
+@media (max-width: 768px) {
+  
+  .grid {
+    grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    gap: 1rem;
   }
 
-  .clinic-details h2 {
-      font-size: 20px; /* Smaller title on small screens */
+  .card-logo {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
   }
 
-  .clinic-details p,
-  .clinic-details h3 {
-      font-size: 14px; /* Smaller text on small screens */
+  .card-logo-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
-}
 
-.admin-action-buttons {
-  display: flex;
-  gap: 5px;
-}
+  .profile-image-container {
+    width: 80px;
+    height: 80px;
+  }
 
-.logo-clinic {
-  width: 50px;          /* Adjust the width */
-  height: 50px;         /* Adjust the height */
-  border-radius: 50%;   /* Makes it circular */
-  object-fit: cover;    /* Ensures the image covers the space without distortion */
-  margin-right: 8px;    /* Adds space between the logo and the clinic name */
-}
+  .card-logo-info h1 {
+    font-size: 16px;
+  }
 
-.action-buttons {
-  display: flex;
-  justify-content: center; /* Center the buttons */
-  align-items: center; /* Vertically center the buttons */
-  gap: 10px; /* Space between buttons */
-  margin-top: 0px;
+  .card-info,
+  .card-services,
+  .edit-mode {
+    padding: 15px;
+  }
+
+  .input-field2,
+  .edit-mode input {
+    width: 100%; /* Full width on mobile */
+  }
+
+  .add-service-button {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bubutton {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .bubutton h1 {
+    font-size: 1.2rem;
+  }
+
+  .p-inputtext,
+  .p-inputtextarea {
+    width: 100%;
+  }
+
+  .cliniclogo {
+    height: 80px;
+    width: 80px;
+  }
+
+  .edit-button,
+  .save-button {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
 }

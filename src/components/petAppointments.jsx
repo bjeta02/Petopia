@@ -166,10 +166,13 @@ export default function PetAppointments() {
         <div>
                 <div className="pet-appointment">
                     {/* Insert Status Legend Above Filters */}
-                    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
+                    <div className="patients-label">
+                        <p>Status Legend</p>
                         {statusLegend}
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+
+                    <div className="filters-container" style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+
                         <div>
                             <span style={{ fontWeight: "bold", marginRight: "0.5rem" }}>Filter by Pet:</span>
                             <Dropdown
@@ -194,7 +197,15 @@ export default function PetAppointments() {
                         </div>
                     </div>
 
-                    <DataTable value={filteredAppointments} paginator rows={10} className="p-datatable-striped p-datatable-gridlines">
+                    <div style={{ overflowX: "auto" }}>
+                    <DataTable 
+                        value={filteredAppointments}
+                        paginator
+                        rows={10}
+                        className="p-datatable-striped p-datatable-gridlines"
+                        style={{ minWidth: "300px" }}
+                    >
+
                         <Column field="clinic.name" header="🏥 Clinic" body={clinicBodyTemplate} />
                         <Column field="pet_id.name" header="🐾 Pet Name" />
                         <Column field="notes" header="🩺 Reason" />
@@ -202,6 +213,7 @@ export default function PetAppointments() {
                         <Column field="date" header="📅 Date" body={rowData => formatDateTime(rowData.date)} sortable />
                         <Column field="status" header="📌 Status" body={formatStatus} />
                     </DataTable>
+                    </div>
                 </div>
         </div>
     );

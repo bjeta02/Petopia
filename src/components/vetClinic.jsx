@@ -438,8 +438,6 @@
           </div>
           <div className="card-logo-info">
             <h1>{clinic.name}</h1>
-            <p>{clinic.email}</p>
-            <p>{clinic.contact_number}</p>
           </div>
         </div>
       </Card>
