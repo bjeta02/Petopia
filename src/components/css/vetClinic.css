@@ -63,6 +63,26 @@
     margin-top: 15px;
   }
 
+  .clinic-profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .clinic-profile-header h1 {
+    margin-bottom: 0px;
+  }
+
+  .clinic-add-button {
+    width: 120px;
+    height: 35px;
+    background-color: #14967f;
+    color: white;
+    border: none;
+    font-size: 12px;
+  }
+
   /* Editing Mode - Inputs */
   .input-field2 {
     font-size: 1.2rem;

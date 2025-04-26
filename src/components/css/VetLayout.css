@@ -37,6 +37,8 @@
 }
 
 .sidebar2 a {
+  display: flex;
+  justify-content: center;
   text-decoration: none;
   color: #333;
   font-weight: bold;
@@ -44,6 +46,7 @@
   padding: 10px;
   border-radius: 6px;
   transition: background 0.2s ease;
+  align-items: center;
 }
 
 .sidebar2 a.active,

@@ -244,8 +244,9 @@
         <div className="superadmin">
           <Toast ref={toast} position="bottom-right" />
           <Card className="p-4 card-services" style={{marginTop: '0px'}}>
-            <div className="flex justify-between items-center mb-4">
+            <div className="clinic-profile-header">
               <h1 className="services-title font-bold" style={{ fontSize: '20px' }}>Clinic Management</h1>
+              <Button label="Add" icon="pi pi-plus" className="clinic-add-button"/>
             </div>
           <DataTable value={allClinics} paginator rows={10} className="shadow-md rounded-lg">
             <Column 
