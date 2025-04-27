@@ -16,8 +16,8 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 20px;
-  overflow: hidden; /* Prevents unnecessary horizontal scrolling */
-  margin-top: 20px; /* Added space below navbar */
+  overflow: hidden;
+  margin-top: 20px;
 }
 
 /* Map Section */
@@ -174,18 +174,19 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .grid-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
 
-  .shop-header {
-    flex-direction: column;
-    text-align: center;
+  .wide-map {
+    order: 2; /* Map comes AFTER services */
   }
 }
 
 @media (max-width: 768px) {
   .page-container {
     padding-top: 40%;
+    flex-direction: column !important;
   }
 
   .shop-logo {
@@ -201,43 +202,15 @@
 
 @media (max-width: 480px) {
   .page-container {
-    padding-top: 80px;
-  }
-
-  .shop-info,
-  .booking-container,
-  .shop-info-container,
-  .shop-info-container2 {
-    padding: 15px;
+    padding-top: 40%;
   }
 
   .shop-logo {
-    width: 50px;
-    height: 50px;
-  }
-
-  .shop-name {
-    font-size: 16px;
-  }
-
-  .shop-specialty,
-  .shop-experience,
-  .shop-location,
-  .shop-contact,
-  .shop-hours {
-    font-size: 12px;
-  }
-
-  .section-title {
-    font-size: 1.2em;
-  }
-
-  .book-button-profile {
-    padding: 8px 10px;
-    font-size: 14px;
+    width: 60px;
+    height: 60px;
   }
 
   .grid-container {
-    gap: 10px;
+    gap: 15px;
   }
 }

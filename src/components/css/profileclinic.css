@@ -274,3 +274,73 @@ body {
     justify-content: space-between;
     flex-wrap: wrap; /* Allows wrapping if necessary */
   }
+
+  @media (max-width: 1024px) {
+    .shop-main-section {
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center the sections */
+    }
+  
+    .profile-shop-left,
+    .profile-shop-right {
+      flex: 1 0 100%; /* Ensure they take up full width */
+      margin-right: 0; /* Remove any right margin */
+      margin-bottom: 20px; /* Add some space between the sections */
+    }
+  
+    .profile-map-container {
+      order: 2; /* Map comes after the services */
+      margin-top: 2rem;
+    }
+  
+    .profile-map-container iframe {
+      height: 200px; /* Adjust map height on smaller screens */
+    }
+    
+    .shop-profile-logo {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .shop-profile-details h1 {
+      font-size: 1.6rem;
+    }
+  
+    .shop-profile-description h1 {
+      font-size: 1.4rem;
+    }
+  
+    .service-name,
+    .service-price {
+      font-size: 1.4; /* Smaller font size for mobile */
+    }
+  }
+  
+  /* Very Small Screens */
+  @media (max-width: 480px) {
+    .shop-profile-card {
+      padding: 1.5rem;
+    }
+  
+    .shop-profile-details h1 {
+      font-size: 1.4rem;
+    }
+  
+    .services-table {
+      padding: 15px;
+    }
+  
+    .service-name,
+    .service-price {
+      font-size: 1rem; /* Adjust for very small screens */
+    }
+  
+    .profile-map-container iframe {
+      height: 180px; /* Further adjust for smaller screens */
+    }
+  
+    .profile-map-button {
+      width: 100%; /* Full width for buttons */
+      font-size: 1rem; /* Adjust font size */
+    }
+  }

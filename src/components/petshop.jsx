@@ -235,7 +235,21 @@ function PetShop() {
     <div className={`page-container ${(step === 2 || step === 3) ? 'step-2-3-margin' : ''}`}>
       <Toast ref={toast} position="bottom-right" />
       <div className="petshop-container">
+
+      {clinic && step !== 3 && (
+        <div className={`shop-info-book ${step === 3 ? 'hide-on-step-3' : ''}`}>
+          <img
+            src={`http://localhost:5000${clinic.logo}`}
+            className="shop-logo-book"
+          />
+          <h3>{clinic.name}</h3>
+        </div>
+      )}
+
+
         <div className={`form-container ${step === 3 ? 'step-3-active' : ''}`}>
+
+        
           {step === 1 && (
             <>
               <div className="step-indicator">

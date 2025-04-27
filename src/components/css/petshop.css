@@ -25,7 +25,7 @@
 
 .shop-info-book {
   width: 40%; /* Allocate space for the clinic info */
-  padding: 20px;
+  padding: 40px;
   text-align: center;
 }
 
@@ -170,7 +170,7 @@
 @media screen and (max-width: 768px) {
   .petshop-container {
     flex-direction: column;
- width: 90%;
+    width: 90%;
     padding: 15px;
     max-height: none; /* Remove max-height for mobile */
     margin-top: 20px; /* Adjust margin for mobile */
@@ -216,11 +216,16 @@
     font-size: 12px;
   }
   
-  .step-2-3-margin {
-    margin-top: 5rem; /* adjust as needed */
+  .step-3-active {
+    margin-top: 0; /* or reduce it */
+    padding-top: 0;
   }
   
-  .step-3-active {
-    margin-top: 15rem;
+  
+  
+
+  .hide-on-step-3 {
+    display: none;
   }
+  
 }
