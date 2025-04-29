@@ -10,19 +10,31 @@
   import { InputTextarea } from 'primereact/inputtextarea';
   import { InputText } from 'primereact/inputtext';
   import { Dropdown } from 'primereact/dropdown';
-  import { Calendar } from 'primereact/calendar';
   import { InputNumber } from 'primereact/inputnumber';
   import { Dialog } from 'primereact/dialog';
   import ToggleSwitch from './ToggleSwitch';
-  import { styleText } from "util";
+  import { FilterIcon, SearchIcon } from "lucide-react";
 
   const ClinicProfile = () => {
     const { role, clinicId } = useAuth();
     const [allClinics, setAllClinics] = useState([]);
+    const [filteredClinics, setFilteredClinics] = useState([]);
     const [clinic, setClinic] = useState(null);
     const [isEditingLogo, setIsEditingLogo] = useState(false);
     const [isEditingInfo, setIsEditingInfo] = useState(false);
     const [formData, setFormData] = useState({
+      _id: "",
+      name: "",
+      email: "",
+      address: "",
+      contact_number: "",
+      description: "",
+      days: "",
+      open_time: "",
+      close_time: "",
+      logo: null,
+    });
+    const [newClinicData, setNewClinicData] = useState({
       name: "",
       email: "",
       address: "",
@@ -44,6 +56,14 @@
     const [selectedClinic, setSelectedClinic] = useState(null);
     const fileInputRef = useRef(null);
     const toast = useRef(null);
+    const [serviceOptions, setServiceOptions] = useState([]); // New state to store services
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedStatus, setSelectedStatus] = useState(null);
+
+    const statusOptions = [
+      { label: "Active", value: "Active" },
+      { label: "Inactive", value: "Inactive" },
+    ]; 
 
     useEffect(() => {
       const fetchData = async () => {
@@ -51,6 +71,7 @@
           const response = await axios.get(`http://localhost:5000/api/clinics/${clinicId}`);
           setClinic(response.data);
           setFormData({
+            _id: response.data._id,
             name: response.data.name || "",
             email: response.data.email || "",
             address: response.data.address || "",
@@ -70,6 +91,30 @@
     
       fetchData();
     }, [clinicId, role]);
+
+    useEffect(() => {
+      filterClinics(); // Filter clinics whenever allClinics, searchTerm, or selectedStatus changes
+  }, [allClinics, searchTerm, selectedStatus]);
+
+  const filterClinics = () => {
+      let filtered = [...allClinics];
+
+      // Filter by search term
+      if (searchTerm) {
+          const lowercasedSearchTerm = searchTerm.toLowerCase();
+          filtered = filtered.filter(clinic => 
+              clinic.name.toLowerCase().includes(lowercasedSearchTerm) ||
+              clinic.address.toLowerCase().includes(lowercasedSearchTerm)
+          );
+      }
+
+      // Filter by selected status
+      if (selectedStatus) {
+          filtered = filtered.filter(clinic => clinic.status === selectedStatus);
+      }
+
+      setFilteredClinics(filtered);
+  };
 
     const fetchAllClinics = async () => {
       try {
@@ -101,8 +146,27 @@
         setFormData(prev => ({ ...prev, logo: file }));
       }
     };  
-    
 
+    const handleNewClinicInputChange = (e) => {
+      const { name, value } = e.target;
+      setNewClinicData({ ...newClinicData, [name]: value });
+    };
+
+    const openAddClinicDialog = () => {
+      setNewClinicData({
+        name: "",
+        email: "",
+        address: "",
+        contact_number: "",
+        description: "",
+        days: "",
+        open_time: "",
+        close_time: "",
+        logo: null,
+      });
+      setIsDialogVisible(true); // Assuming you have a state for dialog visibility
+    };
+    
     const removeService = (index) => {
       const updatedServices = formData.services.filter((_, i) => i !== index);
       setFormData({ ...formData, services: updatedServices });
@@ -110,49 +174,48 @@
 
     const handleSave = async () => {
       try {
-        // 1. Save clinic profile updates
-        await axios.put(`http://localhost:5000/api/clinics/update/${clinicId}`, formData);
-    
-        // 2. Prepare only valid, new services (with a name, no _id)
-        const newServices = formData.services
-          .filter(service => service.name?.trim() && !service._id)
-          .map(service => {
-            const { _id, ...rest } = service;
-            return { ...rest, clinic_id: clinicId };
+          // Save clinic profile updates
+          await axios.put(`http://localhost:5000/api/clinics/update/${formData._id}`, formData);
+  
+          // Prepare only valid, new services (with a name, no _id)
+          const newServices = formData.services
+              .filter(service => service.name?.trim() && !service._id)
+              .map(service => {
+                  const { _id, ...rest } = service;
+                  return { ...rest, clinic_id: clinic._id };
+              });
+  
+          if (newServices.length > 0) {
+              await axios.post("http://localhost:5000/api/services/add", newServices);
+          }
+  
+          const existingServices = formData.services
+              .filter(service => service._id)
+              .map(service => {
+                  const { _id, ...rest } = service;
+                  return axios.put(`http://localhost:5000/api/services/update/${_id}`, rest);
+              });
+  
+          await Promise.all(existingServices);
+  
+          setClinic({ ...clinic, ...formData });
+          setIsEditingLogo(false);
+          setIsEditingInfo(false);
+  
+          toast.current.show({
+              severity: "success",
+              summary: "Success",
+              detail: "Profile updated successfully",
           });
-    
-        if (newServices.length > 0) {
-          await axios.post("http://localhost:5000/api/services/add", newServices);
-        }
-    
-        const existingServices = formData.services
-          .filter(service => service._id)
-          .map(service => {
-            const { _id, ...rest } = service;
-            return axios.put(`http://localhost:5000/api/services/update/${_id}`, rest);
-          });
-    
-        await Promise.all(existingServices);
-    
-        setClinic({ ...clinic, ...formData });
-        setIsEditingLogo(false);
-        setIsEditingInfo(false);
-    
-        toast.current.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Profile updated successfully"
-        });
-    
       } catch (error) {
-        console.error("Error saving clinic profile:", error);
-        toast.current.show({
-          severity: "error",
-          summary: "Error",
-          detail: "Failed to save changes"
-        });
+          console.error("Error saving clinic profile:", error);
+          toast.current.show({
+              severity: "error",
+              summary: "Error",
+              detail: "Failed to save changes",
+          });
       }
-    };  
+  };
     
 
     
@@ -169,7 +232,10 @@
     };
 
     const statusBodyTemplate = (rowData) => (
-      <span className={`status-tag ${rowData.status?.toLowerCase()}`}>{rowData.status}</span>
+        <ToggleSwitch
+        isActive={rowData.status === "Active"}
+        onToggle={() => handleStatusUpdate(rowData._id, rowData.status === "Active" ? "Inactive" : "Active")}
+      />
     );
 
 
@@ -178,27 +244,24 @@
       <div className="flex justify-center items-center admin-action-buttons"> {/* Center all items in a row */}
         <Button
           icon="pi pi-pencil"
-          className="p-button-sm p-button-info"
+          className="edit-btn"
           onClick={() => handleEditClinic(rowData)}
           tooltip="Edit"
-          style={{ borderRadius: '50%', width: '33px'}}
+          style={{ borderRadius: '50%', width: '35px'}}
         />
         <Button
           icon="pi pi-trash"
-          className="p-button-sm p-button-danger"
+          className="delete-btn"
           onClick={() => handleDeleteClinic(rowData._id)}
           tooltip="Delete"
-          style={{ borderRadius: '50%', width: '33px'}}
-        />
-        <ToggleSwitch
-          isActive={rowData.status === "Active"}
-          onToggle={() => handleStatusUpdate(rowData._id, rowData.status === "Active" ? "Inactive" : "Active")}
+          style={{ borderRadius: '50%', width: '35px'}}
         />
       </div>
     );
 
     const handleEditClinic = (clinicData) => {
       setFormData({
+        _id: clinicData._id,
         name: clinicData.name,
         email: clinicData.email,
         address: clinicData.address,
@@ -238,90 +301,198 @@
       return `${hour12}:${minute} ${suffix}`;
     };
 
+    const handleAddClinic = async () => {
+      try {
+        const formDataToSend = new FormData();
+        Object.keys(newClinicData).forEach(key => {
+          formDataToSend.append(key, newClinicData[key]);
+        });
+    
+        await axios.post("http://localhost:5000/api/clinics/register", formDataToSend);
+        toast.current.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Clinic added successfully",
+        });
+        fetchAllClinics(); // Refresh the clinic list
+        setIsDialogVisible(false); // Close the dialog
+      } catch (error) {
+        console.error("Error adding clinic:", error);
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Failed to add clinic",
+        });
+      }
+    };
+
 
     if (role === "admin") {
       return (
         <div className="superadmin">
           <Toast ref={toast} position="bottom-right" />
-          <Card className="p-4 card-services" style={{marginTop: '0px'}}>
-            <div className="flex justify-between items-center mb-4">
-              <h1 className="services-title font-bold" style={{ fontSize: '20px' }}>Clinic Management</h1>
-            </div>
-          <DataTable value={allClinics} paginator rows={10} className="shadow-md rounded-lg">
-            <Column 
-              body={(rowData) => (
-                <img 
-                  src={`http://localhost:5000${rowData.logo}`} 
-                  alt={`${rowData.name} Logo`} 
-                  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }} // Adjust size as needed
-                />
-              )} 
-            />
-            <Column field="name" header="Clinic Name" />
-            <Column field="address" header="Address" />
-            <Column field="contact_number" header="Contact" />
-            <Column field="days" header="Schedule" />
-            <Column 
-              header="Operating time"
-              body={(rowData) => {
-                const openTime12Hour = convertTo12HourFormat(rowData.open_time);
-                const closeTime12Hour = convertTo12HourFormat(rowData.close_time);
+            <Card className="p-4 card-services" style={{ marginTop: '0px' }}>
+                <div className="clinic-profile-header">
+                    <h1 className="services-title font-bold" style={{ fontSize: '20px' }}>Clinic Management</h1>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ position: "relative", minWidth: "250px" }}>
+                          {/* Search Icon inside input */}
+                          <SearchIcon size={20} style={{ 
+                              position: "absolute", 
+                              top: "50%", 
+                              left: "10px", 
+                              transform: "translateY(-50%)", 
+                              color: "#6c757d" 
+                          }} />
 
-                return (
-                <div>
-                  <p>{openTime12Hour} - {closeTime12Hour  }</p>
+                          {/* Input Text with padding to the left */}
+                            <InputText 
+                                value={searchTerm}
+                                onChange={e => setSearchTerm(e.target.value)}
+                                placeholder="Search"
+                                style={{ 
+                                    width: "100%", 
+                                    paddingLeft: "3.5rem", 
+                                    maxWidth: "400px",
+                                    marginBottom: "0px"
+                                }}
+                            />
+                        </div>
+                        <Dropdown
+                            value={selectedStatus}
+                            options={statusOptions}
+                            onChange={(e) => setSelectedStatus(e.value)}
+                            placeholder="Filter by Status"
+                            className="p-inputtext-sm"
+                            showClear
+                            style={{
+                              height: "45px", 
+                              padding: "0 10px", 
+                              fontSize: "14px", 
+                              minWidth: "150px", 
+                              marginBottom: "0px"
+                            }}
+                        />
+                        {/* <Button label="Add" icon="pi pi-plus" className="clinic-add-button" onClick={openAddClinicDialog} /> */}
+                    </div>
                 </div>
-              )
-              }}
-            />
-            <Column header="Actions" body={actionBodyTemplate} />
-          </DataTable>
-          </Card>
+                <span className="datatable-line"></span>
+                <DataTable value={allClinics} paginator rows={10} className="shadow-md rounded-lg">
+                  <Column 
+                    header="Clinic Name"
+                    body={(rowData) => (
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img 
+                          src={`http://localhost:5000${rowData.logo}`} 
+                          alt={`${rowData.name} Logo`} 
+                          style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%', marginRight: '10px' }} // Adjust size as needed
+                        />
+                        <span>{rowData.name}</span>
+                      </div>
+                    )}
+                  />
+                  <Column field="email" header="Email" />
+                  <Column field="contact_number" header="Contact #" />
+                  <Column field="address" header="Address" />
+                  <Column field="days" header="Schedule" />
+                  <Column header="Status" body={statusBodyTemplate} />
+                  <Column header="Actions" body={actionBodyTemplate} />
+                </DataTable>
+            </Card>
 
-          <Dialog
-          header="Edit Clinic"
-          visible={isDialogVisible}
-          onHide={() => setIsDialogVisible(false)}
-          style={{ width: '500px' }}
-        >
-          <div className="grid gap-3">
-            <div className="p-field">
-              <label>Name</label>
-              <InputText name="name" value={formData.name} onChange={handleInputChange} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Email</label>
-              <InputText name="email" value={formData.email} onChange={handleInputChange} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Address</label>
-              <InputText name="address" value={formData.address} onChange={handleInputChange} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Contact Number</label>
-              <InputText name="contact_number" value={formData.contact_number} onChange={handleInputChange} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Description</label>
-              <InputTextarea name="description" value={formData.description} onChange={handleInputChange} rows={3} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Days Open</label>
-              <InputText name="days" value={formData.days} onChange={handleInputChange} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Open Time</label>
-              <input type="time" name="open_time" value={formData.open_time} onChange={handleInputChange} className="w-full" />
-            </div>
-            <div className="p-field">
-              <label>Close Time</label>
-              <input type="time" name="close_time" value={formData.close_time} onChange={handleInputChange} className="w-full" />
-            </div>
-          </div>
-          <div className="flex justify-end mt-4">
-            <Button label="Save" onClick={handleSave} className="p-button-success" />
-          </div>
-        </Dialog>
+            <Dialog
+                header="Edit Clinic"
+                visible={isDialogVisible}
+                onHide={() => setIsDialogVisible(false)}
+                style={{ width: '500px' }}
+            >
+                <div className="grid gap-3">
+                    <div className="p-field">
+                        <label>Name</label>
+                        <InputText name="name" value={formData.name} onChange={handleInputChange} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Email</label>
+                        <InputText name="email" value={formData.email} onChange={handleInputChange} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Address</label>
+                        <InputText name="address" value={formData.address} onChange={handleInputChange} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Contact Number</label>
+                        <InputText name="contact_number" value={formData.contact_number} onChange={handleInputChange} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Description</label>
+                        <InputTextarea name="description" value={formData.description} onChange={handleInputChange} rows={3} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Days Open</label>
+                        <InputText name="days" value={formData.days} onChange={handleInputChange} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Open Time</label>
+                        <input type="time" name="open_time" value={formData.open_time} onChange={handleInputChange} className="w-full" />
+                    </div>
+                    <div className="p-field">
+                        <label>Close Time</label>
+                        <input type="time" name="close_time" value={formData.close_time} onChange={handleInputChange} className="w-full" />
+                    </div>
+                </div>
+                <div className="flex justify-end mt-4">
+                    <Button label="Save" onClick={handleSave} className="p-button-success" />
+                </div>
+            </Dialog>
+
+            <Dialog
+              header="Add New Clinic"
+              visible={isDialogVisible}
+              onHide={() => setIsDialogVisible(false)}
+              style={{ width: '500px' }}
+            >
+              <div className="grid gap-3">
+                <div className="p-field">
+                  <label>Name</label>
+                  <InputText name="name" value={newClinicData.name} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Email</label>
+                  <InputText name="email" value={newClinicData.email} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Address</label>
+                  <InputText name="address" value={newClinicData.address} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Contact Number</label>
+                  <InputText name="contact_number" value={newClinicData.contact_number} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Description</label>
+                  <InputTextarea name="description" value={newClinicData.description} onChange={handleNewClinicInputChange} rows={3} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Days Open</label>
+                  <InputText name="days" value={newClinicData.days} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Open Time</label>
+                  <input type="time" name="open_time" value={newClinicData.open_time} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Close Time</label>
+                  <input type="time" name="close_time" value={newClinicData.close_time} onChange={handleNewClinicInputChange} className="w-full" />
+                </div>
+                <div className="p-field">
+                  <label>Logo</label>
+                  <input type="file" accept="image/*" onChange={(e) => setNewClinicData({ ...newClinicData, logo: e.target.files[0] })} className="w-full" />
+                </div>
+              </div>
+              <div className="flex justify-end mt-4">
+                <Button label="Add Clinic" onClick={handleAddClinic} className="p-button-success" />
+              </div>
+            </Dialog>
         </div>
       );
     }
@@ -446,7 +617,7 @@
         {/* Clinic Information */}
         <Card className="p-4 card-info">
           <div className="bubutton mt-2">
-            <h1>Personal Information</h1>
+            <h1>Clinic Information</h1>
               {isEditingInfo ? (
                 <Button label="Save" icon="pi pi-check" className="custom-save-btn" onClick={handleSave} />
               ) : (

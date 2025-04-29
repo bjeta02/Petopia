@@ -36,7 +36,8 @@ export const getAppointments = async (req, res) => {
             return {
                 ...appointment.toObject(),
                 ownerName,
-                petDetails
+                petDetails,
+                medical_concern: appointment.medical_concern
             };
         });
 
@@ -81,7 +82,8 @@ export const getAppointmentById = async (req, res) => {
             ownerName,
             petDetails,
             petName: petDetails, // if you want petName separately
-            owner: ownerName // if you want owner separately
+            owner: ownerName, // if you want owner separately
+            medical_concern: appointment.medical_concern
         };
 
         res.status(200).json(appointmentWithDetails);
@@ -237,7 +239,7 @@ const pendingAppointments = new Map();
 
 export const bookAppointment = async (req, res) => {
     try {
-        const { owner_id, firstName, lastName, petName, petType, petBreed, petGender, petAge, service_id, clinic_id, date, vet_id, notes, email, phone } = req.body;
+        const { owner_id, firstName, lastName, petName, petType, petBreed, petGender, petAge, service_id, clinic_id, date, vet_id, notes, email, phone, medical_concern } = req.body;
 
         if (!owner_id) {
             // 🟢 Guest Booking
@@ -301,7 +303,7 @@ export const bookAppointment = async (req, res) => {
         const now = new Date();
         passedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), 0);
 
-        const newAppointment = new Appointment({ owner_id, clinic_id, date: passedDate, service_id, notes, pet_id: petId, isVerified: true });
+        const newAppointment = new Appointment({ owner_id, clinic_id, date: passedDate, service_id, notes, pet_id: petId, isVerified: true, medical_concern });
         const savedAppointment = await newAppointment.save();
 
         // ✅ Fetch Additional Details
@@ -325,7 +327,8 @@ export const bookAppointment = async (req, res) => {
             petName: petName,
             petType: petType,
             notes: notes || "No additional notes provided.",
-            firstName: owner?.firstname || "Valued Customer"
+            firstName: owner?.firstname || "Valued Customer",
+            clinicEmail: clinic?.email || "Your Email"
         }, qrCode);
 
         // ✅ Send Confirmation Email (With PDF Attachment)
@@ -353,20 +356,18 @@ export const bookAppointmentForClinic = async (req, res) => {
     try {
         const { owner_id, pet_id, clinic_id, service_id, date, vet_id, notes } = req.body;
 
-        // Validate required fields
         if (!owner_id || !pet_id || !clinic_id || !service_id || !date) {
             return res.status(400).json({ message: "Missing required fields." });
         }
 
         const rawDate = new Date(date);
-            const now = new Date();
+        const now = new Date();
 
-            rawDate.setHours(now.getHours());
-            rawDate.setMinutes(now.getMinutes());
-            rawDate.setSeconds(now.getSeconds());
-            rawDate.setMilliseconds(0);
+        rawDate.setHours(now.getHours());
+        rawDate.setMinutes(now.getMinutes());
+        rawDate.setSeconds(now.getSeconds());
+        rawDate.setMilliseconds(0);
 
-        // Create a new appointment for the owner
         const newAppointment = new Appointment({
             owner_id,
             pet_id,
@@ -375,30 +376,58 @@ export const bookAppointmentForClinic = async (req, res) => {
             date: rawDate,
             vet_id,
             notes,
-            isVerified: true, // Mark as verified
+            isVerified: true, 
+            status: "Pending", 
         });
 
         const savedAppointment = await newAppointment.save();
 
-        // Fetch clinic and service details
-        const clinic = await Clinic.findById(savedAppointment.clinic_id);
+        // Fetch clinic, service, pet, and owner details
+        const clinic = await Clinic.findById(savedAppointment.clinic_id).select('email name');
         const service = await Service.findById(savedAppointment.service_id);
         const pet = await Pet.findById(savedAppointment.pet_id);
         const owner = await Owner.findById(owner_id);
 
-        // Send follow-up checkup email notification
-        const followUpDate = new Date(savedAppointment.date);
-        followUpDate.setDate(followUpDate.getDate() + 7); // Set follow-up date to 7 days later
-        sendFollowUpEmailToClinic(clinic.email, {
-            appointmentId: savedAppointment._id,
-            clinicName: clinic ? clinic.name : "Your Clinic Name",
-            firstName: owner ? owner.firstname : "Valued Customer",
-            lastName: owner ? owner.lastname : "Unknown",
-            petName: pet ? pet.name : "Your Pet",
-            serviceName: service ? service.name : "Your Service Name",
-            followUpDate: followUpDate.toLocaleString(),
-            notes: notes || "No additional notes provided.",
-        });
+        if (!clinic || !clinic.email) {
+            console.error('No clinic email found. Skipping follow-up email.');
+        } else {
+            // Prepare follow-up date (7 days later)
+            const followUpDate = new Date(savedAppointment.date);
+            followUpDate.setDate(followUpDate.getDate() + 7);
+
+            // ✅ Create Appointment
+            const passedDate = new Date(date);
+            const now = new Date();
+            passedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), 0);
+
+            const verifyUrl = `http://localhost:3000/verify?appointmentId=${savedAppointment._id}`;
+            const qrCode = await generateQRCode(verifyUrl);
+
+            // ✅ Generate PDF
+            const pdfBuffer = await createPDF({
+                appointmentId: savedAppointment._id,
+                clinicName: clinic?.name || "Your Clinic Name",
+                clinicAddress: clinic?.address || "Your Address",
+                date: new Date(passedDate).toLocaleString(),
+                serviceName: service?.name || "Your Service Name",
+                petName: pet?.name,
+                petType: pet?.type,
+                notes: notes || "No additional notes provided.",
+                firstName: owner?.firstname || "Valued Customer"
+            }, qrCode);
+
+            // Send follow-up email
+            sendFollowUpEmailToClinic(clinic.email, {
+                appointmentId: savedAppointment._id,
+                clinicName: clinic.name || "Your Clinic Name",
+                firstName: owner?.firstname || "Valued Customer",
+                lastName: owner?.lastname || "Unknown",
+                petName: pet?.name || "Your Pet",
+                serviceName: service?.name || "Your Service Name",
+                followUpDate: followUpDate.toLocaleString(),
+                notes: notes || "No additional notes provided.",
+            }, pdfBuffer);
+        }
 
         return res.status(201).json({ message: "Appointment booked successfully.", appointment: savedAppointment });
     } catch (error) {
@@ -406,6 +435,7 @@ export const bookAppointmentForClinic = async (req, res) => {
         return res.status(500).json({ message: "Server error", error });
     }
 };
+
 
 export const verifyAppointmentOTP = async (req, res) => {
     try {
@@ -447,6 +477,7 @@ export const verifyAppointmentOTP = async (req, res) => {
             service_id: pendingAppointment.service_id,
             notes: pendingAppointment.notes,    
             isVerified: true, // Mark as verified
+            medical_concern: pendingAppointment.medical_concern
         });
         const savedAppointment = await newAppointment.save();
 
@@ -457,6 +488,7 @@ export const verifyAppointmentOTP = async (req, res) => {
         // Fetch clinic and service details
         const clinic = await Clinic.findById(pendingAppointment.clinic_id);
         const service = await Service.findById(pendingAppointment.service_id);
+        
 
         // ✅ Generate QR Code
         const verifyUrl = `http://localhost:3000/verify?appointmentId=${savedAppointment._id}`;
@@ -469,25 +501,26 @@ export const verifyAppointmentOTP = async (req, res) => {
             clinicAddress: clinic?.address || "Your Address",
             date: new Date(passedDate).toLocaleString(),
             serviceName: service?.name || "Your Service Name",
-            petName: petName,
-            petType: petType,
-            notes: notes || "No additional notes provided.",
-            firstName: owner?.firstname || "Valued Customer"
+            petName: pendingAppointment.pet.name,  // ✅ From pendingAppointment
+            petType: pendingAppointment.pet.type,  // ✅ From pendingAppointment
+            notes: pendingAppointment.notes || "No additional notes provided.",  // ✅ From pendingAppointment
+            firstName: pendingAppointment.firstName || "Valued Customer"  // ✅ From pendingAppointment
         }, qrCode);
+        
 
         // ✅ Send Confirmation Email (With PDF Attachment)
-        sendAppointmentEmail(owner.email, {
+        sendAppointmentEmail(pendingAppointment.email, {
             appointmentId: savedAppointment._id,
             clinicName: clinic?.name || "Your Clinic Name",
             clinicAddress: clinic?.address || "Your Address",
             date: new Date(passedDate).toLocaleString(),
             serviceName: service?.name || "Your Service Name",
-            petName: petName,
-            petType: petType,
-            notes: notes || "No additional notes provided.",
-            firstName: owner?.firstname || "Valued Customer",
+            petName: pendingAppointment.pet.name,
+            petType: pendingAppointment.pet.type,
+            notes: pendingAppointment.notes || "No additional notes provided.",
+            firstName: pendingAppointment.firstName || "Valued Customer",
         }, pdfBuffer);
-
+        
         // Remove pending appointment after success
         pendingAppointments.delete(requestEmail);
 
@@ -501,7 +534,7 @@ export const verifyAppointmentOTP = async (req, res) => {
 export const updateAppointment = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status, notes, date, time, price } = req.body;
+        const { status, notes, date, time, price,medical_concern } = req.body;
 
         const updateData = {};
 
@@ -576,6 +609,11 @@ export const updateAppointment = async (req, res) => {
             updateData.price = price;
         }
 
+        // Update medical_concern if provided
+        if (medical_concern) {
+            updateData.medical_concern = medical_concern;
+        }
+
         // Update the appointment
         const updatedAppointment = await Appointment.findByIdAndUpdate(id, updateData, { new: true })
             .populate("owner_id", "email firstname")
@@ -605,7 +643,7 @@ export const updateAppointment = async (req, res) => {
                 clinicAddress: updatedAppointment.clinic_id?.address || "Unknown Address",
                 notes: updatedAppointment.notes || "No additional notes",
                 price: updatedAppointment.price ? `₱${updatedAppointment.price}` : "Not specified",
-                email: updatedAppointment.clinic_id?.email || "No email provided",
+                clinicEmail: updatedAppointment.clinic_id?.email || "No email provided",
             };
             recipientEmail = updatedAppointment.owner_id.email;
         } else if (updatedAppointment.guest_id) {
@@ -619,7 +657,7 @@ export const updateAppointment = async (req, res) => {
                 clinicAddress: updatedAppointment.clinic_id?.address || "Unknown Address",
                 notes: updatedAppointment.notes || "No additional notes",
                 price: updatedAppointment.price ? `₱${updatedAppointment.price}` : "Not specified",
-                email: updatedAppointment.clinic_id?.email || "No email provided",
+                clinicEmail: updatedAppointment.clinic_id?.email || "No email provided",
             };
             recipientEmail = updatedAppointment.guest_id?.email;
         }

@@ -120,10 +120,28 @@ export const updatePet = async (req, res) => {
       return res.status(404).json({ message: "Pet not found" });
     }
 
-    // Update the pet with the new data
-    const updatedPet = await Pet.findByIdAndUpdate(petId, updates, { new: true });
+    // If medical_history is provided in the updates, append it
+    if (updates.medical_history) {
+      // Ensure medical_history is an array
+      if (!Array.isArray(pet.medical_history)) {
+        pet.medical_history = []; // Initialize as an empty array if not already
+      }
+      // Append the new medical history
+      pet.medical_history.push(updates.medical_history); // Add the new medical concern
+    }
+
+    // Update the pet with the new data (excluding medical_history)
+    const { medical_history, ...otherUpdates } = updates; // Exclude medical_history from updates
+    const updatedPet = await Pet.findByIdAndUpdate(petId, otherUpdates, { new: true });
+
+    // Save the updated pet with the new medical_history if it was updated
+    if (updates.medical_history) {
+      await updatedPet.save(); // Save the updated pet with the new medical_history
+    }
+
     res.status(200).json(updatedPet);
   } catch (error) {
+    console.error("Error updating pet:", error);
     res.status(500).json({ message: error.message });
   }
 };

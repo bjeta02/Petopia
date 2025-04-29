@@ -16,6 +16,16 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+// ✅ Call verify *after* the transporter is created
+transporter.verify((err, success) => {
+    if (err) {
+        console.error("Email transporter verification error:", err);
+    } else {
+        console.log("Email transporter is ready to send emails!");
+    }
+});
+
+
 // Send OTP Email
 export const sendOTPEmail = async (email, otp) => {
     try {
@@ -23,7 +33,13 @@ export const sendOTPEmail = async (email, otp) => {
             from: process.env.EMAIL_USER,
             to: email,
             subject: "Your OTP Code - Petopia",
-            html: `<p>Your OTP code is: <strong>${otp}</strong>. It expires in 5 minutes.</p>`,
+            html: `
+            <p>Hello,</p>
+            <p>Your OTP code is: <strong>${otp}</strong>. This code will expire in 5 minutes.</p>
+            <p>Thanks for choosing <strong>Petopia</strong> 🐾</p>
+            <br />
+            <small>This is an automated email. Please do not reply to this message.</small>
+            `,
         };
 
         const info = await transporter.sendMail(mailOptions);
@@ -216,31 +232,38 @@ export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails
     }
 };
 
-// Send Follow-Up Email to Clinic
-export const sendFollowUpEmailToClinic = async (clinicEmail, appointmentDetails) => {
-    try {
-        const mailOptions = {
-            from: process.env.EMAIL_USER,
-            to: clinicEmail,
-            subject: "Follow-Up Appointment Reminder - Petopia",
-            html: `
-                <h2>Follow-Up Appointment Reminder</h2>
-                <p>This is a reminder for a follow-up appointment at <strong>${appointmentDetails.clinicName}</strong>.</p>
-                <p><strong>Appointment ID:</strong> ${appointmentDetails.appointmentId}</p>
-                <p><strong>Owner Name:</strong> ${appointmentDetails.firstName} ${appointmentDetails.lastName}</p>
-                <p><strong>Pet Name:</strong> ${appointmentDetails.petName}</p>
-                <p><strong>Service:</strong> ${appointmentDetails.serviceName}</p>
-                <p><strong>Follow-Up Date:</strong> ${new Date(appointmentDetails.followUpDate).toLocaleString()}</p>
-                <p><strong>Notes:</strong> ${appointmentDetails.notes || "No additional notes provided."}</p>
-                <p>Thank you for providing excellent care to our furry friends!</p>
-                <hr>
-                <p style="font-size: 12px; color: gray;">This is an automated message from Petopia. Please do not reply to this email.</p>
-            `,
-        };
+    // Send Follow-Up Email to Clinic
+    export const sendFollowUpEmailToClinic = async (clinicEmail, appointmentDetails) => {
+        try {
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: clinicEmail,
+                subject: "Follow-Up Appointment Reminder - Petopia",
+                html: `
+                    <h2>Follow-Up Appointment Reminder</h2>
+                    <p>This is a reminder for a follow-up appointment at <strong>${appointmentDetails.clinicName}</strong>.</p>
+                    <p><strong>Appointment ID:</strong> ${appointmentDetails.appointmentId}</p>
+                    <p><strong>Owner Name:</strong> ${appointmentDetails.firstName} ${appointmentDetails.lastName}</p>
+                    <p><strong>Pet Name:</strong> ${appointmentDetails.petName}</p>
+                    <p><strong>Service:</strong> ${appointmentDetails.serviceName}</p>
+                    <p><strong>Follow-Up Date:</strong> ${new Date(appointmentDetails.followUpDate).toLocaleString()}</p>
+                    <p><strong>Notes:</strong> ${appointmentDetails.notes || "No additional notes provided."}</p>
+                    <p>Thank you for providing excellent care to our furry friends!</p>
+                    <hr>
+                    <p style="font-size: 12px; color: gray;">This is an automated message from Petopia. Please do not reply to this email.</p>
+                `,
+                attachments: [
+                    {
+                        filename: `appointment-${appointmentDetails.appointmentId}.pdf`,
+                        content: pdfBuffer, // Ensure proper passing of the buffer
+                        contentType: "application/pdf",
+                    },
+                ],
+            };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log("Follow-Up Email sent to clinic: ", info.response);
-    } catch (error) {
-        console.error("Error sending follow-up email to clinic:", error);
-    }
-};
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Follow-Up Email sent to clinic: ", info.response);
+        } catch (error) {
+            console.error("Error sending follow-up email to clinic:", error);
+        }
+    };

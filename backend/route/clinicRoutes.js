@@ -8,6 +8,6 @@ router.get("/clinics", getClinics);
 router.get("/clinics/:id", getClinicById);
 router.post("/clinics/register", upload.single("logo"), registerClinic); // Upload a single file with the field name 'logo'
 router.put("/clinics/update/:clinicId", upload.single("logo"), updateClinic); // For updating the logo
-router.delete('/clinics/:id', deleteClinic);// DELETE request to delete a clinic by ID
+router.delete('/clinics/delete/:id', deleteClinic);// DELETE request to delete a clinic by ID
 
 export default router;

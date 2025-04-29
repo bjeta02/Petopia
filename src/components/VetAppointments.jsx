@@ -4,6 +4,9 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext"; 
+import { FilterIcon, SearchIcon } from 'lucide-react';
+import { Dropdown } from "primereact/dropdown";
 import { useAuth } from "./utils/auth";
 import axios from "axios";
 import "./css/VetAppointments.css";
@@ -13,14 +16,33 @@ import { QrReader } from "react-qr-reader";
 const VetAppointments = () => {
   const { role, clinicId } = useAuth();
   const [appointments, setAppointments] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [editDialog, setEditDialog] = useState(false);
   const toast = React.useRef(null);
   const [qrDialog, setQrDialog] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedService, setSelectedService] = useState(null); // New state for selected service
+  const [serviceOptions, setServiceOptions] = useState([]); // New state to store services
+
+  const statusOptions = [
+    { label: "Pending", value: "Pending" },
+    { label: "Confirmed", value: "Confirmed" },
+    { label: "In Progress", value: "In Progress" },
+    { label: "Ready for Pickup", value: "Ready for Pickup" },
+  ];  
+
 
   useEffect(() => {
     fetchAppointments();
+    fetchServices();
   }, [clinicId, role]);
+
+  useEffect(() => {
+    filterAppointments(); // Filter appointments whenever appointments or selectedStatus or selectedService changes
+  }, [appointments, searchTerm, selectedStatus, selectedService]);
+
 
   const fetchAppointments = async () => {
     if (role !== "admin" && !clinicId) {
@@ -35,6 +57,7 @@ const VetAppointments = () => {
           : `http://localhost:5000/api/appointments/clinics/${clinicId}`; // Fetch only clinic-specific ones
   
       console.log("🔍 Fetching appointments from:", url);
+      
       
       const response = await axios.get(url);
       const filteredAppointments = response.data.filter((appt) => {
@@ -57,6 +80,79 @@ const VetAppointments = () => {
       });
     }
   };
+
+  const fetchServices = async () => {
+    try {
+      const url =
+        role === "admin"
+          ? `http://localhost:5000/api/services` // Fetch all services for admin
+          : `http://localhost:5000/api/services/clinic/${clinicId}`; // Fetch services only for this clinic
+  
+      const response = await axios.get(url);
+      const services = response.data;
+  
+      const formattedServices = services.map(service => ({
+        label: service.name,   // 💬 Still using name for dropdown
+        value: service.name    // 🔥 value is service.name not id!
+      }));
+  
+      setServiceOptions(formattedServices);
+    } catch (error) {
+      console.error("Error fetching services:", error);
+      toast.current?.show({
+        severity: "error",
+        summary: "Error",
+        detail: "Failed to fetch services",
+      });
+    }
+  };
+
+  const filterAppointments = () => {
+    let filtered = [...appointments];
+  
+    // Filter by search term
+    if (searchTerm) {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      filtered = filtered.filter((appt) => {
+        const petName = appt.petDetails?.toLowerCase() || "";
+        const ownerName = appt.ownerName?.toLowerCase() || "";
+        const serviceName = appt.service_id?.name?.toLowerCase() || "";
+        return (
+          petName.includes(lowercasedSearchTerm) ||
+          ownerName.includes(lowercasedSearchTerm) ||
+          serviceName.includes(lowercasedSearchTerm)
+        );
+      });
+    }
+  
+    // Filter by status
+    if (selectedStatus) {
+      filtered = filtered.filter(
+        (appt) => appt.status.toLowerCase() === selectedStatus.toLowerCase()
+      );
+    }
+  
+    // Filter by selected service (now by NAME)
+    if (selectedService) {
+      filtered = filtered.filter(
+        (appt) => appt.service_id?.name === selectedService
+      );
+    }
+  
+    // Sort by date
+    const today = new Date();
+    filtered.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      const isTodayA = dateA.toDateString() === today.toDateString();
+      const isTodayB = dateB.toDateString() === today.toDateString();
+      if (isTodayA && !isTodayB) return -1;
+      if (!isTodayA && isTodayB) return 1;
+      return dateA - dateB;
+    });
+  
+    setFilteredAppointments(filtered);
+  };
   
 
   const showToast = (severity, summary, detail) => {
@@ -75,6 +171,15 @@ const VetAppointments = () => {
         updateData.completedAt = new Date();
         updateData.confirmedAt = null;
         updateData.rejectedAt = null;
+
+        // Append medical_concern to pet's medical_history
+        const medicalConcern = selectedAppointment.medical_concern; // Get the medical concern from the selected appointment
+        const petId = selectedAppointment.pet_id; // Get the pet ID from the selected appointment
+
+        // Update the pet's medical history
+        await axios.put(`http://localhost:5000/api/pets/update/${petId}`, {
+          medical_history: medicalConcern // Append the medical concern
+        });
       } else if (status === "Cancelled") {
         updateData.rejectedAt = new Date();
         updateData.confirmedAt = null;
@@ -240,24 +345,95 @@ const VetAppointments = () => {
       <Toast ref={toast} position="bottom-right" />
 
       <div className="patients-label">
-          <p>All Patients: {appointments.length}</p>
+          <h1 className="services-title font-bold" style={{ fontSize: "20px", marginBottom: "0px" }}>
+              Appointment Management
+          </h1>
           <div>
               {statusLegend}
           </div>
       </div>
       <span className="datatable-line"></span>
 
+      <div className="flex-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FilterIcon size={24} />
+        </div>
+        <div style={{ position: "relative", flexGrow: 1 }}>
+          <Dropdown
+            value={selectedStatus}
+            options={statusOptions}
+            onChange={(e) => setSelectedStatus(e.value)}
+            placeholder="Filter by Status"
+            className="p-inputtext-sm"
+            showClear
+            style={{
+              height: "45px", 
+              padding: "0 10px", 
+              fontSize: "14px", 
+              minWidth: "150px", 
+              marginBottom: "10px"
+            }}
+          />
+        </div>
+
+        {/* Add gap between the two filters */}
+        <div style={{ position: "relative", flexGrow: 1 }}>
+          <Dropdown
+            value={selectedService}
+            options={serviceOptions}
+            onChange={(e) => setSelectedService(e.value)}
+            placeholder="Filter by Services"
+            className="p-inputtext-sm"
+            showClear
+            style={{
+              height: "45px", 
+              padding: "0 10px", 
+              fontSize: "14px",
+              minWidth: "150px", 
+              marginBottom: "10px"
+            }}
+          />
+        </div>
+
+        <div style={{ position: "relative", flexGrow: 1, minWidth: "250px" }}>
+          {/* Search Icon inside input */}
+          <SearchIcon size={20} style={{ 
+              position: "absolute", 
+              top: "40%", 
+              left: "10px", 
+              transform: "translateY(-50%)", 
+              color: "#6c757d" 
+          }} />
+
+          {/* Input Text with padding to the left */}
+            <InputText 
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search"
+                style={{ 
+                    width: "100%", 
+                    paddingLeft: "3.5rem", 
+                    maxWidth: "400px"
+                }}
+            />
+        </div>
+      </div>
+
       <Button
         label="Scan QR Code"
         icon="pi pi-qrcode"
         onClick={() => setQrDialog(true)}
-        className="custom-qr-btn mb-4"
+        className="custom-qr-btn"
       />
+    </div>
 
-      <DataTable value={appointments} className="datatable" paginator rows={20}>
+      <DataTable value={filteredAppointments} className="datatable" paginator rows={20}>
         <Column field="ownerName" header="Owner Name" />
         <Column field="petDetails" header="Pet Details" />
         <Column field="service_id.name" header="Service Availed" />
+        <Column field="medical_concern" header="Medical Concern" />
         <Column field="date" header="Appointment Date" body={dateTemplate} />
         <Column field="status" header="Status" body={formatStatus} />
         <Column header="Actions" body={actionTemplate} />

@@ -21,6 +21,7 @@ function PetShop() {
   const [petBreed, setPetBreed] = useState("");
   const [petAge, setPetAge] = useState("");
   const [petGender, setPetGender] = useState("");
+  const [medicalConcern, setMedicalConcern] = useState("");
   const [services, setServices] = useState([]);
   const [pets, setPets] = useState([]);
   const [selectedService, setSelectedService] = useState("");
@@ -34,6 +35,11 @@ function PetShop() {
   const [loading, setLoading] = useState(false); // New state for loading
   const [storeHours, setStoreHours] = useState({ open_time: "", close_time: "" });
   const toast = useRef(null); // Create a ref for Toast
+  const selectedServiceObject = services.find(service => service._id === selectedService);
+
+  useEffect(() => {
+    console.log("selected Service: ", selectedService);
+  });
 
   useEffect(() => {
     const fetchClinicData = async () => {
@@ -137,6 +143,7 @@ function PetShop() {
       if (!petBreed) newErrors.petBreed = "Pet breed is required";
       if (!petGender) newErrors.petGender = "Pet gender is required";
       if (!petAge) newErrors.petAge = "Pet age is required";
+      if (!medicalConcern) newErrors.medicalConcern = "Medical concern is required";
     }
   
     if (Object.keys(newErrors).length > 0) {
@@ -163,12 +170,19 @@ function PetShop() {
           service_id: selectedService,
           vet_id: "someVetId",
           notes: "Some notes",
+          medical_concern: medicalConcern
       };    
   
       console.log("🚀 Sending appointment data:", appointmentData);
   
       const response = await axios.post("http://localhost:5000/api/appointments/book", appointmentData);
-    
+  
+      let appointmentId;
+
+      if (!isGuest && response.data.appointment) {
+        appointmentId = response.data.appointment._id;
+      }
+
       if (isGuest) {
         if (toast.current) {
           toast.current.show({ severity: "info", summary: "Info", detail: response.data.message });
@@ -179,7 +193,24 @@ function PetShop() {
         if (toast.current) {
           toast.current.show({ severity: "success", summary: "Success", detail: "✅ Appointment booked successfully!" });
         }
-        navigate(`/home`);
+        navigate(`/appointment-success`, {
+          state: {
+              appointment: {
+                appointmentId: appointmentId,  // Use the direct value from the response
+                clinicName: clinic?.name,  // Use the clinic name from the state
+                date: selectedDate,
+                service: selectedServiceObject,
+                ownerName: `${firstname} ${lastname}`,
+                ownerEmail: email,
+                petName,
+                petType,
+                petBreed,
+                petGender,
+                petAge,
+                medicalConcern
+              }
+          }
+        });
       }
     } catch (error) {
       console.error("❌ Error creating appointment:", error);
@@ -189,20 +220,45 @@ function PetShop() {
     } finally {
       setLoading(false);
     }
-  };
+};
 
   const handleVerifyOTP = async () => {
+    setLoading(true);
     try {
       const response = await axios.post("http://localhost:5000/api/appointments/verify-otp", {
         email,
         otp,
       });
-
-      toast.current.show({ severity: "success", summary: "Success", detail: response.data.message }); // Show success toast
-      navigate(`/appointment`);
+      
+      const appointmentId = response.data.appointment._id; // Use the ID from the response
+  
+      toast.current.show({ severity: "success", summary: "Success", detail: response.data.message });
+  
+      // ✅ Navigate to success page with correct info
+      navigate(`/appointment-success`, {
+        state: {
+          appointment: {
+            appointmentId: appointmentId,
+            clinicName: clinicId?.name,
+            date: selectedDate,
+            service: selectedServiceObject, // You probably need to make sure this is correctly selected
+            ownerName: `${firstname} ${lastname}`,
+            ownerEmail: email,
+            petName,
+            petType,
+            petBreed,
+            petGender,
+            petAge,
+            medicalConcern
+          }
+        }
+      });
+  
     } catch (error) {
       console.error("Error verifying OTP:", error);
-      toast.current.show({ severity: "error", summary: "Error", detail: "Invalid or expired OTP." }); // Show error toast
+      toast.current.show({ severity: "error", summary: "Error", detail: "Invalid or expired OTP." });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -429,6 +485,16 @@ function PetShop() {
                   onChange={(e) => setPetAge(e.target.value)}
                   placeholder="Enter pet age"
                 />
+
+                <label className="form-label">Medical Concern</label>
+                  <input 
+                    type="text" 
+                    className={`input-field ${errors.medicalConcern ? "error-field" : ""}`}
+                    value={medicalConcern}
+                    onChange={(e) => setMedicalConcern(e.target.value)} // Update state on change
+                    placeholder="Enter any medical concerns"
+                  />
+                  {errors.medicalConcern && <p className="error-text">{errors.medicalConcern}</p>}
               </div>
 
               <button 

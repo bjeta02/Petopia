@@ -137,7 +137,13 @@ export const registerClinic = async (req, res) => {
 export const updateClinic = async (req, res) => {
     try {
         const { clinicId } = req.params; // Get clinicId from request parameters
-        const { name, address, email, password, contact_number, description, status, open_time, close_time, days, image } = req.body; // Expecting the updated fields from the request body
+
+        // Validate clinicId
+        if (!clinicId || !mongoose.Types.ObjectId.isValid(clinicId)) {
+            return res.status(400).json({ message: "Invalid clinic ID." });
+        }
+
+        const { name, address, email, contact_number, description, status, open_time, close_time, days } = req.body; // Expecting the updated fields from the request body
 
         // Check if a new logo was uploaded
         const logoPath = req.file ? `/logos/${req.file.filename}` : undefined; // Only update if there's a new file
@@ -147,14 +153,12 @@ export const updateClinic = async (req, res) => {
             name,
             address,
             email,
-            password,
             contact_number,
             description,
             status,
             open_time,
             close_time,
             days,
-            image,
         };
 
         // Only add logo to updateData if a new file is uploaded

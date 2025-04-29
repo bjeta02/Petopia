@@ -1,0 +1,114 @@
+/* General Styles */
+body {
+    background-color: #eef7f5; /* Light alternative to white */
+}
+
+
+/* AppointmentSuccess.css */
+.appointment-success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 10px;
+  }
+  
+  .appointment-card {
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    max-height: 700px;
+    text-align: center;
+  }
+  
+  .check-icon {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    width: 96px; /* Container size */
+    height: 96px; /* Container size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 100px;
+}
+
+.check-icon img {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%; /* Optional: to ensure the image is rounded */
+}
+  
+  .appointment-details {
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+    justify-content: start;
+    text-align: start;
+    padding-left: 20px;
+  }
+  
+  .appointment-details div {
+    margin-bottom: 8px;
+  }
+  
+  .continue-button {
+    height: 50px;
+    background-color: limegreen !important;
+    width: 100%; /* Ensures it stretches */
+  }
+  
+  .view-appointment-button {
+    height: 50px;
+    margin-left: 10px;
+    background-color: #2196F3;
+    border-color: #2196F3;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .button-group > .view-appointment-button {
+    width: auto; /* Keep the 'View Appointment' button size flexible */
+  }
+  
+  .button-group > .continue-button {
+    flex-grow: 1; /* Makes the 'Continue' button stretch to take up the remaining space */
+  }
+  
+
+  .thank-you-message {
+    font-size: 1.1rem;
+    color: #4caf50; /* Green color for consistency */
+    margin-bottom: 16px;
+    font-weight: 500;
+    text-align: center; /* Center the text */
+    animation: fadeIn 0.5s ease-in; /* Optional: Add a fade-in effect */
+  }
+  
+  /* Optional: Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

@@ -71,12 +71,14 @@ export const createGuestOwner = async (req, res) => {
  * Update owner by ID.
  */
 export const updateOwner = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; // Extract the ID from the request parameters
     const { firstname, lastname, email, phone, address, password } = req.body;
+
     try {
-        const owner = await Owner.findById(id);
+        const owner = await Owner.findById(id); // Find the owner by ID
         if (!owner) return res.status(404).json({ message: "Owner not found" });
 
+        // Update fields if they exist
         if (firstname) owner.firstname = firstname;
         if (lastname) owner.lastname = lastname;
         if (email) owner.email = email;
@@ -84,7 +86,7 @@ export const updateOwner = async (req, res) => {
         if (address) owner.address = address;
         if (password) owner.password = await bcrypt.hash(password, 10);
 
-        const updatedOwner = await owner.save();
+        const updatedOwner = await owner.save(); // Save the updated owner
         res.status(200).json(updatedOwner);
     } catch (error) {
         console.error("Error updating owner:", error);

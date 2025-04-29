@@ -28,8 +28,6 @@
 
 /* PrimeReact DataTable Styling */
 .custom-table .p-datatable-thead > tr > th {
-  background-color: #24b89f;
-  color: white;
   text-align: left;
   padding: 10px;
 }

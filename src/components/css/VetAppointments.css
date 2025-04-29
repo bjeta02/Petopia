@@ -20,7 +20,7 @@
     border-radius: 8px;
     overflow: hidden;
     background: #f9f9f9;
-    padding: 10px; /* Padding around the DataTable */
+    padding: 0px; /* Padding around the DataTable */
 }
 
 /* Add padding to the cells in the DataTable */
@@ -424,4 +424,16 @@
     100% {
       top: calc(50% + 120px);
     }
+  }
+
+  .status-filter {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    gap: 10px; /* Optional: space between label and select */
+  }
+  
+  .filter-label {
+    display: flex;
+    align-items: center; /* Center label vertically */
   }

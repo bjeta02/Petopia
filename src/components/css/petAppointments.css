@@ -1,7 +1,7 @@
 .pet-appointment {
     width: 100%;
     max-width: 1050px;
-    margin: 0 auto 30px auto;
+    margin-left: 70px;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
@@ -72,23 +72,19 @@
 
 .status-legend {
     display: flex;
+    justify-content: flex-end; /* Aligns content to the right */
+    gap: 10px;
+    flex-wrap: wrap; /* Optional, for responsiveness */
     font-size: 14px;
     font-family: Arial, sans-serif;
-    align-items: flex-end;
 }
 
 .status-item {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 10px;
 }
 
-.patients-label {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
+
 
 
 /* Add keyframes animation */

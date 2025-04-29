@@ -5,6 +5,8 @@ import {
   CalendarCheck,
   History,
   Clock, // Assuming you want to use a clock icon for schedules
+  Settings,
+  Users
 } from "lucide-react"; // Importing icons
 
 import "../components/css/VetLayout.css";
@@ -24,37 +26,48 @@ const VetLayout = () => {
             </NavLink>
           </li>
           <li>
+          <NavLink 
+            to="/vet-profile" 
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            <Home size={18} style={{ marginRight: 8 }} />
+            {role === "admin" ? "Manage Clinics" : "Profile"}
+          </NavLink>
+          </li>
+          {role === "admin" && (
+          <li>
+            <NavLink to="/vet-service" className={({ isActive }) => (isActive ? "active" : "")}>
+              <Settings size={18} style={{ marginRight: 8 }} />
+              Manage Services
+            </NavLink>
+          </li>
+          )}
+          {role === "admin" && (
+          <li>
+            <NavLink to="/vet-users" className={({ isActive }) => (isActive ? "active" : "")}>
+              <Users size={18} style={{ marginRight: 8 }} />
+              Manage Users
+            </NavLink>
+          </li>
+          )}
+          <li>
             <NavLink to="/vet-appointments" className={({ isActive }) => (isActive ? "active" : "")}>
               <CalendarCheck size={18} style={{ marginRight: 8 }} />
-              Appointments
+              Manage Appointments
             </NavLink>
           </li>
           <li>
             <NavLink to="/vet-schedules" className={({ isActive }) => (isActive ? "active" : "")}>
               <Clock size={18} style={{ marginRight: 8 }} /> {/* Using Clock icon for Schedules */}
-              Schedules
+              Manage Schedules
             </NavLink>
           </li>
           <li>
             <NavLink to="/vet-history" className={({ isActive }) => (isActive ? "active" : "")}>
               <History size={18} style={{ marginRight: 8 }} />
-              History
+              Manage History
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/vet-profile" className={({ isActive }) => (isActive ? "active" : "")}>
-              <Home size={18} style={{ marginRight: 8 }} />
-              Profile
-            </NavLink>
-          </li>
-          {role === "admin" && (
-          <li>
-            <NavLink to="/vet-service" className={({ isActive }) => (isActive ? "active" : "")}>
-              <Home size={18} style={{ marginRight: 8 }} />
-              Service Management
-            </NavLink>
-          </li>
-          )}
         </ul>
       </div>
 

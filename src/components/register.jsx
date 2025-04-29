@@ -32,7 +32,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/owners/register", {
+      const response = await axios.post("http://localhost:5000/api/owners/register-with-otp", {
         firstname,
         lastname,
         email,

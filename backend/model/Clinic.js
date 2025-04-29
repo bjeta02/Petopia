@@ -12,7 +12,7 @@
         days: String,
         open_time: String,
         close_time: String,
-        image: { type: String, default: "https://via.placeholder.com/150" },
+        image: { type: String, default: 'https://cdn-icons-png.flaticon.com/512/616/616408.png' },
         logo: { type: String },
     }, { timestamps: true });
 

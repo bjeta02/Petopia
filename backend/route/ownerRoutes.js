@@ -1,6 +1,6 @@
 import express from 'express';
 import { getOwners, getOwnerById, updateOwner, uploadOwnerAvatar, createGuestOwner } from '../controller/ownerController.js';
-import { getUsers, registerUser, verifyUserOTP, loginUser } from '../controller/ownerAuthController.js';
+import { getUsers, registerOwnerWithOTP, registerUserWithoutOTP, verifyUserOTP, loginUser, updateUser, deleteUser } from '../controller/ownerAuthController.js';
 import { uploadAvatar } from "../middleware/uploadAvatar.js";
 
 
@@ -8,11 +8,17 @@ const router = express.Router();
 // Route to register a new owner
 router.get('/users', getUsers);
 
-// Route to register a new owner
-router.post('/owners/register', registerUser);
+// For owner registration with OTP
+router.post('/owners/register-with-otp', registerOwnerWithOTP);
+
+// For user registration without OTP (owner, clinic, admin)
+router.post('/users/register', registerUserWithoutOTP);
+
+// For deleting a user (Owner, Clinic, Admin)
+router.delete('/users/delete', deleteUser);
 
 // Route to book a appointment 
-router.post('/owners/create', createGuestOwner)
+router.post('/owners/create', createGuestOwner);
 
 //Route for OTP 
 router.post('/owners/verify-otp', verifyUserOTP);
@@ -31,5 +37,7 @@ router.post('/owners/login', loginUser);
 
 //Route to update owner's information
 router.put('/owners/update/:id', updateOwner)
+
+router.put('/users/update/:id', updateUser);
 
 export default router;

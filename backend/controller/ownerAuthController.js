@@ -23,11 +23,11 @@ export const getUsers = async (req, res) => {
 };
 
 /**
- * Register a new user (Owner, Clinic, or Admin) with optional OTP verification.
+ * Register a new user (Owner, Clinic, or Admin) without OTP verification.
  */
-export const registerUser = async (req, res) => {
+export const registerUserWithoutOTP = async (req, res) => {
     const { firstname, lastname, email, password, role } = req.body;
-    console.log("User registration data received:", req.body);
+    console.log("User registration data received (without OTP):", req.body);
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return res.status(400).json({ message: "Invalid email address." });
@@ -41,41 +41,69 @@ export const registerUser = async (req, res) => {
         if (existingUser) return res.status(400).json({ message: "Email already registered. Please log in." });
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const isOwner = role === "owner";
 
-        if (isOwner) {
-            // Generate OTP for owners
-            const otp = crypto.randomInt(100000, 999999).toString();
-            const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
+        // Directly register Clinics, Admins, and Owners (no OTP for these roles)
+        const newUser = new User({
+            firstname,
+            lastname,
+            email,
+            password: hashedPassword,
+            role,
+            isVerified: true, // Automatically verify Clinic and Admin roles
+        });
 
-            // Store pending user in memory
-            pendingUsers.set(email, { firstname, lastname, email, password: hashedPassword, role, otp, otpExpires });
+        const savedUser = await newUser.save();
 
-            await sendOTPEmail(email, otp);
-            return res.status(201).json({ message: "OTP sent to your email for verification." });
-        } else {
-            // Directly register Clinics & Admins (no OTP required)
-            const newUser = new User({ firstname, lastname, email, password: hashedPassword, role, isVerified: true });
-            const savedUser = await newUser.save();
+        // Create Clinic entry if role is "clinic"
+        if (role === "clinic") {
+            const newClinic = new Clinic({
+                userId: savedUser._id,  // Associate clinic with the user
+                name: `${firstname} ${lastname}`, // Default name
+                email: savedUser.email,
+                contact_number: "",
+                address: "",
+                status: "Inactive",
+            });
 
-            // ✅ Create Clinic entry if role is "clinic"
-            if (role === "clinic") {
-                const newClinic = new Clinic({
-                    userId: savedUser._id,  // Associate clinic with the user
-                    name: `${firstname} ${lastname}`, // Default name
-                    email: savedUser.email,
-                    contact_number: "",
-                    address: "",
-                    status: "Inactive",
-                });
-
-                await newClinic.save();
-            }
-
-            return res.status(201).json({ message: "User registered successfully!" });
+            await newClinic.save();
         }
+
+        return res.status(201).json({ message: "User registered successfully!" });
     } catch (error) {
-        console.error("Error registering user:", error);
+        console.error("Error registering user without OTP:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+/**
+ * Register an owner with OTP verification.
+ */
+export const registerOwnerWithOTP = async (req, res) => {
+    const { firstname, lastname, email, password } = req.body;
+    console.log("Owner registration with OTP data received:", req.body);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return res.status(400).json({ message: "Invalid email address." });
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) return res.status(400).json({ message: "Email already registered. Please log in." });
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Generate OTP for owner
+        const otp = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = new Date(Date.now() + 5 * 60 * 1000); // OTP expires after 5 minutes
+
+        // Store pending user in memory (or use database if persistence is needed)
+        pendingUsers.set(email, { firstname, lastname, email, password: hashedPassword, role: "owner", otp, otpExpires });
+
+        // Send OTP email
+        await sendOTPEmail(email, otp);
+
+        return res.status(201).json({ message: "OTP sent to your email for verification." });
+    } catch (error) {
+        console.error("Error registering owner with OTP:", error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -139,31 +167,34 @@ export const verifyUserOTP = async (req, res) => {
 
 
 
-/**
- * Unified login for Admins, Clinics, and Owners.
- */
-export const loginUser  = async (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     console.log("Login attempt:", email);
 
-    if (!email || !password) return res.status(400).json({ message: "Email and password are required!" });
+    if (!email || !password)
+        return res.status(400).json({ message: "Email and password are required!" });
 
     try {
         const user = await User.findOne({ email });
-        if (!user) return res.status(401).json({ message: "Invalid email or password" });
+        if (!user)
+            return res.status(401).json({ message: "Invalid email or password" });
 
-        // 🔥 Prevent manual login if user signed up with Google
         if (!user.password) {
             console.log("❌ This account is linked to Google. Blocking manual login.");
             return res.status(403).json({ message: "This email is linked to a Google account. Please log in with Google." });
         }
 
-        if (!user.isVerified) return res.status(401).json({ message: "Account not verified. Please verify with OTP." });
+        if (!user.isVerified)
+            return res.status(401).json({ message: "Account not verified. Please verify with OTP." });
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(401).json({ message: "Invalid email or password" });
+        if (!isMatch)
+            return res.status(401).json({ message: "Invalid email or password" });
 
-        // Initialize userData object
+        // ✅ Set user status to Active
+        await User.findByIdAndUpdate(user._id, { status: "Active" });
+
+        // Build userData response object
         let userData = {
             id: user._id.toString(),
             firstname: user.firstname,
@@ -172,41 +203,32 @@ export const loginUser  = async (req, res) => {
             role: user.role
         };
 
-        // Fetch ownerId if the user is an owner
+        // Append related ID if applicable
         if (user.role === "owner") {
             const owner = await Owner.findOne({ userId: user._id });
-            if (owner) {
-                userData.ownerId = owner._id.toString(); // Add ownerId to userData
-            }
-        } 
-        // Fetch clinicId if the user is a clinic
-        else if (user.role === "clinic") {
+            if (owner) userData.ownerId = owner._id.toString();
+        } else if (user.role === "clinic") {
             const clinic = await Clinic.findOne({ userId: user._id });
-            if (clinic) {
-                userData.clinicId = clinic._id.toString(); // Add clinicId to userData
-            }
+            if (clinic) userData.clinicId = clinic._id.toString();
         }
 
-        // Create token with additional data
         const token = jwt.sign(
             {
                 id: user._id,
                 role: user.role,
-                ownerId: userData.ownerId || null, // Include ownerId if it exists
-                clinicId: userData.clinicId || null // Include clinicId if it exists
+                ownerId: userData.ownerId || null,
+                clinicId: userData.clinicId || null
             },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
 
-        // Send the token and user data in the response
         res.status(200).json({ token, user: userData });
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).json({ message: error.message });
     }
 };
-
 
 export const googleLogin = async (req, res) => {
     try {
@@ -267,5 +289,66 @@ export const googleLogin = async (req, res) => {
     } catch (error) {
         console.error("❌ Error during Google login:", error);
         return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { firstname, lastname, email, address, password, status } = req.body;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        if (firstname) user.firstname = firstname;
+        if (lastname) user.lastname = lastname;
+        if (email) user.email = email;
+        if (address) user.address = address;
+        if (status) user.status = status;
+        if (password) user.password = await bcrypt.hash(password, 10);
+
+        const updatedUser = await user.save();
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+/**
+ * Delete a user (Owner, Clinic, or Admin) by email or userId.
+ */
+export const deleteUser = async (req, res) => {
+    const { email, userId } = req.body;
+
+    if (!email && !userId) {
+        return res.status(400).json({ message: "Either email or userId is required." });
+    }
+
+    try {
+        // If email is provided, find the user by email
+        let user;
+        if (email) {
+            user = await User.findOne({ email });
+        } else if (userId) {
+            user = await User.findById(userId);
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        // Check if the user is associated with a clinic (for clinic role)
+        if (user.role === "clinic") {
+            await Clinic.deleteOne({ userId: user._id });  // Delete associated clinic data
+        }
+
+        // Delete the user
+        await User.deleteOne({ _id: user._id });
+
+        return res.status(200).json({ message: "User deleted successfully." });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ message: error.message });
     }
 };

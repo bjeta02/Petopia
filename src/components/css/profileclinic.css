@@ -1,276 +1,347 @@
 .shop-profile-card {
-    max-width: 1250px;
-    margin: 2rem auto; /* Center the card */
-    padding: 2.5rem;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    margin-top: 100px; /* Space from the top */
-    height: auto; /* Allow height to adjust based on content */
-    overflow: hidden; /* Prevent overflow if needed */
+  max-width: 1250px;
+  margin: 2rem auto; /* Center the card */
+  padding: 2.5rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 100px; /* Space from the top */
+  height: auto; /* Allow height to adjust based on content */
+  overflow: hidden; /* Prevent overflow if needed */
 }
 
 body {
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
-    height: auto; /* Allow body height to adjust based on content */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack children vertically */
-}
-  
-  .shop-main-section {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .profile-shop-left {
-    flex: 1;
-    margin-right: 20px; /* Adjust spacing as needed */
-  }
-  
-  .profile-shop-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .shop-profile-header {
-    display: flex;
-    gap: 2rem;
-    width: 100%;
-    align-items: center ;
-  }
-  
-  .shop-profile-logo {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .shop-profile-details h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-    color: rgb(41, 26, 26);
-    margin-top: 0px;
-  }
-  
-  .shop-profile-details p {
-    font-size: 1.3rem;
-    margin-bottom: 0.25rem;
-    color: #555;
-  }
-
-  .profile-icon {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* adds space between icon and text */
-    margin-bottom: 0.5rem;
-    color: #555;
-  }
-
-  .shop-profile-description {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-  }
-  
-  .shop-profile-description h1 {
-    font-size: 1.6rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  
-  .shop-profile-description p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.6;
-  }
-
-  .shop-description-list {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    color: #000000;
-    font-size: 1.5rem;
-    line-height: 1.6;
-  }
-  
-  .shop-description-list li {
-    margin-bottom: 0.5rem;
-  }
-
-  .shop-description-list li::marker {
-    font-size: 2rem;
-    color: #444; /* Optional: customize bullet color */
-  }
-
-  .shop-services-section {
-    margin-top: 2rem;
-    width: 90%;
-  }
-  
-  .shop-services-section h1 {
-    font-size: 1.6rem;
-    font-weight: bold;
-    margin-bottom: 0rem;
-    color: #333;
-  }
-  
-  .services-table {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 20px;
-  }
-  
-  .service-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .service-name {
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  .service-price {
-    font-size: 1.5rem;
-    color: #000;
-  }
-  
-  
-  .profile-map-container h1 {
-    margin-top: 0px;
-    font-size: 2rem;
-    font-weight: bold;
-    color: rgb(30, 30, 30);
-    margin-bottom: 5px;
-  }
-  
-  .profile-map-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        height: 300px;
-        background: white;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-  .profile-map-container iframe {
-    flex-grow: 1;
-    width: 100%;
-    height: 250px;
-    border: 1px solid #ccc;
-    
-  }
-
-  .profile-button {
-    margin-top: 1rem;
-    display: inline-block;
-  }
-
-  .map-bottom-section {
-    margin-top: 1.5rem;
-    background-color: #f9f9f9;
-    padding: 1.25rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
-  
-  .map-bottom-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #222;
-    margin-bottom: 0.5rem;
-  }
-  
-  .profile-map-button {
-    margin-top: 15px;
-    background-color: #14967f; /* Main button color */
-    color: white;
-    padding: 12px 20px; /* Increased padding for a larger button */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 30%; /* Full width */
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for scaling */
-    font-size: 1.2rem; /* Adjust font size here */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
-    align-self: end;
-  }
-  
-  .profile-map-button:hover {
-    background-color: #0e7a68; /* Darker shade on hover */
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
-  }
-
-  .booking-container {
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Stack items vertically */
-    align-items: start; /* Center items horizontally */
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px; /* Space between sections */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  height: auto; /* Allow body height to adjust based on content */
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack children vertically */
 }
 
-  .section-title {
-    font-weight: bold;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    margin-top: 0px;
+.shop-main-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-shop-left {
+  flex: 1;
+  margin-right: 20px; /* Adjust spacing as needed */
+}
+
+.profile-shop-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-profile-header {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  align-items: center ;
+}
+
+.shop-profile-logo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.shop-profile-details h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: rgb(41, 26, 26);
+  margin-top: 0px;
+}
+
+.shop-profile-details p {
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+  color: #555;
+}
+
+.profile-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* adds space between icon and text */
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.shop-profile-description {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.shop-profile-description h1 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.shop-profile-description p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.shop-description-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: #000000;
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+.shop-description-list li {
+  margin-bottom: 0.5rem;
+}
+
+.shop-description-list li::marker {
+  font-size: 2rem;
+  color: #444; /* Optional: customize bullet color */
+}
+
+.shop-services-section {
+  margin-top: 2rem;
+  width: 90%;
+}
+
+.shop-services-section h1 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0rem;
+  color: #333;
+}
+
+.services-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 20px;
+}
+
+.service-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.service-name {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.service-price {
+  font-size: 1.5rem;
+  color: #000;
+}
+
+
+.profile-map-container h1 {
+  margin-top: 0px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgb(30, 30, 30);
+  margin-bottom: 5px;
+}
+
+.profile-map-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 300px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 10px;
   }
+
+.profile-map-container iframe {
+  flex-grow: 1;
+  width: 100%;
+  height: 250px;
+  border: 1px solid #ccc;
   
-  .booking-info {
-    display: flex;
-    align-items: start;
-    justify-content: start;
-    gap: 8px;
-    margin-top: 5px;
-  }
-  
-  .icon {
-    width: 40px;
-    height: 40px;
-  }
+}
 
-  .shop-schedule2 {
-    font-size: 1.2rem;
-  }
+.profile-button {
+  margin-top: 1rem;
+  display: inline-block;
+}
 
-  .shop-schedule2 p {
-    margin-bottom: 0px;
-  }
+.map-bottom-section {
+  margin-top: 1.5rem;
+  background-color: #f9f9f9;
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
 
-  .book-button-profile {
-    margin-top: 15px;
-    background-color: #14967f; /* Main button color */
-    color: white;
-    padding: 12px 20px; /* Increased padding for a larger button */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%; /* Full width */
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for scaling */
-    font-size: 1.2rem; /* Adjust font size here */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+.map-bottom-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.profile-map-button {
+  margin-top: 15px;
+  background-color: #14967f; /* Main button color */
+  color: white;
+  padding: 12px 20px; /* Increased padding for a larger button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 30%; /* Full width */
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for scaling */
+  font-size: 1.2rem; /* Adjust font size here */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
+  align-self: end;
+}
+
+.profile-map-button:hover {
+  background-color: #0e7a68; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.booking-container {
+  display: flex; /* Use flexbox */
+  flex-direction: column; /* Stack items vertically */
+  align-items: start; /* Center items horizontally */
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px; /* Space between sections */
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+
+.booking-info {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+.shop-schedule2 {
+  font-size: 1.2rem;
+}
+
+.shop-schedule2 p {
+  margin-bottom: 0px;
+}
+
+.book-button-profile {
+  margin-top: 15px;
+  background-color: #14967f; /* Main button color */
+  color: white;
+  padding: 12px 20px; /* Increased padding for a larger button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Full width */
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for scaling */
+  font-size: 1.2rem; /* Adjust font size here */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for depth */
 }
 
 .book-button-profile:hover {
-    background-color: #0e7a68; /* Darker shade on hover */
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
+  background-color: #0e7a68; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
-  .services-and-hours {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap; /* Allows wrapping if necessary */
-  }
+.services-and-hours {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Allows wrapping if necessary */
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 1024px) {
+.shop-main-section {
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center the sections */
+}
+
+.profile-shop-left,
+.profile-shop-right {
+  flex: 1 0 100%; /* Ensure they take up full width */
+  margin-right: 0; /* Remove any right margin */
+  margin-bottom: 20px; /* Add some space between the sections */
+}
+
+.profile-map-container {
+  order: 2; /* Map comes after the services */
+  margin-top: 2rem;
+}
+
+.profile-map-container iframe {
+  height: 200px; /* Adjust map height on smaller screens */
+}
+
+.shop-profile-logo {
+  width: 100px;
+  height: 100px;
+}
+
+.shop-profile-details h1 {
+  font-size: 1.6rem;
+}
+
+.shop-profile-description h1 {
+  font-size: 1.4rem;
+}
+
+.service-name,
+.service-price {
+  font-size: 1.2rem; /* Smaller font size for mobile */
+}
+}
+
+/* Very Small Screens */
+@media (max-width: 480px) {
+.shop-profile-card {
+  padding: 1.5rem;
+}
+
+.shop-profile-details h1 {
+  font-size: 1.4rem;
+}
+
+.services-table {
+  padding: 15px;
+}
+
+.service-name,
+.service-price {
+  font-size: 1rem; /* Adjust for very small screens */
+}
+
+.profile-map-container iframe {
+  height: 180px; /* Further adjust for smaller screens */
+}
+
+.profile-map-button {
+  width: 100%; /* Full width for buttons */
+  font-size: 1rem; /* Adjust font size */
+}
+}

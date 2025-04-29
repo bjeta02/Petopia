@@ -38,6 +38,8 @@ import PrivacyPolicy from "./components/privacy-policy";
 import VetClinic from "./components/vetClinic";
 import GoogleAuthSuccess from "./components/googleAuthSuccess";
 import VerifyAppointment from "./components/verifyAppointments";
+import VetUsers from "./components/VetUsers";
+import AppointmentSuccess from "./components/appointmentSuccess";
 import { AuthProvider } from "./components/utils/auth"; // Import the AuthProvider
 import ProtectedRoute from "./middleware/protectedRoute"; // Import protected route
 import PublicRoute from "./middleware/publicRoute"; // Import public route
@@ -87,6 +89,7 @@ const App = () => {
         <Route path="/petshop" element={<PetShop />} />
         <Route path="/shopprofile" element={<ShopProfile />} />
         <Route path="/otp" element={<OtpPage />} />
+        <Route path="/appointment-success" element={<AppointmentSuccess />} />
 
         <Route element={<ProtectedRoute allowedRoles={["admin", "clinic"]} />}>
           <Route element={<VetLayout />}>
@@ -99,6 +102,7 @@ const App = () => {
             {/* Only allow admin to access the vet service management */}
             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
               <Route path="/vet-service" element={<VetServiceManagement />} />
+              <Route path="/vet-users" element={<VetUsers />} />
             </Route>
           </Route>
         </Route>

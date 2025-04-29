@@ -8,10 +8,12 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Toast } from "primereact/toast";
 import { InputNumber } from "primereact/inputnumber";
 import { Card } from "primereact/card";
+import { SearchIcon } from 'lucide-react';
 import axios from "axios";
 
 const ServiceManagement = () => {
   const [clinics, setClinics] = useState([]);
+  const [filteredClinics, setFilteredClinics] = useState([]);
   const [selectedClinic, setSelectedClinic] = useState(null);
   const [services, setServices] = useState([]);
   const [serviceForm, setServiceForm] = useState({
@@ -22,6 +24,7 @@ const ServiceManagement = () => {
   });
   const [isDialogVisible, setIsDialogVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const toast = useRef(null);
 
   useEffect(() => {
@@ -29,6 +32,7 @@ const ServiceManagement = () => {
       try {
         const response = await axios.get("http://localhost:5000/api/clinics");
         setClinics(response.data.clinics);
+        setFilteredClinics(response.data.clinics);
       } catch (error) {
         console.error("Error fetching clinics:", error);
       }
@@ -36,11 +40,23 @@ const ServiceManagement = () => {
     fetchClinics();
   }, []);
 
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredClinics(clinics); // If searchTerm is empty, show all clinics
+    } else {
+      setFilteredClinics(
+        clinics.filter(clinic =>
+          clinic.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+  }, [searchTerm, clinics]);
+
   const handleClinicSelect = (clinic) => {
     console.log("Selected clinic:", clinic);
     setSelectedClinic(clinic);
     setServices(clinic.services || []); // Use the existing services array
-};
+  };
 
   const handleInputChange = (e) => {
     setServiceForm({ ...serviceForm, [e.target.name]: e.target.value });
@@ -58,7 +74,7 @@ const ServiceManagement = () => {
       toast.current.show({ severity: "success", summary: "Success", detail: "Service saved successfully" });
       setIsDialogVisible(false);
       setServiceForm({ name: "", description: "", estimated_duration: "", rate: "" });
-      
+
       // Refresh services
       const updatedServices = await axios.get(`http://localhost:5000/api/services/clinic/${selectedClinic._id}`);
       setServices(updatedServices.data.services);
@@ -85,53 +101,97 @@ const ServiceManagement = () => {
     }
   };
 
-  return (
-    <div className="service -management">
-      <Toast ref={toast} position="bottom-right" />
-      <Card className="p-4 card-services" style={{marginTop: '0px'}}>
-            <div className="flex justify-between items-center mb-4">
-            <h1 className="services-title font-bold" style={{ fontSize: '20px' }}>Clinics</h1>
-            </div>
+  const clinicLogoTemplate = (rowData) => {
+    return (
+      <img
+        src={`http://localhost:5000${rowData.logo}`}
+        alt={rowData.name}
+        className="logo-clinic"
+        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }}
+      />
+    );
+  };
 
-            <div className="overflow-auto">
-            <table className="service-table w-full text-left border-collapse">
-                <thead>
-                <tr className="table-header">
-                    <th className="p-2">Clinic Name</th>
-                    <th className="p-2">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {clinics.map((clinic, index) => (
-                    <tr key={index} className="table-row">
-                    <td className="p-2">
-                        <img
-                            src={`http://localhost:5000${clinic.logo}`}
-                            alt={clinic.name}
-                            className="logo-clinic"
-                        />{clinic.name}</td>
-                    <td className="p-2">
-                    <Button
-                        label="Manage Services"
-                        onClick={() => handleClinicSelect(clinic)}
-                        className="p-button-text"
-                        style={{ marginLeft: '-60px' }} // Apply negative margin to the button
-                    />
-                    </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-            </div>
-        </Card>
-      
+  const actionTemplate = (rowData) => {
+    return (
+      <div className="action-buttons">
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-text"
+          onClick={() => handleEditService(rowData)}
+        />
+        <Button
+          icon="pi pi-trash"
+          className="p-button-text p-button-danger"
+          onClick={() => handleDeleteService(rowData._id)}
+        />
+      </div>
+    );
+  };
+
+  return (
+    <div className="service-management">
+      <Toast ref={toast} position="bottom-right" />
+      <Card className="p-4 card-services" style={{ marginTop: "0px" }}>
+        <div className="flex justify-between items-center mb-4" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <h1 className="services-title font-bold" style={{ fontSize: "20px", marginBottom: "0px" }}>
+            Service Management
+          </h1>
+
+          <div style={{ position: "relative", minWidth: '250px'}}>
+              <SearchIcon size={20} style={{ 
+              position: "absolute", 
+              top: "50%", 
+              left: "10px", 
+              transform: "translateY(-50%)", 
+              color: "#6c757d" 
+              }} />
+            <InputText
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search Clinics"
+              className="p-inputtext p-component"
+              style={{ width: '300px', paddingLeft: "3.5rem",  marginBottom: '0px' }}
+            />
+          </div>
+        </div>
+
+        <span className="datatable-line"></span>
+
+        <div className="overflow-auto">
+          <DataTable
+            value={clinics}
+            paginator
+            rows={10}
+            selectionMode="single"
+            selection={selectedClinic}
+            onSelectionChange={(e) => handleClinicSelect(e.value)}
+            responsiveLayout="scroll"
+            className="service-table"
+          >
+            <Column header="Logo" body={clinicLogoTemplate} />
+            <Column header="Clinic Name" field="name" />
+            <Column
+              header="Actions"
+              body={rowData => (
+                <Button
+                  label="Manage Services"
+                  onClick={() => handleClinicSelect(rowData)}
+                  className="p-button-text"
+                />
+              )}
+            />
+          </DataTable>
+        </div>
+      </Card>
 
       {selectedClinic && (
         <div className="mt-4">
           <Card className="p-4 card-services">
-          <div className="flex justify-between items-center mb-4">
-            <div className="add-service-button">
-            <h1 className="services-title font-bold" style={{fontSize: '20px'}}>Services for {selectedClinic.name}</h1>
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="services-title font-bold" style={{ fontSize: "20px" }}>
+                Services for {selectedClinic.name}
+              </h1>
               <Button
                 label="Add"
                 icon="pi pi-plus"
@@ -139,95 +199,66 @@ const ServiceManagement = () => {
                 onClick={() => setIsDialogVisible(true)}
               />
             </div>
-          </div>
 
-          <div className="overflow-auto">
-            <table className="service-table w-full text-left border-collapse">
-              <thead>
-                <tr className="table-header">
-                  <th className="p-2">Service Name</th>
-                  <th className="p-2">Description</th>
-                  <th className="p-2">Estimated Duration (mins)</th>
-                  <th className="p-2">Rate</th>
-                  <th className="p-2 text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {services?.map((service, index) => (
-                  <tr key={index} className="table-row">
-                    <td className="p-2">{service.name}</td>
-                    <td className="p-2">{service.description}</td>
-                    <td className="p-2">{service.estimated_duration}</td>
-                    <td className="p-2">{service.rate}</td>
-                    <td className="p-2 ">
-                        <div className="action-buttons">
-                      <Button
-                        icon="pi pi-pencil"
-                        className="p-button-text"
-                        onClick={() => handleEditService(service)}
-                      />
-                      <Button
-                        icon="pi pi-trash"
-                        className="p-button-text p-button-danger"
-                        onClick={() => handleDeleteService(service._id)}
-                      />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        <Dialog
-          header={selectedService ? "Edit Service" : "Add Service"}
-          visible={isDialogVisible}
-          onHide={() => setIsDialogVisible(false)}
-          style={{ width: '500px' }}
-        >
-          <div className="grid gap-3">
-            <div className="p-field">
-              <label>Service Name</label>
-              <InputText
-                value={serviceForm.name}
-                onChange={(e) => setServiceForm({ ...serviceForm, name: e.target.value })}
-                className="w-full"
-              />
+            <div className="overflow-auto">
+              <DataTable value={services} paginator rows={10} responsiveLayout="scroll">
+                <Column header="Service Name" field="name" />
+                <Column header="Description" field="description" />
+                <Column header="Estimated Duration (mins)" field="estimated_duration" />
+                <Column header="Rate" field="rate" />
+                <Column header="Actions" body={actionTemplate} />
+              </DataTable>
             </div>
-            <div className="p-field">
-              <label>Description</label>
-              <InputTextarea
-                value={serviceForm.description}
-                onChange={(e) => setServiceForm({ ...serviceForm, description: e.target.value })}
-                rows={3}
-                className="w-full"
-              />
-            </div>
-            <div className="p-field">
-              <label>Estimated Duration</label>
-              <InputNumber
-                value={serviceForm.estimated_duration}
-                onValueChange={(e) => setServiceForm({ ...serviceForm, estimated_duration: e.value })}
-                className="w-full"
-              />
-            </div>
-            <div className="p-field">
-              <label>Rate</label>
-              <InputText
-                value={serviceForm.rate}
-                onChange={(e) => setServiceForm({ ...serviceForm, rate: e.target.value })}
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end mt-4">
-            <Button label="Save" onClick={handleSaveService} className="p-button-success" />
-          </div>
-        </Dialog>
+          </Card>
         </div>
       )}
+
+      <Dialog
+        header={selectedService ? "Edit Service" : "Add Service"}
+        visible={isDialogVisible}
+        onHide={() => setIsDialogVisible(false)}
+        style={{ width: "500px" }}
+      >
+        <div className="grid gap-3">
+          <div className="p-field">
+            <label>Service Name</label>
+            <InputText
+              value={serviceForm.name}
+              onChange={(e) => setServiceForm({ ...serviceForm, name: e.target.value })}
+              className="w-full"
+            />
+          </div>
+          <div className="p-field">
+            <label>Description</label>
+            <InputTextarea
+              value={serviceForm.description}
+              onChange={(e) => setServiceForm({ ...serviceForm, description: e.target.value })}
+              rows={3}
+              className="w-full"
+            />
+          </div>
+          <div className="p-field">
+            <label>Estimated Duration</label>
+            <InputNumber
+              value={serviceForm.estimated_duration}
+              onValueChange={(e) => setServiceForm({ ...serviceForm, estimated_duration: e.value })}
+              className="w-full"
+            />
+          </div>
+          <div className="p-field">
+            <label>Rate</label>
+            <InputText
+              value={serviceForm.rate}
+              onChange={(e) => setServiceForm({ ...serviceForm, rate: e.target.value })}
+              className="w-full"
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end mt-4">
+          <Button label="Save" onClick={handleSaveService} className="p-button-success" />
+        </div>
+      </Dialog>
     </div>
   );
 };

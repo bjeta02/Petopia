@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: { type: String },
     role: { type: String, enum: ['admin', 'clinic', 'owner'], default: 'owner' }, // Role added
-    address: String, 
+    address: String,
+    status: { type: String, enum: ["Active", "Inactive"], default: "Inactive" },
     isVerified: { type: Boolean, default: false },
     otp: String,
     otpExpires: Date,

@@ -20,6 +20,8 @@ import OwnerModel from "./model/Owner.js"; // ✅ Correct (for ES Modules)
 dotenv.config();
 connectDB();
 
+import './cron/checkAppointment.js';
+
 const app = express();
 app.use(express.json());
 app.use(cors());
