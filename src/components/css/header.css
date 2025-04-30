@@ -1,16 +1,18 @@
-.header {
+
+  .overlay{
     width: 100%;
-    min-height: 70vh; /* Full screen height */
+    min-height: 100vh;
     background-image: url('/public/img/intro-bg.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* This hides the clipped bottom */
   }
 
-  .body{
-    background-color: #eef7f5;
+  .overlay{
+    min-height: 120vh;
   }
   
   .intro {

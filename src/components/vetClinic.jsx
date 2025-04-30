@@ -140,12 +140,46 @@
       setFormData({ ...formData, [name]: value });
     };
 
-    const handleLogoUpload = (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        setFormData(prev => ({ ...prev, logo: file }));
+    const handleLogoUpload = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+  
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("logo", file);
+  
+      try {
+          const response = await fetch(`http://localhost:5000/api/clinics/upload-logo/${clinicId}`, {
+              method: "POST",
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+              body: formData,
+          });
+  
+          if (!response.ok) throw new Error("Failed to upload logo");
+  
+          const result = await response.json();
+          console.log("Uploaded Logo URL:", result.logoUrl);
+          setClinic((prev) => ({ ...prev, logo: result.logoUrl }));
+  
+          toast.current.show({
+              severity: "success",
+              summary: "Success",
+              detail: "Logo uploaded successfully!",
+              life: 3000,
+          });
+      } catch (err) {
+          const errorMessage = err?.response?.data?.message || err.message;
+          console.error("Upload error:", errorMessage);
+          toast.current.show({
+              severity: "error",
+              summary: "Error",
+              detail: errorMessage || "Failed to upload avatar.",
+              life: 3000,
+          });
       }
-    };  
+  };
 
     const handleNewClinicInputChange = (e) => {
       const { name, value } = e.target;
@@ -241,20 +275,18 @@
 
 
     const actionBodyTemplate = (rowData) => (
-      <div className="flex justify-center items-center admin-action-buttons"> {/* Center all items in a row */}
+      <div className="action-buttons"> {/* Center all items in a row */}
         <Button
           icon="pi pi-pencil"
-          className="edit-btn"
+          className="p-button-text"
           onClick={() => handleEditClinic(rowData)}
           tooltip="Edit"
-          style={{ borderRadius: '50%', width: '35px'}}
         />
         <Button
           icon="pi pi-trash"
           className="delete-btn"
           onClick={() => handleDeleteClinic(rowData._id)}
           tooltip="Delete"
-          style={{ borderRadius: '50%', width: '35px'}}
         />
       </div>
     );
@@ -443,55 +475,6 @@
                 <div className="flex justify-end mt-4">
                     <Button label="Save" onClick={handleSave} className="p-button-success" />
                 </div>
-            </Dialog>
-
-            <Dialog
-              header="Add New Clinic"
-              visible={isDialogVisible}
-              onHide={() => setIsDialogVisible(false)}
-              style={{ width: '500px' }}
-            >
-              <div className="grid gap-3">
-                <div className="p-field">
-                  <label>Name</label>
-                  <InputText name="name" value={newClinicData.name} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Email</label>
-                  <InputText name="email" value={newClinicData.email} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Address</label>
-                  <InputText name="address" value={newClinicData.address} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Contact Number</label>
-                  <InputText name="contact_number" value={newClinicData.contact_number} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Description</label>
-                  <InputTextarea name="description" value={newClinicData.description} onChange={handleNewClinicInputChange} rows={3} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Days Open</label>
-                  <InputText name="days" value={newClinicData.days} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Open Time</label>
-                  <input type="time" name="open_time" value={newClinicData.open_time} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Close Time</label>
-                  <input type="time" name="close_time" value={newClinicData.close_time} onChange={handleNewClinicInputChange} className="w-full" />
-                </div>
-                <div className="p-field">
-                  <label>Logo</label>
-                  <input type="file" accept="image/*" onChange={(e) => setNewClinicData({ ...newClinicData, logo: e.target.files[0] })} className="w-full" />
-                </div>
-              </div>
-              <div className="flex justify-end mt-4">
-                <Button label="Add Clinic" onClick={handleAddClinic} className="p-button-success" />
-              </div>
             </Dialog>
         </div>
       );

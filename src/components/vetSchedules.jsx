@@ -191,7 +191,9 @@ const VetSchedules = () => {
     <div>
      <Card style={{ borderRadius: '10px', padding: '0', marginBottom: '1.5rem', height: '80px', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)'}}>
         <div className="header-row">
-          <h3 className="appointment-title">APPOINTMENT SCHEDULE</h3>
+          <h1 className="services-title font-bold" style={{ fontSize: "20px", marginBottom: "0px" }}>
+              Appointment Schedule
+          </h1>
           {role === "clinic" && (
             <Button 
               label="+ Add Appointment" 

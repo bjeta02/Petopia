@@ -230,6 +230,31 @@ export const loginUser = async (req, res) => {
     }
 };
 
+export const logoutUser  = async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      if (!token) return res.status(401).json({ message: 'No token provided' });
+  
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+  
+      const user = await User.findById(userId);
+      if (!user) {
+        console.log('User  not found for ID:', userId);
+        return res.status(404).json({ message: 'User  not found' });
+      }
+  
+      user.status = 'Inactive';
+      const savedUser  = await user.save();
+      console.log('User  status updated:', savedUser );
+  
+      res.status(200).json({ message: 'User  logged out successfully' });
+    } catch (error) {
+      console.error('Logout error:', error);
+      res.status(500).json({ message: 'Failed to log out user' });
+    }
+  };
+
 export const googleLogin = async (req, res) => {
     try {
         if (!req.user) {
@@ -350,5 +375,60 @@ export const deleteUser = async (req, res) => {
     } catch (error) {
         console.error("Error deleting user:", error);
         res.status(500).json({ message: error.message });
+    }
+};
+
+export const sendPasswordResetOTP = async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) return res.status(400).json({ message: "Email is required." });
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: "User not found." });
+
+        if (!user.password) {
+            return res.status(403).json({ message: "This email is linked to a Google account. You cannot reset the password here." });
+        }
+
+        const otp = crypto.randomInt(100000, 999999).toString();
+        const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
+
+        pendingUsers.set(email, {
+            otp,
+            otpExpires,
+            resetPassword: true // Flag for reset flow
+        });
+
+        await sendOTPEmail(email, otp);
+        return res.status(200).json({ message: "OTP sent to email for password reset." });
+    } catch (error) {
+        console.error("Error sending password reset OTP:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+// 2. Verify OTP and Reset Password
+export const verifyResetPasswordOTP = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.status(400).json({ message: "Email, OTP, and new password are required." });
+    }
+
+    const pending = pendingUsers.get(email);
+    if (!pending || pending.otp !== otp || pending.otpExpires < new Date() || !pending.resetPassword) {
+        return res.status(400).json({ message: "Invalid or expired OTP." });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await User.findOneAndUpdate({ email }, { password: hashedPassword });
+
+        pendingUsers.delete(email);
+        return res.status(200).json({ message: "Password reset successfully." });
+    } catch (error) {
+        console.error("Error resetting password:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };

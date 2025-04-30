@@ -15,6 +15,7 @@ import JsonData from "./data/data.json";
 import SmoothScroll from "smooth-scroll";
 import "./App.css";
 import OwnerDashboard from "./components/ownerDashboard";
+import VetPatients from "./components/vetPatients";
 import OwnerProfile from "./components/ownerProfile";
 import PetProfile from "./components/petProfile";
 import PetAppointments from "./components/petAppointments";
@@ -38,6 +39,7 @@ import PrivacyPolicy from "./components/privacy-policy";
 import VetClinic from "./components/vetClinic";
 import GoogleAuthSuccess from "./components/googleAuthSuccess";
 import VerifyAppointment from "./components/verifyAppointments";
+import ResetPassword from "./components/resetPassword";
 import VetUsers from "./components/VetUsers";
 import AppointmentSuccess from "./components/appointmentSuccess";
 import { AuthProvider } from "./components/utils/auth"; // Import the AuthProvider
@@ -83,6 +85,7 @@ const App = () => {
         <Route path="/verify" element={<VerifyAppointment />} />
         <Route path="/terms-services" element={<TermsServices />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route path="/findavet" element={<Findavet />} />
         <Route path="/shops" element={<Shops />} />
@@ -98,6 +101,7 @@ const App = () => {
             <Route path="/vet-appointments" element={<VetAppointments />} />
             <Route path="/vet-history" element={<VetHistory />} />
             <Route path="/vet-profile" element={<VetClinic />} />
+            <Route path="/vet-patients" element={<VetPatients />} />
             
             {/* Only allow admin to access the vet service management */}
             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>

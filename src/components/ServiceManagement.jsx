@@ -178,6 +178,7 @@ const ServiceManagement = () => {
                   label="Manage Services"
                   onClick={() => handleClinicSelect(rowData)}
                   className="p-button-text"
+                  style={{background: "#14967f", color: "white", border: "none"}}
                 />
               )}
             />
@@ -188,8 +189,8 @@ const ServiceManagement = () => {
       {selectedClinic && (
         <div className="mt-4">
           <Card className="p-4 card-services">
-            <div className="flex justify-between items-center mb-4">
-              <h1 className="services-title font-bold" style={{ fontSize: "20px" }}>
+            <div className="" style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px"}}>
+              <h1 className="services-title font-bold" style={{ fontSize: "20px", marginBottom: "0px" }}>
                 Services for {selectedClinic.name}
               </h1>
               <Button
@@ -197,6 +198,8 @@ const ServiceManagement = () => {
                 icon="pi pi-plus"
                 className="p-button"
                 onClick={() => setIsDialogVisible(true)}
+                tooltip="Add"
+                style={{width: "100px", background: "#14967f", border: "none", color: "white", height: "34px"}}
               />
             </div>
 

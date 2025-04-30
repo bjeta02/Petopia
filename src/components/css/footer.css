@@ -1,5 +1,5 @@
 #footer {
-    background: linear-gradient(to right, #0066cc, #4a90e2);
+    background: linear-gradient(to right, #095d7e, #14976f);
     padding: 50px 0;
     text-align: center;
     color: white;
@@ -18,7 +18,7 @@
   
   .section-title h4 {
     font-size: 1.4rem;
-    opacity: 0.9;
+    opacity: 0.9; 
     margin-bottom: 20px;
     color: #fff; /* Keep the text white */
   }
@@ -37,7 +37,7 @@
   .email-input {
     width: 350px;
     padding: 15px;
-    border: 2px solid #004c99;
+    border: 2px solid black;
     border-radius: 8px;
     font-size: 1em;
     color: black;
@@ -53,20 +53,20 @@
   
   /* Get Started Button */
  /* Get Started Button */
-.get-started-btn {
-background-color: #0066cc;
-color: white;
-font-weight: bold;
-padding: 15px 30px;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-size: 1.2rem;
-box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-transition: all 0.3s ease-in-out;
-display: inline-flex;
-align-items: center; /* Align text and arrow vertically */
-}
+  .get-started-btn {
+  background-color: #007acc;
+  color: white;
+  font-weight: bold;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center; /* Align text and arrow vertically */
+  }
 
 /* Arrow in the Button */
 .get-started-btn::after {
@@ -78,7 +78,7 @@ transition: all 0.3s ease-in-out;
 
 /* Hover Effects */
 .get-started-btn:hover {
-background-color: #005bb5;
+background-color: #14976f;
 transform: scale(1.05);
 }
 
@@ -87,7 +87,39 @@ margin-left: 15px; /* Move the arrow further to emphasize the hover effect */
 }
 
 .copyright p{
-margin-top: 20px;
-font-size: 0.9rem;
-color: #fff;
+  margin-top: 50px;
+  font-size: 0.9rem;
+  color: lightgray;
+}
+
+.footer-about {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align content to the top */
+  gap: 60px; /* Optional: spacing between the columns */
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.footer-help {
+  text-align: start;
+}
+
+.footer-help h4 {
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+
+.contact-info {
+  text-align: start;
+}
+
+.contact-info h4 {
+  color: white;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }

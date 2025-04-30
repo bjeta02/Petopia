@@ -22,7 +22,7 @@ const VetLayout = () => {
           <li>
             <NavLink to="/vet-dashboard" className={({ isActive }) => (isActive ? "active" : "")}>
               <LayoutDashboard size={18} style={{ marginRight: 8 }} />
-              Dashboard
+              Dashboard 
             </NavLink>
           </li>
           <li>
@@ -50,6 +50,12 @@ const VetLayout = () => {
             </NavLink>
           </li>
           )}
+          <li>
+            <NavLink to="/vet-patients" className={({ isActive }) => (isActive ? "active" : "")}>
+              <History size={18} style={{ marginRight: 8 }} />
+              Manage Patients
+            </NavLink>
+          </li>
           <li>
             <NavLink to="/vet-appointments" className={({ isActive }) => (isActive ? "active" : "")}>
               <CalendarCheck size={18} style={{ marginRight: 8 }} />

@@ -2,16 +2,20 @@ import multer from "multer";
 import path from "path";
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "logos/"); // Save to 'logos' folder
+    destination: function (req, file, cb) {
+        cb(null, "logos/"); // adjust as needed
     },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        const baseName = path.basename(file.originalname, path.extname(file.originalname)).replace(/\s+/g, "_").toLowerCase();
-        cb(null, `${baseName}_${Date.now()}${path.extname(file.originalname)}`);        
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + "-" + file.originalname);
     },
 });
 
-const upload = multer({ storage });
 
-export default upload;
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+    if (allowedTypes.includes(file.mimetype)) cb(null, true);
+    else cb(new Error("Only JPEG and PNG files are allowed"), false);
+};
+
+export const upload = multer({ storage, fileFilter });

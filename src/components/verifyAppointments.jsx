@@ -24,9 +24,9 @@ const VerifyAppointment = () => {
 
   const updateStatus = async (status) => {
     try {
-      await axios.put(`/api/appointments/${appointmentId}`, { status });
+      await axios.put(`http://localhost:5000/appointments/update/${appointmentId}`, { status });
       alert(`Appointment marked as ${status}`);
-      navigate("/dashboard");
+      navigate("/vet-appointments");
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -56,15 +56,9 @@ const VerifyAppointment = () => {
           <div className="button-group">
             <button
               className="verify-button accept"
-              onClick={() => updateStatus("confirmed")}
+              onClick={() => updateStatus("In-Progress")} // ← Changed from "confirmed"
             >
-              Accept
-            </button>
-            <button
-              className="verify-button reject"
-              onClick={() => updateStatus("rejected")}
-            >
-              Reject
+              Start Appointment
             </button>
           </div>
         ) : (

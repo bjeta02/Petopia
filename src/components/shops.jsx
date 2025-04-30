@@ -10,7 +10,7 @@ function Shops() {
   const { ownerId } = useAuth();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const initialSelectedService = queryParams.get("service");
+  const initialSelectedService = queryParams.get("service") || localStorage.getItem('selectedService');
   const [shops, setShops] = useState([]);
   const [locations, setLocations] = useState([]);
   const [services, setServices] = useState([]);
@@ -21,7 +21,6 @@ function Shops() {
   const navigate = useNavigate();
   const [locationPermission, setLocationPermission] = useState(null); // State for location access
   const [userLocation, setUserLocation] = useState(null); // State for user's location
-  const [storeHours, setStoreHours] = useState({ open_time: "", close_time: "" });
 
   // Debounce logic to delay API call
   useEffect(() => {
@@ -70,18 +69,28 @@ useEffect(() => {
   getUserLocation();
 }, []);
 
+const formatTime = (time) => {
+  if (!time) return "";
+  const [hour, minute] = time.split(":");
+  const hourInt = parseInt(hour, 10);
+  const formattedHour = (hourInt % 12 || 12);
+  const period = hourInt >= 12 ? "PM" : "AM";
+  return `${formattedHour}:${minute} ${period}`;
+};
+
 
 useEffect(() => {
   const fetchShops = async () => {
     try {
+      // 🔁 Get selected service from localStorage (before filtering)
+      const storedService = localStorage.getItem('selectedService');
+
       const response = await axios.get("http://localhost:5000/api/clinics", {
         params: {
           location: selectedLocation,
           search: debouncedSearchQuery,
         },
       });
-
-      console.log(response.data)
 
       if (!Array.isArray(response.data.clinics)) {
         console.error("Invalid response format, expected array of clinics.");
@@ -90,32 +99,24 @@ useEffect(() => {
 
       const activeShops = response.data.clinics.filter(shop => shop.status !== "Inactive");
 
-      const formatTime = (time) => {
-        if (!time) return "";
-        const [hour, minute] = time.split(":");
-        const hourInt = parseInt(hour, 10);
-        const formattedHour = (hourInt % 12 || 12);
-        const period = hourInt >= 12 ? "PM" : "AM";
-        return `${formattedHour}:${minute} ${period}`;
-      };
+      // 🧠 Determine final selectedService
+      const serviceToUse = selectedService || storedService;
 
-      const shopsWithTime = activeShops.map(shop => ({
-        ...shop,
-        open_time: formatTime(shop.open_time),
-        close_time: formatTime(shop.close_time),
-      }));
-
-      // Filter by selected service
-      const filteredShops = selectedService
-        ? shopsWithTime.filter(shop => 
-            shop.services && shop.services.some(service => 
-              service.trim().toLowerCase() === selectedService.trim().toLowerCase()
-            )
+      // 🧼 Filter by service
+      const filteredShops = serviceToUse
+        ? activeShops.filter(shop =>
+            shop.services && shop.services.some(service => {
+              const serviceName = typeof service === 'string' ? service : service.name;
+              return serviceName && serviceName.trim().toLowerCase() === serviceToUse.trim().toLowerCase();
+            })
           )
-        : shopsWithTime;
+        : activeShops;
 
-      // Calculate distance only if no filters are applied
-      const filtersApplied = selectedLocation || selectedService || debouncedSearchQuery;
+      // 🧹 Remove from localStorage after using it once
+      if (storedService) localStorage.removeItem('selectedService');
+
+      // 🚀 Calculate distance only if no filters are applied
+      const filtersApplied = selectedLocation || serviceToUse || debouncedSearchQuery;
 
       let finalShops = filteredShops;
 
@@ -348,10 +349,10 @@ useEffect(() => {
               </div>
               <div className="shop-schedule">
                 <p>📅 Schedule: {shop.days}</p>
-                <p>🕘 {shop.open_time} - {shop.close_time}</p>
+                <p>🕘 {formatTime(shop.open_time)} - {formatTime(shop.close_time)}</p>
                 {locationPermission && shop.distance !== undefined && (
-                    <p>📍 Distance: {shop.distance !== Infinity ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
-                  )}
+                  <p>📍 Distance: {shop.distance !== Infinity ? shop.distance.toFixed(2) + " km" : "Location not available"}</p>
+                )}
               </div>
               <div className="shop-actions">
                 <button 

@@ -34,12 +34,10 @@ function Findavet() {
     };
   }, []); // Empty dependency array means this effect runs once when the component mounts
   
-  
-
   const handleServiceSelect = (service) => {
     setSelectedService(service);
-    console.log("Navigating to:", `/shops?service=${service}`);
-    navigate(`/shops?service=${service}`); // Navigate to the shops page with the selected service
+    localStorage.setItem('selectedService', service); // Store selected service in local storage
+    navigate(`/shops`); // Navigate to the shops page with the selected service
     setShowDropdown(false); // Hide dropdown when a service is selected
   };
 
@@ -53,62 +51,62 @@ function Findavet() {
 
   return (
     <div>
-    <Navigation />
-    <div className="bg-img">
-      <div className="findavet-container">
-        <div className="appointment-subheading">
-          <p>FIND A VET</p>
-        </div>
-        <h1 className="appointment-heading">
-          Book an Appointment, 
-          <span className="periwinkle"> online!</span>
-        </h1>
-
-        <div className="search-box-container">
-          <div className="search-icon">
-            <i className="fas fa-search"></i> 
+      <Navigation />
+      <div className="bg-img">
+        <div className="findavet-container">
+          <div className="appointment-subheading">
+            <p>FIND A VET</p>
           </div>
+          <h1 className="appointment-heading">
+            Book an Appointment, 
+            <span className="periwinkle"> online!</span>
+          </h1>
 
-          {/* Input Box for Search */}
-          <input
-            type="text"
-            className="search-box"
-            value={selectedService}
-            onChange={(e) => setSelectedService(e.target.value)} // Update service on input change
-            onFocus={handleInputFocus} // Show dropdown when input is focused
-            onBlur={handleInputBlur} // Hide dropdown when input loses focus
-            placeholder="Search for a service..."
-          />
-
-          {/* Dropdown list of services */}
-          {showDropdown && (
-            <div className="dropdown">
-              {services.filter(service => service.toLowerCase().includes(selectedService.toLowerCase())).map((service, index) => (
-                <div 
-                  key={index} 
-                  className="dropdown-item"
-                  onMouseDown={() => handleServiceSelect(service)}
-                >
-                  {service}
-                </div>
-              ))}
+          <div className="search-box-container">
+            <div className="search-icon">
+              <i className="fas fa-search"></i> 
             </div>
-          )}
-        </div>
 
-        <a href="/shops" className="browse-shop">
-          <p>Browse Shops</p>
-        </a>
+            {/* Input Box for Search */}
+            <input
+              type="text"
+              className="search-box"
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)} // Update service on input change
+              onFocus={handleInputFocus} // Show dropdown when input is focused
+              onBlur={handleInputBlur} // Hide dropdown when input loses focus
+              placeholder="Search for a service..."
+            />
 
-        <div className="invisible-box">
-          <div className="text-container">
-            <h1>Looking for immediate pet medical assistance?</h1>
-            <p>Look for the vet that suits your pet's needs.</p>
+            {/* Dropdown list of services */}
+            {showDropdown && (
+              <div className="dropdown">
+                {services.filter(service => service.toLowerCase().includes(selectedService.toLowerCase())).map((service, index) => (
+                  <div 
+                    key={index} 
+                    className="dropdown-item"
+                    onMouseDown={() => handleServiceSelect(service)}
+                  >
+                    {service}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <div className="box-logo"></div>
+
+          <a href="/shops" className="browse-shop">
+            <p>Browse Shops</p>
+          </a>
+
+          <div className="invisible-box">
+            <div className="text-container">
+              <h1>Looking for immediate pet medical assistance?</h1>
+              <p>Look for the vet that suits your pet's needs.</p>
+            </div>
+            <div className="box-logo"></div>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

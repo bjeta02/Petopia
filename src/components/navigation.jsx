@@ -7,18 +7,23 @@ export const Navigation = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const [avatar, setAvatar] = useState(''); // State to hold the avatar URL
-  const { role, ownerId, clinicId, setUserInfo} = useAuth(); // ✅ Get user info
+  const [avatar, setAvatar] = useState('');
+  const { role, ownerId, clinicId, setUserInfo } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
 
-    // Retrieve the avatar from local storage
+    if (token && isTokenExpired(token)) {
+      localStorage.removeItem('token');
+      setIsLoggedIn(false);
+      navigate('/login');
+    }
+
     const ownerData = localStorage.getItem("owner");
     if (ownerData) {
       const owner = JSON.parse(ownerData);
-      setAvatar(owner.avatar); // Set the avatar URL from owner data
+      setAvatar(owner.avatar);
     }
 
     const handleClickOutside = (event) => {
@@ -28,27 +33,41 @@ export const Navigation = () => {
     };
 
     window.addEventListener("click", handleClickOutside);
-    return () => {  
+    return () => {
       window.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [navigate]);
 
-  useEffect(() => {
-    console.log("Owner ID:", ownerId); // Check if ownerId is available
-    console.log("Role:", role); // Check if role is available
-  }, [ownerId, role]);
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expirationTime = payload.exp * 1000;
+    return Date.now() > expirationTime;
+  };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setUserInfo({ userId: null, ownerId: null, clinicId: null, role: null }); // Reset user info
-    setIsLoggedIn(false);
-    setAvatar(''); // Reset avatar state
-    navigate('/login');
-};
+  const handleLogout = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      await fetch('http://localhost:5000/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      localStorage.removeItem('token');
+      setUserInfo({ userId: null, ownerId: null, clinicId: null, role: null });
+      setIsLoggedIn(false);
+      setAvatar('');
+      navigate('/login');
+    } catch (err) {
+      console.error('Logout failed:', err);
+      // Optionally, show an error message to the user
+    }
+  };
 
-const closeNavbar = () => {
-  const navbarCollapse = document.getElementById("bs-example-navbar-collapse-1");
-  if (navbarCollapse) {
+  const closeNavbar = () => {
+    const navbarCollapse = document.getElementById("bs-example-navbar-collapse-1");
+    if (navbarCollapse) {
     navbarCollapse.classList.remove("in"); // Bootstrap 3 (for collapsing menu)
   }
 };
@@ -128,7 +147,7 @@ const closeNavbar = () => {
             <span className="sr-only">Toggle navigation</span>
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
+            <span className="icon -bar"></span>
           </button>
           <a className="navbar-brand page-scroll" href="/home">
             <img src={require('../assets/Logo.png')} alt="Petopia Logo" style={styles.logo} />
@@ -137,36 +156,34 @@ const closeNavbar = () => {
 
         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul className="nav navbar-nav navbar-right">
-              {isLoggedIn ? (
-                <>
-                  <li>
-                    <a onClick={() => { navigate('/home'); closeNavbar(); }} style={styles.navLink}>Home</a>
-                  </li>
-                  <li>
-                    <a onClick={() => { handleProfileClick(); closeNavbar(); }} style={styles.navLink}>Profile</a>
-                  </li>
-                  <li>
-                    <a onClick={() => { handleLogout(); closeNavbar(); }} style={styles.navLink}>Logout</a>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <a href="/#header" className="page-scroll" style={styles.navLink} onClick={closeNavbar}>
-                      Home
-                    </a>
-                  </li>
-                  <li>
-                    <Link to="/login" style={styles.navLink} onClick={closeNavbar}>
-                      Log In
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
-
+            {isLoggedIn ? (
+              <>
+                <li>
+                  <a onClick={() => { navigate('/home'); closeNavbar(); }} style={styles.navLink}>Home</a>
+                </li>
+                <li>
+                  <a onClick={() => { handleProfileClick(); closeNavbar(); }} style={styles.navLink}>Profile</a>
+                </li>
+                <li>
+                  <a onClick={() => { handleLogout(); closeNavbar(); }} style={styles.navLink}>Logout</a>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <a href="/#header" className="page-scroll" style={styles.navLink} onClick={closeNavbar}>
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <Link to="/login" style={styles.navLink} onClick={closeNavbar}>
+                    Log In
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
-
       </div>
     </nav>
   );

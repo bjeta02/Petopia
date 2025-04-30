@@ -232,38 +232,68 @@ export const sendAppointmentStatusUpdateEmail = async (email, appointmentDetails
     }
 };
 
-    // Send Follow-Up Email to Clinic
-    export const sendFollowUpEmailToClinic = async (clinicEmail, appointmentDetails) => {
-        try {
-            const mailOptions = {
-                from: process.env.EMAIL_USER,
-                to: clinicEmail,
-                subject: "Follow-Up Appointment Reminder - Petopia",
-                html: `
-                    <h2>Follow-Up Appointment Reminder</h2>
-                    <p>This is a reminder for a follow-up appointment at <strong>${appointmentDetails.clinicName}</strong>.</p>
-                    <p><strong>Appointment ID:</strong> ${appointmentDetails.appointmentId}</p>
-                    <p><strong>Owner Name:</strong> ${appointmentDetails.firstName} ${appointmentDetails.lastName}</p>
-                    <p><strong>Pet Name:</strong> ${appointmentDetails.petName}</p>
-                    <p><strong>Service:</strong> ${appointmentDetails.serviceName}</p>
-                    <p><strong>Follow-Up Date:</strong> ${new Date(appointmentDetails.followUpDate).toLocaleString()}</p>
-                    <p><strong>Notes:</strong> ${appointmentDetails.notes || "No additional notes provided."}</p>
-                    <p>Thank you for providing excellent care to our furry friends!</p>
-                    <hr>
-                    <p style="font-size: 12px; color: gray;">This is an automated message from Petopia. Please do not reply to this email.</p>
-                `,
-                attachments: [
-                    {
-                        filename: `appointment-${appointmentDetails.appointmentId}.pdf`,
-                        content: pdfBuffer, // Ensure proper passing of the buffer
-                        contentType: "application/pdf",
-                    },
-                ],
-            };
+// Send Follow-Up Email to Clinic
+export const sendFollowUpEmailToClinic = async (clinicEmail, appointmentDetails) => {
+    try {
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: clinicEmail,
+            subject: "Follow-Up Appointment Reminder - Petopia",
+            html: `
+                <h2>Follow-Up Appointment Reminder</h2>
+                <p>This is a reminder for a follow-up appointment at <strong>${appointmentDetails.clinicName}</strong>.</p>
+                <p><strong>Appointment ID:</strong> ${appointmentDetails.appointmentId}</p>
+                <p><strong>Owner Name:</strong> ${appointmentDetails.firstName} ${appointmentDetails.lastName}</p>
+                <p><strong>Pet Name:</strong> ${appointmentDetails.petName}</p>
+                <p><strong>Service:</strong> ${appointmentDetails.serviceName}</p>
+                <p><strong>Follow-Up Date:</strong> ${new Date(appointmentDetails.followUpDate).toLocaleString()}</p>
+                <p><strong>Notes:</strong> ${appointmentDetails.notes || "No additional notes provided."}</p>
+                <p>Thank you for providing excellent care to our furry friends!</p>
+                <hr>
+                <p style="font-size: 12px; color: gray;">This is an automated message from Petopia. Please do not reply to this email.</p>
+            `,
+            attachments: [
+                {
+                    filename: `appointment-${appointmentDetails.appointmentId}.pdf`,
+                    content: pdfBuffer, // Ensure proper passing of the buffer
+                    contentType: "application/pdf",
+                },
+            ],
+        };
 
-            const info = await transporter.sendMail(mailOptions);
-            console.log("Follow-Up Email sent to clinic: ", info.response);
-        } catch (error) {
-            console.error("Error sending follow-up email to clinic:", error);
-        }
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Follow-Up Email sent to clinic: ", info.response);
+    } catch (error) {
+        console.error("Error sending follow-up email to clinic:", error);
+    }
+};
+
+export const passwordResetOTPEmail = (otp) => {
+    return {
+      subject: "Petopia Password Reset OTP",
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd;">
+          <h2 style="text-align: center; color: #4CAF50;">🐾 Petopia Password Reset</h2>
+          <p style="text-align: center;">You requested to reset your password. Please use the OTP code below to proceed:</p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <span style="display: inline-block; font-size: 32px; font-weight: bold; background: #f0f0f0; padding: 10px 20px; border-radius: 8px; color: #007bff;">
+              ${otp}
+            </span>
+          </div>
+  
+          <p style="text-align: center;">This OTP is valid for <strong>5 minutes</strong>.</p>
+          <p style="text-align: center;">If you didn't request a password reset, you can safely ignore this email.</p>
+          
+          <hr style="border: 1px solid #ddd; margin: 20px 0;">
+  
+          <p style="text-align: center;">Thank you,<br><strong>The Petopia Team</strong></p>
+  
+          <hr>
+          <p style="font-size: 12px; color: gray; text-align: center;">
+            This is an automated message from Petopia. Please do not reply to this email.
+          </p>
+        </div>
+      `,
     };
+  };  

@@ -1,6 +1,6 @@
 import express from 'express';
 import { getOwners, getOwnerById, updateOwner, uploadOwnerAvatar, createGuestOwner } from '../controller/ownerController.js';
-import { getUsers, registerOwnerWithOTP, registerUserWithoutOTP, verifyUserOTP, loginUser, updateUser, deleteUser } from '../controller/ownerAuthController.js';
+import { getUsers, registerOwnerWithOTP, registerUserWithoutOTP, verifyUserOTP, loginUser, updateUser, deleteUser, verifyResetPasswordOTP, sendPasswordResetOTP, logoutUser } from '../controller/ownerAuthController.js';
 import { uploadAvatar } from "../middleware/uploadAvatar.js";
 
 
@@ -39,5 +39,11 @@ router.post('/owners/login', loginUser);
 router.put('/owners/update/:id', updateOwner)
 
 router.put('/users/update/:id', updateUser);
+
+router.post("/auth/send-reset", sendPasswordResetOTP);
+
+router.post("/auth/verify-reset", verifyResetPasswordOTP);
+
+router.post("/auth/logout", logoutUser);
 
 export default router;

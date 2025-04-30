@@ -1,7 +1,8 @@
 .shops-container {
     margin-top: 80px;
     padding: 20px;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1300px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -145,7 +146,7 @@
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
+    max-width: 1300px;
     width: 100%;
     margin: auto;
 }

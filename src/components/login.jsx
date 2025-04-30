@@ -19,34 +19,37 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+  
     try {
       const response = await axios.post(`http://localhost:5000/api/owners/login`, {
         email: username,
         password: password,
       });
-
+  
       console.log("✅ Login successful:", response.data);
       const { token } = response.data;
-
+  
       // ✅ Store token
       localStorage.setItem("token", token);
-
+  
       // ✅ Decode token and set user info
       const user = getUserFromToken(); // Call this function to get user info
       if (user) {
         setUserInfo(user); // Update user info in context
       }
-
-      // ✅ Redirect based on role
-      if (user.role === "owner") {
-        navigate("/home");
-      } else if (user.role === "clinic" || user.role === "admin") {
-        navigate("/vet-dashboard");
-        window.location.reload();
-      } else {
-        navigate("/home");
-      }
+  
+      // ✅ Introduce a delay before navigating
+      setTimeout(() => {
+        // ✅ Redirect based on role
+        if (user.role === "owner") {
+          navigate("/home");
+        } else if (user.role === "clinic" || user.role === "admin") {
+          navigate("/vet-dashboard");
+        } else {
+          navigate("/home");
+        }
+      }, 1000); // Delay of 1000 milliseconds (1 second)
+  
     } catch (err) {
       console.error("❌ Login error:", err.response ? err.response.data.message : err.message);
       setError(err.response ? err.response.data.message : "An error occurred. Please try again.");
@@ -107,16 +110,9 @@ const Login = () => {
 
           {/* Remember Me and Forgot Password in two rows */}
           <div className="remember-forgot-container">
-            <div className="remember-me">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-              <label htmlFor="rememberMe">Remember Me</label>
+            <div className="forgot-password-link">
+              <a href="/reset-password">Forgot Password?</a>
             </div>
-
             
           </div>
 

@@ -179,7 +179,10 @@
       <div className="vet-history-container">
         <Toast ref={toast} />
 
-        <div className="patients-label" style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div className="patients-label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1 className="services-title font-bold" style={{ fontSize: "20px", marginBottom: "0px" }}>
+              Appointment History
+          </h1>
           {statusLegend}
         </div>
 

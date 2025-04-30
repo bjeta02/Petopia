@@ -261,12 +261,12 @@
   }
 
   .action-buttons .edit-btn {
-    background: #ffc107;
+    background:#007bff;
     color: #333;
   }
 
   .action-buttons .edit-btn:hover {
-    background: #e0a800;
+    background:#0056b3;
   }
 
   .action-buttons .delete-btn {

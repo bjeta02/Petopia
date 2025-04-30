@@ -97,8 +97,6 @@ export const getClinicById = async (req, res) => {
             })),
             logo: clinic.logo,
         };
-
-        console.log("Fetched Data", response);
         res.json(response);
     } catch (error) {
         console.error("Error fetching clinic:", error);
@@ -182,6 +180,43 @@ export const updateClinic = async (req, res) => {
         res.status(500).json({ message: "Failed to update clinic." });
     }
 };
+
+export const updateClinicLogo = async (req, res) => {
+    try {
+      const { clinicId } = req.params; // Get clinicId from request parameters
+  
+      // Validate clinicId
+      if (!clinicId || !mongoose.Types.ObjectId.isValid(clinicId)) {
+        return res.status(400).json({ success: false, message: "Invalid clinic ID." });
+      }
+  
+      const clinic = await Clinic.findById(clinicId);
+      if (!clinic) {
+        return res.status(404).json({ success: false, message: "Clinic not found" });
+      }
+  
+      // Check if file was uploaded
+      if (!req.file) {
+        return res.status(400).json({ success: false, message: "No file uploaded" });
+      }
+  
+      // Construct the full URL for the uploaded logo
+      const logoUrl = `/logos/${req.file.filename}`;
+      clinic.logo = logoUrl; // Update the logo field
+  
+      // Save to database
+      await clinic.save();
+  
+      res.status(200).json({
+        success: true,
+        message: "Logo uploaded successfully",
+        logoUrl: clinic.logo,
+      });
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+    }
+  };
 
 export const deleteClinic = async (req, res) => {
     try {
