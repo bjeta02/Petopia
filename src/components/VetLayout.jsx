@@ -38,7 +38,7 @@ const VetLayout = () => {
           <li>
             <NavLink to="/vet-service" className={({ isActive }) => (isActive ? "active" : "")}>
               <Settings size={18} style={{ marginRight: 8 }} />
-              Manage Services
+              Services
             </NavLink>
           </li>
           )}
@@ -46,32 +46,32 @@ const VetLayout = () => {
           <li>
             <NavLink to="/vet-users" className={({ isActive }) => (isActive ? "active" : "")}>
               <Users size={18} style={{ marginRight: 8 }} />
-              Manage Users
+              Users
             </NavLink>
           </li>
           )}
           <li>
             <NavLink to="/vet-patients" className={({ isActive }) => (isActive ? "active" : "")}>
               <History size={18} style={{ marginRight: 8 }} />
-              Manage Patients
+              Patients
             </NavLink>
           </li>
           <li>
             <NavLink to="/vet-appointments" className={({ isActive }) => (isActive ? "active" : "")}>
               <CalendarCheck size={18} style={{ marginRight: 8 }} />
-              Manage Appointments
+              Appointments
             </NavLink>
           </li>
           <li>
             <NavLink to="/vet-schedules" className={({ isActive }) => (isActive ? "active" : "")}>
               <Clock size={18} style={{ marginRight: 8 }} /> {/* Using Clock icon for Schedules */}
-              Manage Schedules
+              Schedules
             </NavLink>
           </li>
           <li>
             <NavLink to="/vet-history" className={({ isActive }) => (isActive ? "active" : "")}>
               <History size={18} style={{ marginRight: 8 }} />
-              Manage History
+              History
             </NavLink>
           </li>
         </ul>

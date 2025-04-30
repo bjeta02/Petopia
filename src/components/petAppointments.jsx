@@ -215,124 +215,83 @@ export default function PetAppointments() {
 
     return (
         <div>
-                <div className="pet-appointment">
-                    {/* Insert Status Legend Above Filters */}
-                    <div className="patients-label" style={{ display: "flex", justifyContent: "flex-end", alignContent: 'center', marginTop: '0px', marginBottom: '0px' }}>
-                        {statusLegend}
+            <div className="pet-appointment">
+                {/* Insert Status Legend Above Filters */}
+                <div className="patients-label">
+                    {statusLegend}
+                </div>
+    
+                <span className="datatable-line"></span>
+    
+                <div className="filters-container">
+                    {/* Search Bar */}
+                    <div className="search-bar">
+                        <SearchIcon size={20} className="search-icon" />
+                        <InputText
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            placeholder="Search by Pet, Clinic, or Vet Name"
+                            className="search-input"
+                        />
                     </div>
-
-                    <span className="datatable-line"></span>
-
-                    <div className="filters-container" style={{ 
-                        display: "flex", 
-                        alignItems: "center", 
-                        gap: "1rem",  
-                        flexWrap: "wrap"
-                    }}>
-                        {/* Search Bar */}
-                        <div style={{ position: "relative", flexGrow: 1, minWidth: "250px" }}>
-                            {/* Search Icon inside input */}
-                            <SearchIcon size={20} style={{ 
-                                position: "absolute", 
-                                top: "40%", 
-                                left: "10px", 
-                                transform: "translateY(-50%)", 
-                                color: "#6c757d" 
-                            }} />
-
-                            {/* Input Text with padding to the left */}
-                            <InputText 
-                                value={searchTerm}
-                                onChange={e => setSearchTerm(e.target.value)}
-                                placeholder="Search by Pet, Clinic, or Vet Name"
-                                style={{ 
-                                    width: "100%", 
-                                    paddingLeft: "3.5rem",  // Enough space for the icon
-                                    maxWidth: "400px"
-                                }}
-                            />
-                        </div>
-
-                        {/* Filter Icon */}
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <FilterIcon size={24} />
-                        </div>
-
-                        {/* Filter Dropdowns */}
-                        <div>
-                            <Dropdown
-                                value={selectedPet}
-                                options={petOptions}
-                                onChange={e => setSelectedPet(e.value)}
-                                placeholder="Filter by Pet"
-                                className="p-inputtext-sm"
-                                showClear
-                                style={{ 
-                                    height: "45px",        // Adjust height here
-                                    padding: "0 10px",      // Optional: adjust horizontal padding
-                                    fontSize: "14px",       // Optional: adjust font size to match InputText
-                                    minWidth: "150px",       // Optional: make sure it's wide enough
-                                    marginBottom: "10px"
-                                    
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <Dropdown
-                                value={selectedClinic}
-                                options={clinicOptions}
-                                onChange={e => setSelectedClinic(e.value)}
-                                placeholder="Filter by Clinic"
-                                className="p-inputtext-sm"
-                                showClear
-                                style={{ 
-                                    height: "45px",        // Adjust height here
-                                    padding: "0 10px",      // Optional: adjust horizontal padding
-                                    fontSize: "14px",       // Optional: adjust font size to match InputText
-                                    minWidth: "150px",       // Optional: make sure it's wide enough
-                                    marginBottom: "10px"
-                                    
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <Dropdown
-                                value={selectedStatus}
-                                options={statusOptions}
-                                onChange={e => setSelectedStatus(e.value)}
-                                placeholder="Filter by Status"
-                                className="p-inputtext-sm"
-                                showClear
-                                style={{ 
-                                    height: "45px",        // Adjust height here
-                                    padding: "0 10px",      // Optional: adjust horizontal padding
-                                    fontSize: "14px",       // Optional: adjust font size to match InputText
-                                    minWidth: "150px",       // Optional: make sure it's wide enough
-                                    marginBottom: "10px"
-                                    
-                                }}
-                            />
-                        </div>
+    
+                    {/* Filter Icon */}
+                    <div className="filter-icon">
+                        <FilterIcon size={24} />
                     </div>
-
-
-                    <div style={{ overflowX: "auto" }}>
-                    <DataTable 
+    
+                    {/* Filter Dropdowns */}
+                    <div>
+                        <Dropdown
+                            value={selectedPet}
+                            options={petOptions}
+                            onChange={e => setSelectedPet(e.value)}
+                            placeholder="Filter by Pet"
+                            className="p-inputtext-sm filter-dropdown"
+                            showClear
+                        />
+                    </div>
+    
+                    <div>
+                        <Dropdown
+                            value={selectedClinic}
+                            options={clinicOptions}
+                            onChange={e => setSelectedClinic(e.value)}
+                            placeholder="Filter by Clinic"
+                            className="p-inputtext-sm filter-dropdown"
+                            showClear
+                        />
+                    </div>
+    
+                    <div>
+                        <Dropdown
+                            value={selectedStatus}
+                            options={statusOptions}
+                            onChange={e => setSelectedStatus(e.value)}
+                            placeholder="Filter by Status"
+                            className="p-inputtext-sm filter-dropdown"
+                            showClear
+                        />
+                    </div>
+                </div>
+    
+                <div className="datatable-wrapper">
+                    <DataTable
                         value={filteredAppointments}
                         paginator
                         rows={20}
                         className="p-datatable-striped p-datatable-gridlines"
-                        style={{ minWidth: "300px" }}
                     >
-                        <Column field="pet_id" header="🐾 Pet Name" body={petBodyTemplate}/>
+                        <Column field="pet_id" header="🐾 Pet Name" body={petBodyTemplate} />
                         <Column field="clinic.name" header="🏥 Clinic" body={clinicBodyTemplate} />
                         <Column field="service_id.name" header="Service Availed" />
                         <Column field="vetName" header="👨‍⚕️ Vet Name" />
                         <Column field="date" header="📅 Date" body={rowData => formatDateTime(rowData.date)} sortable />
                         <Column field="status" header="📌 Status" body={formatStatus} />
                     </DataTable>
-                    </div>
                 </div>
+            </div>
         </div>
     );
+    
 }

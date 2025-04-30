@@ -1,13 +1,12 @@
-.schedule-container {
+
+
+.schedule-container2 {
   width: 100%;
-  max-width: 1050px;
-  margin: 0 -3px 15px auto;
   background-color: white;
   padding: 40px;
   border-radius: 10px !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 
 /* Add Appointment Modal */
 .add-appointment {
@@ -139,7 +138,6 @@
   font-size: 16px;
   font-weight: bold;
   transition: 0.3s ease-in-out;
-  margin-left: 300px;
 }
 
 /* Hover effect for 'Today' Button */
@@ -156,9 +154,11 @@
   font-weight: bold;
   transition: 0.3s ease-in-out;
   margin-top: 10px; /* Add space above the arrows */
-  margin-right: 10px; /* Add space between the left and right arrows */
+  margin-left: 5px; /* Adjust margin to left */
+  /* Remove margin-right to avoid pushing the arrow too far right */
 }
 
+/* Hover effect for Arrows */
 /* Hover effect for Arrows */
 .fc-prev-button:hover, .fc-next-button:hover {
   background: #18824f !important;
@@ -207,11 +207,58 @@
 
 
 /* Smaller font size for mobile devices (max-width: 768px) */
+/* Mobile Styles */
 @media (max-width: 768px) {
-  .fc-toolbar-title {
-    font-size: 1.2em !important; /* Adjust font size for mobile */
+  /* Card styling */
+  .services-title {
+      font-size: 18px; /* Smaller font size for mobile */
+  }
+
+  .addapp-button {
+      font-size: 14px; /* Smaller button text */
+      padding: 0.5rem 1rem;
+  }
+
+  /* FullCalendar */
+  .fc {
+      font-size: 12px; /* Reduce font size for mobile */
+  }
+
+  .fc-daygrid-day-number {
+      font-size: 10px; /* Adjust day numbers */
+  }
+
+  /* Dialog adjustments */
+  .p-dialog {
+      width: 90%; /* Make dialog width responsive */
+      max-width: 100%; /* Prevent overflow */
+  }
+
+  .add-appointment {
+      padding: 10px;
+  }
+
+  .add-appointment .p-dropdown, 
+  .add-appointment .p-calendar {
+      width: 100%; /* Full width for dropdowns and calendar */
+  }
+
+  .add-appointment .p-button {
+      width: 100%; /* Full width for the button */
+  }
+
+  /* Layout adjustments */
+  .schedule-container {
+      padding: 0 10px;
+  }
+
+  /* Adjustments for dialogs */
+  .add-appointment space-y-3 {
+      display: block;
   }
 }
+
+
 
 /* Even smaller font size for very small mobile screens (max-width: 480px) */
 @media (max-width: 480px) {

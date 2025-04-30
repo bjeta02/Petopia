@@ -4,7 +4,7 @@ html {
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
   color: #777;
-  font-weight: 400;
+  font-weight: 300;
   width: 100% !important;
   height: 100% !important;
 }
@@ -216,6 +216,7 @@ a:focus,
 }
 .intro .overlay {
   background: rgba(0, 0, 0, 0.2);
+  
 }
 .intro h1 {
   font-family: "Raleway", sans-serif;
@@ -599,7 +600,73 @@ label {
 }
 
 @media (max-width: 768px) {
+  header .intro-text {
+    padding-top: 150px;
+    padding-bottom: 100px;
+  }
+
+  .container, .content-wrapper, .main-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .intro h1 {
+    font-size: 36px;
+  }
+
+  .intro p {
+    font-size: 16px;
+    line-height: 24px;
+    padding: 0 10px;
+  }
+
   #about img {
-    margin: 50px 0;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  #services i.fa,
+  #features i.fa {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+    padding: 25px 0;
+  }
+
+  #services h3,
+  #features h3 {
+    font-size: 18px;
+  }
+
+  #portfolio .portfolio-item {
+    margin: 15px 0;
+  }
+
+  .testimonial {
+    text-align: center;
+  }
+
+  .testimonial-image {
+    float: none;
+    margin: 0 auto 10px;
+  }
+
+  .team-img {
+    width: 100% !important;
+  }
+
+  #team .team-img {
+    width: 100%;
+  }
+
+  #contact h3 {
+    margin-top: 40px;
+  }
+
+  #menu.navbar-default .navbar-nav > li > a {
+    margin: 10px 0;
+    text-align: center;
+    display: block;
   }
 }
+

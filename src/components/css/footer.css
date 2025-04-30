@@ -123,3 +123,47 @@ margin-left: 15px; /* Move the arrow further to emphasize the hover effect */
   font-weight: bold;
   margin-bottom: 20px;
 }
+
+@media (max-width: 768px) {
+  .footer-about {
+    flex-direction: column;
+    padding: 0 20px;
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .contact-info,
+  .footer-help {
+    text-align: center !important;
+  }
+
+  .input-container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px;
+  }
+
+  .email-input {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .get-started-btn {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .section-title h2 {
+    font-size: 2rem;
+  }
+
+  .section-title h4 {
+    font-size: 1.1rem;
+  }
+
+  .copyright p {
+    font-size: 0.8rem;
+    margin-top: 30px;
+  }
+}

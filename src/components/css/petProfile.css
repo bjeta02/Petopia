@@ -7,7 +7,7 @@ body {
 .pet-profile-container {
     width: 100%;
     max-width: 1050px;
-    margin: 0 0px 40px auto;
+    margin: 0  auto;
 }
 
 /* Header Styles */

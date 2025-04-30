@@ -203,7 +203,7 @@ const VetSchedules = () => {
           )}
         </div>
       </Card>
-    <div className="schedule-container">
+    <div className="schedule-container2">
       {error && <p className="text-red-500">{error}</p>}
 
       <FullCalendar

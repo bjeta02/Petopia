@@ -75,7 +75,6 @@ const PetSchedules = () => {
 
   return (
     <div className="schedule-container">
-      {error && <p className="text-red-500">{error}</p>}
 
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}

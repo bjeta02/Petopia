@@ -356,7 +356,7 @@ const VetAppointments = () => {
 
       <div className="flex-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <div className="filter-group">
         <div style={{ display: "flex", alignItems: "center" }}>
           <FilterIcon size={24} />
         </div>

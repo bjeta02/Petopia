@@ -402,18 +402,48 @@
     animation: scan-move 2s linear infinite;
     z-index: 4; /* above the box */
   }
+
+  .filters-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
   
 /* Adjust margin for mobile devices */
 @media (max-width: 768px) {
+    .pet-appointment {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto 20px auto;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .filters-container {
+        flex-direction: column; /* Stack filters vertically */
+        gap: 10px; /* Add gap between filters */
+        width: 100%; /* Ensure full width for mobile */
+    }
+
+    .filters-container > div {
+        width: 100%; /* Each filter takes full width */
+    }
+
+    .p-dropdown {
+        width: 100% !important; /* Ensure dropdowns are full width */
+    }
+
+    /* Patients label responsive adjustments */
     .patients-label {
         flex-direction: column;
-        align-items: flex-start; /* Align to the left */
-        margin-top: 20px; /* Increase the top margin for mobile screens */
+        align-items: flex-start;
+        margin-top: 20px;
     }
 
     .patients-label p {
-        font-size: 14px; /* Adjust font size for mobile */
-        margin-bottom: 10px; /* Add some bottom space to separate the title from the legend */
+        font-size: 14px;
+        margin-bottom: 10px;
     }
 }
 

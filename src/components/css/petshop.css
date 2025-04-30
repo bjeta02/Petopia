@@ -19,13 +19,12 @@
   max-width: 900px; /* Adjust width to fit content */
   max-height: 90vh; /* Set a max height */
   overflow-y: auto; /* Allow scrolling if content exceeds max height */
-  margin-top: 20px; /* Use a smaller margin */
   align-items: center;
 }
 
 .shop-info-book {
   width: 40%; /* Allocate space for the clinic info */
-  padding: 20px;
+  padding: 40px;
   text-align: center;
 }
 
@@ -70,9 +69,6 @@
   margin-top: 5rem; /* adjust as needed */
 }
 
-.step-3-active {
-  margin-top: 15rem;
-}
 /* Form Fields */
 .form-label {
   display: block;
@@ -170,7 +166,7 @@
 @media screen and (max-width: 768px) {
   .petshop-container {
     flex-direction: column;
- width: 90%;
+    width: 90%;
     padding: 15px;
     max-height: none; /* Remove max-height for mobile */
     margin-top: 20px; /* Adjust margin for mobile */
@@ -216,11 +212,14 @@
     font-size: 12px;
   }
   
-  .step-2-3-margin {
-    margin-top: 5rem; /* adjust as needed */
+  .step-3-active {
+    margin-top: 0; /* or reduce it */
+    padding-top: 0;
   }
   
-  .step-3-active {
-    margin-top: 15rem;
+  
+  .hide-on-step-3 {
+    display: none;
   }
+  
 }

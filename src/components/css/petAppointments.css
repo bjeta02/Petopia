@@ -1,7 +1,7 @@
 .pet-appointment {
     width: 100%;
     max-width: 1050px;
-    margin-left: 70px;
+    margin: 0 auto;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
@@ -101,9 +101,9 @@
 @media (max-width: 768px) {
     .pet-appointment {
         width: 100%;
-        max-width: 100%;
-        margin: 0 auto 20px auto;
-        padding: 15px;
+        max-width: 100%; /* Allow the container to take full width */
+        margin: 0 10px; /* Add margin on the sides to avoid edge-to-edge view */
+        padding: 15px; /* Reduce padding for smaller screens */
         box-sizing: border-box;
     }
 

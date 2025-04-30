@@ -1,0 +1,74 @@
+/* Responsive layout for filter/search section */
+.flex-container {
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .flex-container {
+      flex-direction: column;
+      align-items: stretch !important;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    
+      .filter-group > * {
+        width: 100%;
+      }
+  
+    .flex-container > * {
+      width: 100% !important;
+    }
+  
+    .custom-qr-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .p-inputtext-sm,
+    .p-dropdown,
+    .p-inputtext {
+      width: 100% !important;
+    }
+  
+    .datatable {
+      overflow-x: auto;
+    }
+  }
+  
+  /* Improve button alignment inside DataTable */
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Peso input field fix */
+  .peso-input-container {
+    position: relative;
+  }
+  
+  .peso-sign {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .peso-input-container input {
+    padding-left: 25px;
+    width: 100%;
+  }
+  

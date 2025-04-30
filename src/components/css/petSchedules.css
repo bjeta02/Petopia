@@ -1,150 +1,191 @@
 .schedule-container {
-    width: 100%;
-    max-width: 1050px;
-    margin: 0 -3px 15px auto;
-    background-color: white;
-    padding: 40px;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 40px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-appointment {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+/* Input Fields */
+.add-appointment input,
+.add-appointment .p-calendar {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-appointment input:focus,
+.add-appointment .p-calendar:focus {
+  border-color: #14967f;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.add-appointment button {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: #14967f;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.add-appointment button:hover {
+  background-color: #18824f;
+}
+
+.addapp-button {
+  background: #14967f; /* Blue-green color */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.addapp-button:hover {
+  background: #0c9083; /* Darker blue-green on hover */
+  transform: scale(1.05);
+}
+
+.addapp-button:active {
+  background: #18824f; /* Even darker shade for click effect */
+  transform: scale(0.98);
+}
+
+.fc-toolbar-chunk button {
+  background: #14967f; /* Blue */
+  color: white;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
+}
+
+.fc-toolbar-chunk button:hover {
+  background: #18824f; /* Darker Blue */
+  transform: scale(1.1);
+}
+
+.fc-toolbar-chunk .fc-today-button {
+  background: #14967f !important; /* Green */
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.fc-toolbar-chunk .fc-today-button:hover {
+  background: #18824f !important; /* Darker Green */
+}
+
+.fc-prev-button, .fc-next-button {
+  background: #14967f !important; /* Orange */
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.fc-prev-button:hover, .fc-next-button:hover {
+  background: #18824f !important; /* Darker Orange */
+  transform: scale(1.1);
+}
+
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.fc-event {
+  background: #14967f; /* Orange */
+  border: none;
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.fc-event:hover {
+  background: #18824f; /* Darker Orange */
+}
+
+@media (max-width: 768px) {
+  /* Shrink container padding and margins */
+  .schedule-container {
+    padding: 15px;
+    margin: 0 5px;
   }
 
-/* Add Appointment Modal */
-.add-appointment {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 16px;
-    background: #ffffff;
-    border-radius: 8px;
+  /* Force FullCalendar to fit smaller screens */
+  .fc {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 12px !important;
   }
-  
-  /* Input Fields */
-  .add-appointment input,
-  .add-appointment .p-calendar {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .add-appointment input:focus,
-  .add-appointment .p-calendar:focus {
-    border-color: #14967f;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    outline: none;
-  }
-  
-  /* Calendar Styling */
-  .p-calendar {
-    background: white;
-  }
-  
-  /* Button Styling */
-  .add-appointment button {
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    color: white;
-    background-color: #14967f;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-  }
-  
-  .add-appointment button:hover {
-    background-color: #18824f;
-  }
-  
-  /* Add Appointment Button */
-  .addapp-button {
-    background: #14967f; /* Blue-green color */
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.2s;
-  }
-  
-  .addapp-button:hover {
-    background: #0c9083; /* Darker blue-green on hover */
-    transform: scale(1.05);
-  }
-  
-  .addapp-button:active {
-    background: #18824f; /* Even darker shade for click effect */
-    transform: scale(0.98);
-  }
-  
-  /* 🔹 FullCalendar Navigation Buttons (Today, Previous, Next) */
-  .fc-toolbar-chunk button {
-    background: #14967f; /* Blue */
-    color: white;
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .fc-toolbar-chunk button:hover {
-    background: #18824f; /* Darker Blue */
-    transform: scale(1.1);
-  }
-  
-  /* 🔹 Style for the 'Today' Button */
-  .fc-toolbar-chunk .fc-today-button {
-    background: #14967f !important; /* Green */
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .fc-toolbar-chunk .fc-today-button:hover {
-    background: #18824f !important; /* Darker Green */
-  }
-  
-  /* 🔹 Custom Styling for Arrows (Previous & Next) */
-  .fc-prev-button, .fc-next-button {
-    background: #14967f !important; /* Orange */
-    border-radius: 5px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .fc-prev-button:hover, .fc-next-button:hover {
-    background: #18824f !important; /* Darker Orange */
-    transform: scale(1.1);
-  }
-  
-  /* 🔹 Increase visibility of Calendar Header */
+
+  /* Shrink header title */
   .fc-toolbar-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
+    font-size: 14px !important;
   }
-  
-  /* 🔹 Style for Calendar Events */
+
+  /* Shrink navigation and today buttons */
+  .fc-toolbar-chunk button,
+  .fc-prev-button,
+  .fc-next-button,
+  .fc-today-button {
+    font-size: 12px !important;
+    padding: 4px 8px !important;
+    min-width: unset !important;
+  }
+
+  /* Shrink event display */
   .fc-event {
-    background: #14967f; /* Orange */
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    padding: 4px;
+    font-size: 11px !important;
+    padding: 2px 4px !important;
   }
-  
-  .fc-event:hover {
-    background: #18824f; /* Darker Orange */
+
+  /* Shrink day numbers */
+  .fc-daygrid-day-number {
+    font-size: 11px !important;
+    padding: 2px !important;
   }
+
+  /* Shrink day headers (Mon, Tue, etc.) */
+  .fc-col-header-cell-cushion {
+    font-size: 11px !important;
+    padding: 4px !important;
+  }
+
+  /* Optional: shrink overall height spacing */
+  .fc .fc-daygrid-day-frame {
+    padding: 4px !important;
+  }
+}
+
